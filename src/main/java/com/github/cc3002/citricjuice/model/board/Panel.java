@@ -15,7 +15,6 @@ import java.util.Set;
  * @since 1.0
  */
 public class Panel { /*this is a neutral panel*/
-  //private final PanelType type;
   private final Set<Panel> nextPanels = new HashSet<>();
 
   /**
@@ -41,8 +40,7 @@ public class Panel { /*this is a neutral panel*/
   }
 
   /**
-   * Creo que no es necesario dejar este metodo, ya que en este caso no hace nada, pero originalmente
-   * también estaba el caso de que type=neutral en activatedBy, asi que preferi dejarlo por si acaso
+   *
    */
   public void activatedBy(final Player player) {
     return null;
