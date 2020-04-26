@@ -42,68 +42,7 @@ public class Panel { /*this is a neutral panel*/
   /**
    *
    */
-  public void activatedBy(final Player player) {
-    return null;
-  }
+  public void activatedBy(final Player player) {  }
 }
 
-
-public class BonusPanel extends Panel {
-
-  public BonusPanel(){
-    super();
-  }
-
-  /**
-   * Increases the player's star count by the D6 roll multiplied by the maximum between the player's
-   * norma level and three.
-   */
-  private static void activatedBy(final @NotNull Player player) {
-    player.increaseStarsBy(player.roll() * Math.min(player.getNormaLevel(), 3));
-  }
-}
-
-
-public class DropPanel extends Panel{
-
-  public DropPanel(){
-    super();
-  }
-
-  /**
-   * Reduces the player's star count by the D6 roll multiplied by the player's norma level.
-   */
-  private static void activatedBy(final @NotNull Player player) {
-    player.reduceStarsBy(player.roll() * player.getNormaLevel());
-  }
-}
-
-
-public class HomePanel extends Panel{
-
-  public HomePanel(){
-    super();
-  }
-
-  /**
-   * Restores a player's HP in 1.
-   */
-  private static void activatedBy(final @NotNull Player player) {
-    player.setCurrentHP(player.getCurrentHP() + 1);
-  }
-}
-
-public class EncounterPanel extends Panel{
-
-  public EncounterPanel(){
-    super();
-  }
-}
-
-public class BossPanel extends Panel{
-
-  public BossPanel(){
-    super();
-  }
-}
 
