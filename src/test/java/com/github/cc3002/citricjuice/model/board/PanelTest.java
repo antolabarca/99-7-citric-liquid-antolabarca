@@ -47,12 +47,12 @@ class PanelTest {
     assertNotEquals(testNeutralPanel, new Object());
     assertEquals(testNeutralPanel, testNeutralPanel);
     assertEquals(testNeutralPanel, new Panel());
-    assertNotEquals(testNeutralPanel, testHomePanel);
-    assertNotEquals(testHomePanel, testNeutralPanel);
-    assertNotEquals(testBonusPanel,testHomePanel);
-    assertNotEquals(new Panel(), new HomePanel());
-    assertNotEquals(new HomePanel(), new Panel());
-    assertNotEquals(new BonusPanel(), new HomePanel());
+    assertNotEquals(testNeutralPanel, testDropPanel);
+    assertNotEquals(testDropPanel, testNeutralPanel);
+    assertNotEquals(testBonusPanel,testDropPanel);
+    assertNotEquals(new Panel(), new DropPanel());
+    assertNotEquals(new DropPanel(), new Panel());
+    assertNotEquals(new BonusPanel(), new DropPanel());
   }
 
   @Test
