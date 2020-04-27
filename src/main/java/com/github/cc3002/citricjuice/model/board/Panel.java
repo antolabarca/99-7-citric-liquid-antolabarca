@@ -4,6 +4,7 @@ import com.github.cc3002.citricjuice.model.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -21,6 +22,22 @@ public class Panel { /*this is a neutral panel*/
    * Creates a new panel.
    */
   public Panel() { }
+
+  /**
+   * Checks if a panel equals this one
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Panel panel = (Panel) o;
+    return Objects.equals(nextPanels, panel.nextPanels);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(nextPanels);
+  }
 
   /**
    * Returns a copy of this panel's next ones.

@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Random;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author <a href="mailto:ignacio.slater@ug.uchile.cl">Ignacio Slater M.</a>.
@@ -43,15 +42,59 @@ class PanelTest {
     suguri = new Player(PLAYER_NAME, BASE_HP, BASE_ATK, BASE_DEF, BASE_EVD);
   }
 
-  /*@Test
-  public void constructorTest() {
-    assertEquals(PanelType.BONUS, testBonusPanel.getType());
-    assertEquals(PanelType.BOSS, testBossPanel.getType());
-    assertEquals(PanelType.DROP, testDropPanel.getType());
-    assertEquals(PanelType.ENCOUNTER, testEncounterPanel.getType());
-    assertEquals(PanelType.HOME, testHomePanel.getType());
-    assertEquals(PanelType.NEUTRAL, testNeutralPanel.getType());
-  }*/
+  @Test
+  public void PanelConstructorTest() {
+    assertEquals(testNeutralPanel, testNeutralPanel);
+    assertNotEquals(testNeutralPanel, new Object());
+    assertFalse(testNeutralPanel.equals(null));
+    assertNotSame(new Panel(), testNeutralPanel);
+    assertEquals(new Panel(), testNeutralPanel);
+  }
+
+  @Test
+  public void BonusPanelConstructorTest() {
+    assertEquals(testBonusPanel, testBonusPanel);
+    assertNotEquals(testBonusPanel, new Object());
+    assertFalse(testBonusPanel.equals(null));
+    assertNotSame(new BonusPanel(), testBonusPanel);
+    assertEquals(new BonusPanel(), testBonusPanel);
+  }
+
+  @Test
+  public void BossPanelConstructorTest() {
+    assertEquals(testBossPanel, testBossPanel);
+    assertNotEquals(testBossPanel, new Object());
+    assertFalse(testBossPanel.equals(null));
+    assertNotSame(new BossPanel(), testBossPanel);
+    assertEquals(new BossPanel(), testBossPanel);
+  }
+
+  @Test
+  public void DropPanelConstructorTest() {
+    assertEquals(testDropPanel, testDropPanel);
+    assertNotEquals(testDropPanel, new Object());
+    assertFalse(testDropPanel.equals(null));
+    assertNotSame(new DropPanel(), testDropPanel);
+    assertEquals(new DropPanel(), testDropPanel);
+  }
+
+  @Test
+  public void EncounterPanelConstructorTest() {
+    assertEquals(testEncounterPanel, testEncounterPanel);
+    assertNotEquals(testEncounterPanel, new Object());
+    assertFalse(testEncounterPanel.equals(null));
+    assertNotSame(new EncounterPanel(), testEncounterPanel);
+    assertEquals(new EncounterPanel(), testEncounterPanel);
+  }
+
+  @Test
+  public void HomePanelConstructorTest() {
+    assertEquals(testHomePanel, testHomePanel);
+    assertNotEquals(testHomePanel, new Object());
+    assertFalse(testHomePanel.equals(null));
+    assertNotSame(new HomePanel(), testHomePanel);
+    assertEquals(new HomePanel(), testHomePanel);
+  }
 
   @Test
   public void nextPanelTest() {
