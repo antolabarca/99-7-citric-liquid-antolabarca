@@ -9,6 +9,7 @@ public class BonusPanel extends Panel {
     super();
   }
 
+
   /**
    * Increases the player's star count by the D6 roll multiplied by the maximum between the player's
    * norma level and three.

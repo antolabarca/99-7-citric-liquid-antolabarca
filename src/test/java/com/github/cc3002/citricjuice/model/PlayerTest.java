@@ -28,6 +28,7 @@ public class PlayerTest {
   public void constructorTest() {
     final var expectedSuguri = new Player(PLAYER_NAME, 4, 1, -1, 2);
     assertEquals(expectedSuguri, suguri);
+    assertNotSame(expectedSuguri, suguri);
   }
 
   @Test

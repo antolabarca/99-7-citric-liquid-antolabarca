@@ -43,6 +43,19 @@ class PanelTest {
   }
 
   @Test
+  public void equalsTest() {
+    assertNotEquals(testNeutralPanel, new Object());
+    assertEquals(testNeutralPanel, testNeutralPanel);
+    assertEquals(testNeutralPanel, new Panel());
+    assertNotEquals(testNeutralPanel, testHomePanel);
+    assertNotEquals(testHomePanel, testNeutralPanel);
+    assertNotEquals(testBonusPanel,testHomePanel);
+    assertNotEquals(new Panel(), new HomePanel());
+    assertNotEquals(new HomePanel(), new Panel());
+    assertNotEquals(new BonusPanel(), new HomePanel());
+  }
+
+  @Test
   public void PanelConstructorTest() {
     assertEquals(testNeutralPanel, testNeutralPanel);
     assertNotEquals(testNeutralPanel, new Object());
