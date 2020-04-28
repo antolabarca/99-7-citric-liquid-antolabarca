@@ -32,12 +32,12 @@ class PanelTest {
 
   @BeforeEach
   public void setUp() {
-    testBonusPanel = new BonusPanel();
-    testBossPanel = new BossPanel();
-    testDropPanel = new DropPanel();
-    testEncounterPanel = new EncounterPanel();
-    testHomePanel = new HomePanel();
-    testNeutralPanel = new Panel();
+    testBonusPanel = new BonusPanel(1,1);
+    testBossPanel = new BossPanel(1,1);
+    testDropPanel = new DropPanel(1,1);
+    testEncounterPanel = new EncounterPanel(1,1);
+    testHomePanel = new HomePanel(1,1);
+    testNeutralPanel = new Panel(1,1);
     testSeed = new Random().nextLong();
     suguri = new Player(PLAYER_NAME, BASE_HP, BASE_ATK, BASE_DEF, BASE_EVD);
   }
@@ -46,7 +46,7 @@ class PanelTest {
   public void equalsTest() {
     assertNotEquals(testNeutralPanel, new Object());
     assertEquals(testNeutralPanel, testNeutralPanel);
-    assertEquals(testNeutralPanel, new Panel());
+    assertEquals(testNeutralPanel, new Panel(1,1));
     assertNotEquals(testNeutralPanel, testDropPanel);
     assertNotEquals(testDropPanel, testNeutralPanel);
     assertNotEquals(testBonusPanel,testDropPanel);
@@ -62,8 +62,8 @@ class PanelTest {
     assertEquals(testNeutralPanel, testNeutralPanel);
     assertNotEquals(testNeutralPanel, new Object());
     assertFalse(testNeutralPanel.equals(null));
-    assertNotSame(new Panel(), testNeutralPanel);
-    assertEquals(new Panel(), testNeutralPanel);
+    assertNotSame(new Panel(1,1), testNeutralPanel);
+    assertEquals(new Panel(1,1), testNeutralPanel);
   }
 
   @Test
@@ -71,8 +71,8 @@ class PanelTest {
     assertEquals(testBonusPanel, testBonusPanel);
     assertNotEquals(testBonusPanel, new Object());
     assertFalse(testBonusPanel.equals(null));
-    assertNotSame(new BonusPanel(), testBonusPanel);
-    assertEquals(new BonusPanel(), testBonusPanel);
+    assertNotSame(new BonusPanel(1,1), testBonusPanel);
+    assertEquals(new BonusPanel(1,1), testBonusPanel);
   }
 
   @Test
@@ -80,8 +80,8 @@ class PanelTest {
     assertEquals(testBossPanel, testBossPanel);
     assertNotEquals(testBossPanel, new Object());
     assertFalse(testBossPanel.equals(null));
-    assertNotSame(new BossPanel(), testBossPanel);
-    assertEquals(new BossPanel(), testBossPanel);
+    assertNotSame(new BossPanel(1,1), testBossPanel);
+    assertEquals(new BossPanel(1,1), testBossPanel);
   }
 
   @Test
@@ -89,8 +89,8 @@ class PanelTest {
     assertEquals(testDropPanel, testDropPanel);
     assertNotEquals(testDropPanel, new Object());
     assertFalse(testDropPanel.equals(null));
-    assertNotSame(new DropPanel(), testDropPanel);
-    assertEquals(new DropPanel(), testDropPanel);
+    assertNotSame(new DropPanel(1,1), testDropPanel);
+    assertEquals(new DropPanel(1,1), testDropPanel);
   }
 
   @Test
@@ -98,8 +98,8 @@ class PanelTest {
     assertEquals(testEncounterPanel, testEncounterPanel);
     assertNotEquals(testEncounterPanel, new Object());
     assertFalse(testEncounterPanel.equals(null));
-    assertNotSame(new EncounterPanel(), testEncounterPanel);
-    assertEquals(new EncounterPanel(), testEncounterPanel);
+    assertNotSame(new EncounterPanel(1,1), testEncounterPanel);
+    assertEquals(new EncounterPanel(1,1), testEncounterPanel);
   }
 
   @Test
@@ -107,14 +107,14 @@ class PanelTest {
     assertEquals(testHomePanel, testHomePanel);
     assertNotEquals(testHomePanel, new Object());
     assertFalse(testHomePanel.equals(null));
-    assertNotSame(new HomePanel(), testHomePanel);
-    assertEquals(new HomePanel(), testHomePanel);
+    assertNotSame(new HomePanel(1,1), testHomePanel);
+    assertEquals(new HomePanel(1,1), testHomePanel);
   }
 
   @Test
   public void nextPanelTest() {
     assertTrue(testNeutralPanel.getNextPanels().isEmpty());
-    final var expectedPanel1 = new Panel();
+    final var expectedPanel1 = new Panel(0,1);
     final var expectedPanel2 = new Panel(1,2);
 
     testNeutralPanel.addNextPanel(expectedPanel1);

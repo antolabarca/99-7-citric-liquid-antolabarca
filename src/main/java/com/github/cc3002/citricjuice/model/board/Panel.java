@@ -24,8 +24,7 @@ public class Panel { /*this is a neutral panel*/
    * Creates a new panel.
    */
   public Panel() {
-      this.x=0;
-      this.y=0;
+      this(0,0);
   }
 
     /**
