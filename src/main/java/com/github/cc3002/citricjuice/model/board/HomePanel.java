@@ -9,6 +9,8 @@ public class HomePanel extends Panel{
     super();
   }
 
+  public HomePanel(int x, int y){super(x,y);}
+
   /**
    * Restores a player's HP in 1.
    */

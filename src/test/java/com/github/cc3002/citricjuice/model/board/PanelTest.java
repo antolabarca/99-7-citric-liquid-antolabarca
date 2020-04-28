@@ -51,6 +51,8 @@ class PanelTest {
     assertNotEquals(testDropPanel, testNeutralPanel);
     assertNotEquals(testBonusPanel,testDropPanel);
     assertNotEquals(new Panel(), new DropPanel());
+    assertNotEquals(new Panel(1,2),new DropPanel(1,2));
+    assertNotEquals(new DropPanel(1,2), new Panel(1,2));
     assertNotEquals(new DropPanel(), new Panel());
     assertNotEquals(new BonusPanel(), new DropPanel());
   }
@@ -113,7 +115,7 @@ class PanelTest {
   public void nextPanelTest() {
     assertTrue(testNeutralPanel.getNextPanels().isEmpty());
     final var expectedPanel1 = new Panel();
-    final var expectedPanel2 = new Panel();
+    final var expectedPanel2 = new Panel(1,2);
 
     testNeutralPanel.addNextPanel(expectedPanel1);
     assertEquals(1, testNeutralPanel.getNextPanels().size());
@@ -125,7 +127,7 @@ class PanelTest {
     assertEquals(2, testNeutralPanel.getNextPanels().size());
 
     assertEquals(Set.of(expectedPanel1, expectedPanel2),
-                 testNeutralPanel.getNextPanels());
+            testNeutralPanel.getNextPanels());
   }
 
   @Test

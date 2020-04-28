@@ -16,30 +16,42 @@ import java.util.Set;
  * @since 1.0
  */
 public class Panel { /*this is a neutral panel*/
-  private final Set<Panel> nextPanels = new HashSet<>();
+    private final int x; /* x coord of Panel*/
+    private final int y; /* y coord of Panel*/
+    private final Set<Panel> nextPanels = new HashSet<>();
 
   /**
    * Creates a new panel.
    */
-  public Panel() { }
+  public Panel() {
+      this.x=0;
+      this.y=0;
+  }
+
+    /**
+     * Creates a new panel with coordenates x,y
+     * @param x the x coordenate of the panel
+     * @param y the y coordenate of the panel
+     */
+  public Panel(int x, int y){
+      this.x=x;
+      this.y=y;
+  }
 
   /**
    * Checks if a panel equals this one
    */
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Panel panel = (Panel) o;
-    return Objects.equals(nextPanels, panel.nextPanels);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Panel panel = (Panel) o;
+        return x == panel.x &&
+                y == panel.y &&
+                Objects.equals(nextPanels, panel.nextPanels);
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(nextPanels);
-  }
-
-  /**
+    /**
    * Returns a copy of this panel's next ones.
    */
   public Set<Panel> getNextPanels() {

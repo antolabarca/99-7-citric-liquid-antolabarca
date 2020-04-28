@@ -5,4 +5,6 @@ public class EncounterPanel extends Panel{
   public EncounterPanel(){
     super();
   }
+
+  public EncounterPanel(int x, int y){super(x,y);}
 }

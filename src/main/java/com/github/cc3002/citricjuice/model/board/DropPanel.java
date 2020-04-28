@@ -9,6 +9,8 @@ public class DropPanel extends Panel{
     super();
   }
 
+  public  DropPanel(int x, int y){super(x,y);}
+
   /**
    * Reduces the player's star count by the D6 roll multiplied by the player's norma level.
    */

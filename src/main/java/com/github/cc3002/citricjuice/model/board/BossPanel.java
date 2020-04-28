@@ -5,4 +5,6 @@ public class BossPanel extends Panel{
   public BossPanel(){
     super();
   }
+
+  public BossPanel(int x, int y){super(x,y);}
 }
