@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 public class BonusPanel extends Panel {
 
   public BonusPanel(){
-    super();
+    this(0,0);
   }
 
   public BonusPanel(int x, int y){super(x,y);}

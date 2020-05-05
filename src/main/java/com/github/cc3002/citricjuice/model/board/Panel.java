@@ -16,9 +16,9 @@ import java.util.Set;
  * @since 1.0
  */
 public class Panel { /*this is a neutral panel*/
-    private final int x; /* x coord of Panel*/
-    private final int y; /* y coord of Panel*/
-    private final Set<Panel> nextPanels = new HashSet<>();
+    protected final int x; /* x coord of Panel*/
+    protected final int y; /* y coord of Panel*/
+    protected final Set<Panel> nextPanels = new HashSet<>();
 
   /**
    * Creates a new panel.

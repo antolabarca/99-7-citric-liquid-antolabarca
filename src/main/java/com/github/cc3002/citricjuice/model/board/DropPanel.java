@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 public class DropPanel extends Panel{
 
   public DropPanel(){
-    super();
+    this(0,0);
   }
 
   public  DropPanel(int x, int y){super(x,y);}
