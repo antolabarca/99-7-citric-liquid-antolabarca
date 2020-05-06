@@ -1,7 +1,6 @@
 package com.github.cc3002.citricjuice.model.board;
 
-import com.github.cc3002.citricjuice.model.Player;
-import org.jetbrains.annotations.NotNull;
+import com.github.cc3002.citricjuice.model.units.Player;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -50,10 +49,25 @@ public class Panel { /*this is a neutral panel*/
                 Objects.equals(nextPanels, panel.nextPanels);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getX(), getY(), getNextPanels(), getClass());
+    }
+
     /**
-   * Returns a copy of this panel's next ones.
-   */
-  public Set<Panel> getNextPanels() {
+     * Returns this panel's X coordintate
+     */
+    public int getX(){ return this.x; }
+
+    /**
+     * Returns this panel's Y coordinate
+     */
+    public int getY(){ return this.y; }
+
+    /**
+    * Returns a copy of this panel's next ones.
+    */
+    public Set<Panel> getNextPanels() {
     return Set.copyOf(nextPanels);
   }
 
