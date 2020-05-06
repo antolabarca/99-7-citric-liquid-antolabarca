@@ -1,5 +1,8 @@
 package com.github.cc3002.citricjuice.model;
 
+import com.github.cc3002.citricjuice.model.units.Boss;
+import com.github.cc3002.citricjuice.model.units.Player;
+import com.github.cc3002.citricjuice.model.units.Wild;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -15,20 +18,42 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 1.0.6-rc.1
  * @since 1.0
  */
-public class PlayerTest {
+public class UnitsTest {
   private final static String PLAYER_NAME = "Suguri";
   private Player suguri;
+  private Boss testBoss;
+  private Wild testWild;
+
 
   @BeforeEach
   public void setUp() {
     suguri = new Player(PLAYER_NAME, 4, 1, -1, 2);
+    testBoss = new Boss(7, 2,1,-1);
+    testWild = new Wild(5, 1,0,-1);
   }
 
   @Test
-  public void constructorTest() {
+  public void PlayerConstructorTest() {
     final var expectedSuguri = new Player(PLAYER_NAME, 4, 1, -1, 2);
+    assertEquals(suguri,suguri);
     assertEquals(expectedSuguri, suguri);
     assertNotSame(expectedSuguri, suguri);
+  }
+
+  @Test
+  public void BossConstructorTest(){
+    final var expectedBoss = new Boss(7,2,1,-1);
+    assertEquals(testBoss,testBoss);
+    assertEquals(expectedBoss, testBoss);
+    assertNotSame(expectedBoss, testBoss);
+  }
+
+  @Test
+  public void WildConstructorTest(){
+    final var expectedWild = new Wild(5,1,0,-1);
+    assertEquals(testWild, testWild);
+    assertEquals(expectedWild, testWild);
+    assertNotSame(expectedWild, testWild);
   }
 
   @Test

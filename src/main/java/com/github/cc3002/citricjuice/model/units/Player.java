@@ -1,6 +1,4 @@
-package com.github.cc3002.citricjuice.model;
-
-import java.util.Random;
+package com.github.cc3002.citricjuice.model.units;
 
 /**
  * This class represents a player in the game 99.7% Citric Liquid.
@@ -10,7 +8,7 @@ import java.util.Random;
  * @version 1.0.6-rc.3
  * @since 1.0
  */
-public class Player extends Unit{
+public class Player extends Unit {
   private final String name;
   private int normaLevel;
 

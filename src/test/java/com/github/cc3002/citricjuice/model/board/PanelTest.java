@@ -1,6 +1,6 @@
 package com.github.cc3002.citricjuice.model.board;
 
-import com.github.cc3002.citricjuice.model.Player;
+import com.github.cc3002.citricjuice.model.units.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -126,8 +126,7 @@ class PanelTest {
     testNeutralPanel.addNextPanel(expectedPanel2);
     assertEquals(2, testNeutralPanel.getNextPanels().size());
 
-    assertEquals(Set.of(expectedPanel1, expectedPanel2),
-            testNeutralPanel.getNextPanels());
+    assertEquals(Set.of(expectedPanel1, expectedPanel2), testNeutralPanel.getNextPanels());
   }
 
   @Test
@@ -159,8 +158,7 @@ class PanelTest {
       final int roll = testRandom.nextInt(6) + 1;
       testBonusPanel.activatedBy(suguri);
       expectedStars += roll * Math.min(3, normaLvl);
-      assertEquals(expectedStars, suguri.getStars(),
-                   "Test failed with seed: " + testSeed);
+      assertEquals(expectedStars, suguri.getStars(),"Test failed with seed: " + testSeed);
       suguri.normaClear();
     }
   }
@@ -176,8 +174,7 @@ class PanelTest {
       final int roll = testRandom.nextInt(6) + 1;
       testDropPanel.activatedBy(suguri);
       expectedStars = Math.max(expectedStars - roll * normaLvl, 0);
-      assertEquals(expectedStars, suguri.getStars(),
-                   "Test failed with seed: " + testSeed);
+      assertEquals(expectedStars, suguri.getStars(),"Test failed with seed: " + testSeed);
       suguri.normaClear();
     }
   }
