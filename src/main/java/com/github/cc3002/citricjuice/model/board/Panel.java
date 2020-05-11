@@ -19,13 +19,6 @@ public class Panel { /*this is a neutral panel*/
     protected final int y; /* y coord of Panel*/
     protected final Set<Panel> nextPanels = new HashSet<>();
 
-  /**
-   * Creates a new panel.
-   */
-  public Panel() {
-      this(0,0);
-  }
-
     /**
      * Creates a new panel with coordenates x,y
      * @param x the x coordenate of the panel

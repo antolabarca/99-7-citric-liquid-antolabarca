@@ -5,10 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class HomePanel extends Panel{
 
-  public HomePanel(){
-    this(0,0);
-  }
-
   public HomePanel(int x, int y){super(x,y);}
 
   /**
