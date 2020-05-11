@@ -17,4 +17,9 @@ public class Boss extends Unit{
     public Boss(int hp, int atk, int def, int evd){
         super(hp,atk,def,evd);
     }
+
+    /**
+     * Creates a copy of this Boss
+     */
+    public Boss copy(){ return new Boss(maxHP, atk, def, evd);}
 }

@@ -75,17 +75,17 @@ public class Player extends Unit {
   /**
    * Sets the current player's atk to a given amount
    */
-  public void setATK(int new_atk){this.atk=new_atk;}
+  public void setAtk(int new_atk){this.atk=new_atk;}
 
   /**
    * Sets the current player's def to a given amount
    */
-  public void setDEF(int new_def){this.def=new_def;}
+  public void setDef(int new_def){this.def=new_def;}
 
   /**
    * Sets the current player's evd to a given amount
    */
-  public void setEVD(int new_evd){this.evd=new_evd;}
+  public void setEvd(int new_evd){this.evd=new_evd;}
 
   /**
    * Returns a copy of this character.

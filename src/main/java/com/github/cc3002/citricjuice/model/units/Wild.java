@@ -17,4 +17,10 @@ public class Wild extends Unit{
     public Wild(int hp, int atk, int def, int evd){
         super(hp,atk,def,evd);
     }
+
+    /**
+     * Creates a copy of this Wild unit
+     */
+    public Wild copy(){ return new Wild(maxHP, atk, def, evd);}
+
 }

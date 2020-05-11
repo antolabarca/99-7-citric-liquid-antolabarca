@@ -137,6 +137,11 @@ public abstract class Unit {
     }
 
     /**
+     * Returns a copy of this unit.
+     */
+    public abstract Unit copy();
+
+    /**
      * This unit gets attacked by another one, returns the amount of the attack
      * @param unit
      *      the unit that attacks
@@ -173,6 +178,5 @@ public abstract class Unit {
             this.setCurrentHP(this.getCurrentHP()-attack);
         }
     }
-
 
 }
