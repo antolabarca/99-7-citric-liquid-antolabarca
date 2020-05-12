@@ -4,5 +4,25 @@
 Base code for CC3002's *99.7% Citric Juice* Project.
 
 The project consists in creating a (simplified) clone of the game **100% Orange Juice**
-developed by [Orange_Juice](http://daidai.moo.jp) and distributed by 
-[Fruitbat Factory](https://fruitbatfactory.com).
+developed by [Orange_Juice](http://daidai.moo.jp) and distributed by [Fruitbat Factory](https://fruitbatfactory.com).
+
+This project is not yet playable, but all methods are tested in the *UnitsTest* and *PanelTest* classes. Those tests can be run, and have been passed all of the times they were run. We asume the tests are correct, and therefore that the classes and methods tested by them are also correct.
+
+This project is made asuming that a combat interface and user interaction will be implemented in the future, since for now there are only methods for the different parts (attack, defense, evade).
+
+
+###Board
+
+The design of the board consists of a *Panel* class (that can be instantiated as a "neutral" Panel in the game, meaning a Panel that does nothing and has no special attribute), and subclasses that extend *Panel* for all other panel types: *Bonus*, *Boss*, *Drop*, *Encounter*, *Home*. The method *activatedBy* is implemented for *Bonus*, *Drop*, *Encounter* and *Home*. It has not been implemented for *Boss* and *Encounter* panels, since the combat and user interactions in combat have not been done yet, and *activatedBy* for those panels should begin a combat.
+
+Work that could be done in the future includes:
+* Panels should have a way of knowing wich players are currently standing in them (since 2 players in the same panel, no matter which panel type, can also begin a combat).
+* *Boss* and *Encounter* panels could both be subclasses of a "fight panel" abstract class, since they are both very similar, only changing the type of enemy that the player encounters.
+* *Home* panels also need an atribute to know which player's home they are, since it should be different if a player lands on their own home or someone else's.
+
+
+###Units
+
+The units consist of *Wild*, *Boss* and *Player* subclasses of an abstract *Unit* class. Most methods are defined in the abstract class (including those for being attacked by another unit, defending and evading attacks) but the *Player* class has unique methods for setting atk, def and evd and for getting the player's name, and for getting and increasing the player's Norma level.
+
+In the future, the combat needs to be implemented, as well as player interactions. Also, a method to decide if non player units will defend or evade an attack. A method for a player to win a combat is also necessary. This method should be able to increase the wins and stars of the winner, and decrease the stars for the loser.
