@@ -6,7 +6,7 @@ Base code for CC3002's *99.7% Citric Juice* Project.
 The project consists in creating a (simplified) clone of the game **100% Orange Juice**
 developed by [Orange_Juice](http://daidai.moo.jp) and distributed by [Fruitbat Factory](https://fruitbatfactory.com).
 
-This project is not yet playable, but all methods are tested in the *UnitsTest* and *PanelTest* classes. Those tests can be run, and have been passed all of the times they were run. We asume the tests are correct, and therefore that the classes and methods tested by them are also correct.
+This project is not yet playable, but all methods are tested in the *UnitsTest* and *PanelTest* classes, the only classes that can be run at this point. Those tests have been passed all of the times they were run. If those tests are correctly made, it can be asumed that the classes and methods tested are also correct.
 
 This project is made asuming that a combat interface and user interaction will be implemented in the future, since for now there are only methods for the different parts (attack, defense, evade).
 
