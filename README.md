@@ -25,4 +25,8 @@ Work that could be done in the future includes:
 
 The units consist of *Wild*, *Boss* and *Player* subclasses of an abstract *Unit* class. Most methods are defined in the abstract class (including those for being attacked by another unit, defending and evading attacks) but the *Player* class has unique methods for setting atk, def and evd and for getting the player's name, and for getting and increasing the player's Norma level.
 
+It is asumed that an unit's HP cannot be less than 0 or more than their max HP. It is asumed that when defending against an attack, an unit will lose the minimum between 1 HP or the attack minus the unit's defense. It is asumed that when evading an attack, an unit will lose 0 HP if the evasion is successful, and the amount of the attack if it isn't.
+
+The attack method recieves the attacker (an unit) as argument, and returns an int value: the "amount" of the attack. Both defend and evade methods take this int value as argument, and modify the unit's HP accordingly.
+
 In the future, the combat needs to be implemented, as well as player interactions. Also, a method to decide if non player units will defend or evade an attack. A method for a player to win a combat is also necessary. This method should be able to increase the wins and stars of the winner, and decrease the stars for the loser.

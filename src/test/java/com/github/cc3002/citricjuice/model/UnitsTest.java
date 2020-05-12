@@ -226,7 +226,7 @@ public class UnitsTest {
     int attack = suguri.attackedBy(testBoss);
     suguri.defendsFrom(attack);
     int suguri_damage= suguri.getMaxHP() - suguri.getCurrentHP();
-    assertTrue((suguri_damage==1 || (suguri_damage <= attack - suguri.getDef() -1 && suguri_damage >= attack - suguri.getDef() -6)),
+    assertTrue((suguri_damage==1 || suguri_damage==suguri.getMaxHP() || (suguri_damage <= attack - suguri.getDef() -1 && suguri_damage >= attack - suguri.getDef() -6)),
             suguri_damage + "is not in [1,"+ (attack- suguri.getDef() -1)+"]. defends" +
                     "test failed with random seeds: "+testSeed + ", " + testSeed1);
   }
