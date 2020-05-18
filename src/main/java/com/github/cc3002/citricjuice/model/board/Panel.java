@@ -1,9 +1,9 @@
 package com.github.cc3002.citricjuice.model.board;
 
-import com.github.cc3002.citricjuice.model.Player;
-import org.jetbrains.annotations.NotNull;
+import com.github.cc3002.citricjuice.model.units.Player;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -14,53 +14,53 @@ import java.util.Set;
  * @version 1.0.6-rc.2
  * @since 1.0
  */
-public class Panel {
-  private final PanelType type;
-  private final Set<Panel> nextPanels = new HashSet<>();
+public class Panel { /*this is a neutral panel*/
+    protected final int x; /* x coord of Panel*/
+    protected final int y; /* y coord of Panel*/
+    protected final Set<Panel> nextPanels = new HashSet<>();
 
-  /**
-   * Creates a new panel.
-   *
-   * @param type
-   *     the type of the panel.
-   */
-  public Panel(final PanelType type) {
-    this.type = type;
+    /**
+     * Creates a new panel with coordenates x,y
+     * @param x the x coordenate of the panel
+     * @param y the y coordenate of the panel
+     */
+  public Panel(int x, int y){
+      this.x=x;
+      this.y=y;
   }
 
   /**
-   * Restores a player's HP in 1.
+   * Checks if a panel equals this one
    */
-  private static void applyHealTo(final @NotNull Player player) {
-    player.setCurrentHP(player.getCurrentHP() + 1);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Panel panel = (Panel) o;
+        return x == panel.x &&
+                y == panel.y &&
+                Objects.equals(nextPanels, panel.nextPanels);
+    }
 
-  /**
-   * Reduces the player's star count by the D6 roll multiplied by the player's norma level.
-   */
-  private static void applyDropTo(final @NotNull Player player) {
-    player.reduceStarsBy(player.roll() * player.getNormaLevel());
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(getX(), getY(), getNextPanels(), getClass());
+    }
 
-  /**
-   * Reduces the player's star count by the D6 roll multiplied by the maximum between the player's
-   * norma level and three.
-   */
-  private static void applyBonusTo(final @NotNull Player player) {
-    player.increaseStarsBy(player.roll() * Math.min(player.getNormaLevel(), 3));
-  }
+    /**
+     * Returns this panel's X coordintate
+     */
+    public int getX(){ return this.x; }
 
-  /**
-   * Returns the type of this panel
-   */
-  public PanelType getType() {
-    return type;
-  }
+    /**
+     * Returns this panel's Y coordinate
+     */
+    public int getY(){ return this.y; }
 
-  /**
-   * Returns a copy of this panel's next ones.
-   */
-  public Set<Panel> getNextPanels() {
+    /**
+    * Returns a copy of this panel's next ones.
+    */
+    public Set<Panel> getNextPanels() {
     return Set.copyOf(nextPanels);
   }
 
@@ -75,21 +75,9 @@ public class Panel {
   }
 
   /**
-   * Executes the appropriate action to the player according to this panel's type.
+   *
    */
-  public void activatedBy(final Player player) {
-    switch (type) {
-      case BONUS:
-        applyBonusTo(player);
-        break;
-      case DROP:
-        applyDropTo(player);
-        break;
-      case HOME:
-        applyHealTo(player);
-        break;
-      case NEUTRAL:
-        break;
-    }
-  }
+  public void activatedBy(final Player player) {  }
 }
+
+
