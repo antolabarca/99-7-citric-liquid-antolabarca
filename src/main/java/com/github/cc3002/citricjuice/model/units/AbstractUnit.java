@@ -2,7 +2,7 @@ package com.github.cc3002.citricjuice.model.units;
 
 import java.util.Random;
 
-public abstract class Unit {
+public abstract class AbstractUnit implements IUnit{
     protected final Random random;
     protected final int maxHP;
     protected int currentHP;
@@ -24,7 +24,7 @@ public abstract class Unit {
      * @param evd
      *     the base evasion of the unit.
      */
-    public Unit(final int hp, final int atk, final int def, final int evd){
+    public AbstractUnit(final int hp, final int atk, final int def, final int evd){
         this.maxHP=hp;
         this.currentHP=hp;
         this.atk=atk;
@@ -42,7 +42,7 @@ public abstract class Unit {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Unit unit = (Unit) o;
+        AbstractUnit unit = (AbstractUnit) o;
         return maxHP == unit.maxHP &&
                 currentHP == unit.currentHP &&
                 wins == unit.wins &&
@@ -62,7 +62,7 @@ public abstract class Unit {
     /**
      * Increases this unit's star count by an amount.
      */
-    public void increaseStarsBy(final int amount) {
+    public void increaseStarsBy(int amount) {
         stars += amount;
     }
 
@@ -71,7 +71,7 @@ public abstract class Unit {
      * <p>
      * The star count will must always be greater or equal to 0
      */
-    public void reduceStarsBy(final int amount) {
+    public void reduceStarsBy(int amount) {
         stars = Math.max(0, stars - amount);
     }
 
@@ -132,21 +132,21 @@ public abstract class Unit {
      * <p>
      * The character's hit points have a constraint to always be between 0 and maxHP, both inclusive.
      */
-    public void setCurrentHP(final int newHP) {
+    public void setCurrentHP(int newHP) {
         this.currentHP = Math.max(Math.min(newHP, maxHP), 0);
     }
 
     /**
      * Returns a copy of this unit.
      */
-    public abstract Unit copy();
+    public abstract IUnit copy();
 
     /**
      * This unit gets attacked by another one, returns the amount of the attack
      * @param unit
      *      the unit that attacks
      */
-    public int attackedBy(Unit unit){
+    public int attackedBy(IUnit unit){
         int roll = unit.roll();
         int attack = roll + unit.getAtk();
         return attack;

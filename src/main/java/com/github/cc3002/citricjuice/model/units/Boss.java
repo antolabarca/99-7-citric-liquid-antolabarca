@@ -1,6 +1,6 @@
 package com.github.cc3002.citricjuice.model.units;
 
-public class Boss extends Unit{
+public class Boss extends AbstractUnit{
 
     /**
      * Creates a new Boss.
@@ -22,4 +22,5 @@ public class Boss extends Unit{
      * Creates a copy of this Boss
      */
     public Boss copy(){ return new Boss(maxHP, atk, def, evd);}
+
 }

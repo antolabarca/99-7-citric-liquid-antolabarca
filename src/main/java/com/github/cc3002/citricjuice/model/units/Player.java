@@ -8,7 +8,7 @@ package com.github.cc3002.citricjuice.model.units;
  * @version 1.0.6-rc.3
  * @since 1.0
  */
-public class Player extends Unit {
+public class Player extends AbstractUnit {
   private final String name;
   private int normaLevel;
 
@@ -93,4 +93,5 @@ public class Player extends Unit {
   public Player copy() {
     return new Player(name, maxHP, atk, def, evd);
   }
+
 }
