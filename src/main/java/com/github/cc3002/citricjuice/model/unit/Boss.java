@@ -1,10 +1,12 @@
-package com.github.cc3002.citricjuice.model.units;
+package com.github.cc3002.citricjuice.model.unit;
 
 public class Boss extends AbstractUnit{
 
     /**
      * Creates a new Boss.
      *
+     * @param  name
+     *      the name of the boss
      * @param hp
      *     the initial (and max) hit points of the boss.
      * @param atk
@@ -14,13 +16,13 @@ public class Boss extends AbstractUnit{
      * @param evd
      *     the base evasion of the boss.
      */
-    public Boss(int hp, int atk, int def, int evd){
-        super(hp,atk,def,evd);
+    public Boss(String name, int hp, int atk, int def, int evd){
+        super(name, hp,atk,def,evd);
     }
 
     /**
      * Creates a copy of this Boss
      */
-    public Boss copy(){ return new Boss(maxHP, atk, def, evd);}
+    public Boss copy(){ return new Boss(name, maxHP, atk, def, evd);}
 
 }

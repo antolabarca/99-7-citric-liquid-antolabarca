@@ -1,8 +1,9 @@
-package com.github.cc3002.citricjuice.model.units;
+package com.github.cc3002.citricjuice.model.unit;
 
 import java.util.Random;
 
 public abstract class AbstractUnit implements IUnit{
+    protected final String name;
     protected final Random random;
     protected final int maxHP;
     protected int currentHP;
@@ -24,7 +25,8 @@ public abstract class AbstractUnit implements IUnit{
      * @param evd
      *     the base evasion of the unit.
      */
-    public AbstractUnit(final int hp, final int atk, final int def, final int evd){
+    public AbstractUnit(final String name, final int hp, final int atk, final int def, final int evd){
+        this.name=name;
         this.maxHP=hp;
         this.currentHP=hp;
         this.atk=atk;
@@ -50,6 +52,13 @@ public abstract class AbstractUnit implements IUnit{
                 atk == unit.atk &&
                 def == unit.def &&
                 evd == unit.evd;
+    }
+
+    /**
+     * Returns the unit's name.
+     */
+    public String getName() {
+        return name;
     }
 
     /**

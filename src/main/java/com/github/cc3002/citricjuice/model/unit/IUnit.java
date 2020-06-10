@@ -1,4 +1,4 @@
-package com.github.cc3002.citricjuice.model.units;
+package com.github.cc3002.citricjuice.model.unit;
 
 public interface IUnit {
     int getStars();
@@ -8,6 +8,7 @@ public interface IUnit {
     void increaseWinsBy(int amount);
     void setSeed(final long seed);
     int roll();
+    String getName();
     int getMaxHP();
     int getAtk();
     int getDef();

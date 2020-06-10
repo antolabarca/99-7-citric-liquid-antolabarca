@@ -1,8 +1,9 @@
-package com.github.cc3002.citricjuice.model;
+package com.github.cc3002.citricjuice.model.unit;
 
-import com.github.cc3002.citricjuice.model.units.Boss;
-import com.github.cc3002.citricjuice.model.units.Player;
-import com.github.cc3002.citricjuice.model.units.Wild;
+import com.github.cc3002.citricjuice.model.unit.Boss;
+import com.github.cc3002.citricjuice.model.unit.Player;
+import com.github.cc3002.citricjuice.model.unit.Wild;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;

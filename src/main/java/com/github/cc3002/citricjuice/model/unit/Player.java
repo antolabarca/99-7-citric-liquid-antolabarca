@@ -1,4 +1,4 @@
-package com.github.cc3002.citricjuice.model.units;
+package com.github.cc3002.citricjuice.model.unit;
 
 /**
  * This class represents a player in the game 99.7% Citric Liquid.
@@ -9,8 +9,8 @@ package com.github.cc3002.citricjuice.model.units;
  * @since 1.0
  */
 public class Player extends AbstractUnit {
-  private final String name;
   private int normaLevel;
+  private NormaGoal normaGoal;
 
   /**
    * Creates a new character.
@@ -27,16 +27,8 @@ public class Player extends AbstractUnit {
    *     the base evasion of the character.
    */
   public Player(final String name, final int hp, final int atk, final int def, final int evd) {
-    super(hp, atk, def, evd);
-    this.name = name;
+    super(name, hp, atk, def, evd);
     normaLevel = 1;
-  }
-
-  /**
-   * Returns the character's name.
-   */
-  public String getName() {
-    return name;
   }
 
   /**
@@ -45,6 +37,11 @@ public class Player extends AbstractUnit {
   public int getNormaLevel() {
     return normaLevel;
   }
+
+  /**
+   * Returns the player's norma goal
+   */
+  public NormaGoal getNormaGoal(){ return normaGoal; }
 
   /**
    * Performs a norma clear action; the {@code norma} counter increases in 1.
