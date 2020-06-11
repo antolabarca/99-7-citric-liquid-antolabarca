@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class UnitsTest {
   private final static String PLAYER_NAME = "Suguri";
+  private final static String BOSS_NAME = "Boss";
+  private final static String WILD_NAME = "Wild";
   private Player suguri;
   private Boss testBoss;
   private Wild testWild;
@@ -29,8 +31,8 @@ public class UnitsTest {
   @BeforeEach
   public void setUp() {
     suguri = new Player(PLAYER_NAME, 4, 1, -1, 2);
-    testBoss = new Boss(7, 2,1,-1);
-    testWild = new Wild(5, 1,0,-1);
+    testBoss = new Boss(BOSS_NAME, 7, 2,1,-1);
+    testWild = new Wild(WILD_NAME, 5, 1,0,-1);
   }
 
   @Test
@@ -43,7 +45,7 @@ public class UnitsTest {
 
   @Test
   public void BossConstructorTest(){
-    final var expectedBoss = new Boss(7,2,1,-1);
+    final var expectedBoss = new Boss(BOSS_NAME,7,2,1,-1);
     assertEquals(testBoss,testBoss);
     assertEquals(expectedBoss, testBoss);
     assertNotSame(expectedBoss, testBoss);
@@ -51,7 +53,7 @@ public class UnitsTest {
 
   @Test
   public void WildConstructorTest(){
-    final var expectedWild = new Wild(5,1,0,-1);
+    final var expectedWild = new Wild(WILD_NAME,5,1,0,-1);
     assertEquals(testWild, testWild);
     assertEquals(expectedWild, testWild);
     assertNotSame(expectedWild, testWild);
@@ -65,7 +67,7 @@ public class UnitsTest {
     assertNotEquals(testBoss,testWild);
     final var expectedSuguri = new Player(PLAYER_NAME, 4, 1, -1, 2);
     assertEquals(expectedSuguri, suguri);
-    final var unexpected=new Wild(7,2,1,-1);
+    final var unexpected=new Wild(BOSS_NAME, 7,2,1,-1);
     assertNotEquals(unexpected, testBoss);
   }
 
@@ -143,7 +145,7 @@ public class UnitsTest {
 
   @Test
   public void BossCopyTest() {
-    final var expectedBoss = new Boss(7,2,1,-1);
+    final var expectedBoss = new Boss(BOSS_NAME,7,2,1,-1);
     final var actualBoss = testBoss.copy();
     // Checks that the copied player have the same parameters as the original
     assertEquals(expectedBoss, actualBoss);
@@ -153,7 +155,7 @@ public class UnitsTest {
 
   @Test
   public void WildCopyTest() {
-    final var expectedWild = new Wild(5,1,0,-1);
+    final var expectedWild = new Wild(WILD_NAME,5,1,0,-1);
     final var actualWild = testWild.copy();
     // Checks that the copied player have the same parameters as the original
     assertEquals(expectedWild, actualWild);

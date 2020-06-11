@@ -1,13 +1,11 @@
 package com.github.cc3002.citricliquid.mediator;
 
 import com.github.cc3002.citricjuice.controller.GameController;
-import com.github.cc3002.citricjuice.model.NormaGoal;
+import com.github.cc3002.citricjuice.model.norma.NormaGoal;
 import com.github.cc3002.citricjuice.model.board.HomePanel;
 import com.github.cc3002.citricjuice.model.board.IPanel;
-import com.github.cc3002.citricjuice.model.unit.Boss;
 import com.github.cc3002.citricjuice.model.unit.IUnit;
 import com.github.cc3002.citricjuice.model.unit.Player;
-import com.github.cc3002.citricjuice.model.unit.Wild;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
