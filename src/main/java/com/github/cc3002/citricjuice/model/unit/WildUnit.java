@@ -1,6 +1,6 @@
 package com.github.cc3002.citricjuice.model.unit;
 
-public class Wild extends AbstractEnemy{
+public class WildUnit extends AbstractEnemy{
 
     /**
      * Creates a new Wild unit.
@@ -16,13 +16,13 @@ public class Wild extends AbstractEnemy{
      * @param evd
      *     the base evasion of the wild unit.
      */
-    public Wild(String name, int hp, int atk, int def, int evd){
+    public WildUnit(String name, int hp, int atk, int def, int evd){
         super(name, hp,atk,def,evd);
     }
 
     /**
      * Creates a copy of this Wild unit
      */
-    public Wild copy(){ return new Wild(name, maxHP, atk, def, evd);}
+    public WildUnit copy(){ return new WildUnit(name, maxHP, atk, def, evd);}
 
 }

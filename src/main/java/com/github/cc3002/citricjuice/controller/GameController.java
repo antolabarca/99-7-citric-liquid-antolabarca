@@ -2,9 +2,9 @@ package com.github.cc3002.citricjuice.controller;
 
 import com.github.cc3002.citricjuice.model.NormaGoal;
 import com.github.cc3002.citricjuice.model.board.*;
-import com.github.cc3002.citricjuice.model.unit.Boss;
+import com.github.cc3002.citricjuice.model.unit.BossUnit;
 import com.github.cc3002.citricjuice.model.unit.Player;
-import com.github.cc3002.citricjuice.model.unit.Wild;
+import com.github.cc3002.citricjuice.model.unit.WildUnit;
 
 import java.util.ArrayList;
 
@@ -49,12 +49,12 @@ public class GameController {
         return player;
     }
 
-    public Wild createWildUnit(String name, int hitPoints, int attack, int defense, int evasion) {
-        return new Wild(name,hitPoints,attack,defense,evasion);
+    public WildUnit createWildUnit(String name, int hitPoints, int attack, int defense, int evasion) {
+        return new WildUnit(name,hitPoints,attack,defense,evasion);
     }
 
-    public Boss createBossUnit(String name, int hitPoints, int attack, int defense, int evasion) {
-        return new Boss(name,hitPoints,attack,defense,evasion);
+    public BossUnit createBossUnit(String name, int hitPoints, int attack, int defense, int evasion) {
+        return new BossUnit(name,hitPoints,attack,defense,evasion);
     }
 
     public void setCurrPlayerNormaGoal(NormaGoal goal) {

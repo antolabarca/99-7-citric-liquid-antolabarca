@@ -1,9 +1,6 @@
 package com.github.cc3002.citricjuice.model.unit;
 
 import com.github.cc3002.citricjuice.model.NormaGoal;
-import com.github.cc3002.citricjuice.model.unit.Boss;
-import com.github.cc3002.citricjuice.model.unit.Player;
-import com.github.cc3002.citricjuice.model.unit.Wild;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -25,15 +22,15 @@ public class UnitsTest {
   private final static String BOSS_NAME = "Boss";
   private final static String WILD_NAME = "Wild";
   private Player suguri;
-  private Boss testBoss;
-  private Wild testWild;
+  private BossUnit testBossUnit;
+  private WildUnit testWildUnit;
 
 
   @BeforeEach
   public void setUp() {
     suguri = new Player(PLAYER_NAME, 4, 1, -1, 2);
-    testBoss = new Boss(BOSS_NAME, 7, 2,1,-1);
-    testWild = new Wild(WILD_NAME, 5, 1,0,-1);
+    testBossUnit = new BossUnit(BOSS_NAME, 7, 2,1,-1);
+    testWildUnit = new WildUnit(WILD_NAME, 5, 1,0,-1);
   }
 
   @Test
@@ -46,18 +43,18 @@ public class UnitsTest {
 
   @Test
   public void BossConstructorTest(){
-    final var expectedBoss = new Boss(BOSS_NAME,7,2,1,-1);
-    assertEquals(testBoss,testBoss);
-    assertEquals(expectedBoss, testBoss);
-    assertNotSame(expectedBoss, testBoss);
+    final var expectedBoss = new BossUnit(BOSS_NAME,7,2,1,-1);
+    assertEquals(testBossUnit, testBossUnit);
+    assertEquals(expectedBoss, testBossUnit);
+    assertNotSame(expectedBoss, testBossUnit);
   }
 
   @Test
   public void WildConstructorTest(){
-    final var expectedWild = new Wild(WILD_NAME,5,1,0,-1);
-    assertEquals(testWild, testWild);
-    assertEquals(expectedWild, testWild);
-    assertNotSame(expectedWild, testWild);
+    final var expectedWild = new WildUnit(WILD_NAME,5,1,0,-1);
+    assertEquals(testWildUnit, testWildUnit);
+    assertEquals(expectedWild, testWildUnit);
+    assertNotSame(expectedWild, testWildUnit);
   }
 
   @Test
@@ -65,11 +62,11 @@ public class UnitsTest {
     final var o = new Object();
     assertNotEquals(suguri, o);
     assertEquals(suguri, suguri);
-    assertNotEquals(testBoss,testWild);
+    assertNotEquals(testBossUnit, testWildUnit);
     final var expectedSuguri = new Player(PLAYER_NAME, 4, 1, -1, 2);
     assertEquals(expectedSuguri, suguri);
-    final var unexpected=new Wild(BOSS_NAME, 7,2,1,-1);
-    assertNotEquals(unexpected, testBoss);
+    final var unexpected=new WildUnit(BOSS_NAME, 7,2,1,-1);
+    assertNotEquals(unexpected, testBossUnit);
   }
 
   @Test
@@ -156,22 +153,22 @@ public class UnitsTest {
 
   @Test
   public void BossCopyTest() {
-    final var expectedBoss = new Boss(BOSS_NAME,7,2,1,-1);
-    final var actualBoss = testBoss.copy();
+    final var expectedBoss = new BossUnit(BOSS_NAME,7,2,1,-1);
+    final var actualBoss = testBossUnit.copy();
     // Checks that the copied player have the same parameters as the original
     assertEquals(expectedBoss, actualBoss);
     // Checks that the copied player doesn't reference the same object
-    assertNotSame(testBoss, actualBoss);
+    assertNotSame(testBossUnit, actualBoss);
   }
 
   @Test
   public void WildCopyTest() {
-    final var expectedWild = new Wild(WILD_NAME,5,1,0,-1);
-    final var actualWild = testWild.copy();
+    final var expectedWild = new WildUnit(WILD_NAME,5,1,0,-1);
+    final var actualWild = testWildUnit.copy();
     // Checks that the copied player have the same parameters as the original
     assertEquals(expectedWild, actualWild);
     // Checks that the copied player doesn't reference the same object
-    assertNotSame(testWild, actualWild);
+    assertNotSame(testWildUnit, actualWild);
   }
 
   // region : consistency tests
@@ -215,18 +212,18 @@ public class UnitsTest {
   @RepeatedTest(100)
   public void AttackTest() {
     long testSeed = new Random().nextLong();
-    testBoss.setSeed(testSeed);
-    final int bossAtk = suguri.attackedBy(testBoss);
+    testBossUnit.setSeed(testSeed);
+    final int bossAtk = suguri.attackedBy(testBossUnit);
     assertTrue(bossAtk>=3 && bossAtk <= 8, bossAtk + "is not in [3, 8]" + System.lineSeparator()
             + "Boss attacking test failed with random seed: "+ testSeed);
     long testSeed1 = new Random().nextLong();
-    testWild.setSeed(testSeed1);
-    final int wildAtk = testBoss.attackedBy(testWild);
+    testWildUnit.setSeed(testSeed1);
+    final int wildAtk = testBossUnit.attackedBy(testWildUnit);
     assertTrue(wildAtk>=2 && wildAtk <=7, wildAtk + "is not in [2,7]" + System.lineSeparator()+
             "Wild attacking test failed with random seed: "+ testSeed1);
     long testSeed2 = new Random().nextLong();
     suguri.setSeed(testSeed2);
-    final int playerAtk = testWild.attackedBy(suguri);
+    final int playerAtk = testWildUnit.attackedBy(suguri);
     assertTrue(playerAtk >= 2 && playerAtk <= 7, playerAtk + "is not in [2,7]" + System.lineSeparator()+
             "Suguri attacking test failed with random seed: "+testSeed2);
   }
@@ -236,8 +233,8 @@ public class UnitsTest {
     final long testSeed = new Random().nextLong();
     suguri.setSeed(testSeed);
     final long testSeed1 = new Random().nextLong();
-    testBoss.setSeed(testSeed1);
-    int attack = suguri.attackedBy(testBoss);
+    testBossUnit.setSeed(testSeed1);
+    int attack = suguri.attackedBy(testBossUnit);
     suguri.defendsFrom(attack);
     int suguri_damage= suguri.getMaxHP() - suguri.getCurrentHP();
     assertTrue((suguri_damage==1 || suguri_damage==suguri.getMaxHP() || (suguri_damage <= attack - suguri.getDef() -1 && suguri_damage >= attack - suguri.getDef() -6)),
@@ -250,11 +247,11 @@ public class UnitsTest {
     final long testSeed = new Random().nextLong();
     suguri.setSeed(testSeed);
     final long testSeed1 = new Random().nextLong();
-    testWild.setSeed(testSeed1);
-    int attack = testWild.attackedBy(suguri);
-    testWild.evades(attack);
-    int testWild_damage = testWild.getMaxHP() - testWild.getCurrentHP();
-    assertTrue((testWild_damage==0 || testWild_damage == attack || testWild_damage == testWild.getMaxHP()), testWild_damage +
+    testWildUnit.setSeed(testSeed1);
+    int attack = testWildUnit.attackedBy(suguri);
+    testWildUnit.evades(attack);
+    int testWild_damage = testWildUnit.getMaxHP() - testWildUnit.getCurrentHP();
+    assertTrue((testWild_damage==0 || testWild_damage == attack || testWild_damage == testWildUnit.getMaxHP()), testWild_damage +
             "is not in {0," + attack + "}. evades test failed with random seeds: "+ testSeed + ", "+ testSeed1);
   }
 

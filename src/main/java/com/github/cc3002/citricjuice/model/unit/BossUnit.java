@@ -1,6 +1,6 @@
 package com.github.cc3002.citricjuice.model.unit;
 
-public class Boss extends AbstractEnemy{
+public class BossUnit extends AbstractEnemy{
 
     /**
      * Creates a new Boss.
@@ -16,13 +16,13 @@ public class Boss extends AbstractEnemy{
      * @param evd
      *     the base evasion of the boss.
      */
-    public Boss(String name, int hp, int atk, int def, int evd){
+    public BossUnit(String name, int hp, int atk, int def, int evd){
         super(name, hp,atk,def,evd);
     }
 
     /**
      * Creates a copy of this Boss
      */
-    public Boss copy(){ return new Boss(name, maxHP, atk, def, evd);}
+    public BossUnit copy(){ return new BossUnit(name, maxHP, atk, def, evd);}
 
 }
