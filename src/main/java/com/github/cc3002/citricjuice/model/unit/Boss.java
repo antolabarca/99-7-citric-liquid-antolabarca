@@ -1,6 +1,6 @@
 package com.github.cc3002.citricjuice.model.unit;
 
-public class Boss extends AbstractUnit{
+public class Boss extends AbstractEnemy{
 
     /**
      * Creates a new Boss.

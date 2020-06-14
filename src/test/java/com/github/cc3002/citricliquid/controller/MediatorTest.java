@@ -1,7 +1,7 @@
 package com.github.cc3002.citricliquid.controller;
 
-import com.github.cc3002.citricjuice.mediator.Mediator;
-import com.github.cc3002.citricjuice.model.norma.INormaGoal;
+import com.github.cc3002.citricliquid.mediator.Mediator;
+import com.github.cc3002.citricjuice.model.NormaGoal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

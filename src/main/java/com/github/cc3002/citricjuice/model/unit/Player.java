@@ -1,5 +1,9 @@
 package com.github.cc3002.citricjuice.model.unit;
 
+import com.github.cc3002.citricjuice.model.NormaGoal;
+
+import static com.github.cc3002.citricjuice.model.NormaGoal.STARS;
+
 /**
  * This class represents a player in the game 99.7% Citric Liquid.
  *
@@ -29,6 +33,7 @@ public class Player extends AbstractUnit {
   public Player(final String name, final int hp, final int atk, final int def, final int evd) {
     super(name, hp, atk, def, evd);
     normaLevel = 1;
+    normaGoal = STARS;
   }
 
   /**
@@ -44,10 +49,31 @@ public class Player extends AbstractUnit {
   public NormaGoal getNormaGoal(){ return normaGoal; }
 
   /**
+   * Checks if the player has reached their norma goal
+   */
+  public boolean checkNorma(){
+    int [] stars_goal = {-1, 10, 30, 70, 120, 200}; /*amount of stars needed to get norma i+1*/
+    int [] wins_goal = {-1, -1, 2, 5, 9, 14}; /*amount of wins needed to get norma i+1*/
+    /* the arrays have -1 in the position 0, as norma levels start at 1. wins has a -1 in position 1 as the first goal is always stars */
+    if (this.getNormaGoal()==STARS){return this.getStars()>= stars_goal[this.getNormaLevel()];}
+    else {return this.getWins()>= wins_goal[this.getNormaLevel()];}
+    /*this is horrible, I'm sorry*/
+  }
+
+  /**
    * Performs a norma clear action; the {@code norma} counter increases in 1.
    */
   public void normaClear() {
     normaLevel++;
+  }
+
+  /**
+   * Sets the players new norma goal
+   * @param goal
+   *      the new norma goal for the player
+   */
+  public void setNormaGoal(NormaGoal goal) {
+    this.normaGoal=goal;
   }
 
   @Override
@@ -90,5 +116,6 @@ public class Player extends AbstractUnit {
   public Player copy() {
     return new Player(name, maxHP, atk, def, evd);
   }
+
 
 }

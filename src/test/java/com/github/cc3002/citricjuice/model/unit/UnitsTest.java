@@ -1,5 +1,6 @@
 package com.github.cc3002.citricjuice.model.unit;
 
+import com.github.cc3002.citricjuice.model.NormaGoal;
 import com.github.cc3002.citricjuice.model.unit.Boss;
 import com.github.cc3002.citricjuice.model.unit.Player;
 import com.github.cc3002.citricjuice.model.unit.Wild;
@@ -128,9 +129,19 @@ public class UnitsTest {
   }
 
   @Test
-  public void normaClearTest() {
+  public void normaTest() {
+    assertEquals(NormaGoal.STARS, suguri.getNormaGoal());
+    assertEquals(1, suguri.getNormaLevel());
+    suguri.increaseStarsBy(12);
+    assertTrue(suguri.checkNorma());
     suguri.normaClear();
     assertEquals(2, suguri.getNormaLevel());
+    suguri.setNormaGoal(NormaGoal.WINS);
+    assertEquals(NormaGoal.WINS, suguri.getNormaGoal());
+    suguri.increaseWinsBy(3);
+    assertTrue(suguri.checkNorma());
+    suguri.normaClear();
+    assertEquals(3, suguri.getNormaLevel());
   }
 
   @Test

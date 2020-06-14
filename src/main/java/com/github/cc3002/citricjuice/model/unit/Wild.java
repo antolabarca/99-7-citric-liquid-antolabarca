@@ -1,6 +1,6 @@
 package com.github.cc3002.citricjuice.model.unit;
 
-public class Wild extends AbstractUnit{
+public class Wild extends AbstractEnemy{
 
     /**
      * Creates a new Wild unit.
