@@ -119,10 +119,13 @@ public class UnitsTest {
     assertEquals(suguri.getMaxHP(), suguri.getCurrentHP());
     suguri.setCurrentHP(2);
     assertEquals(2, suguri.getCurrentHP());
+    assertFalse(suguri.isDown());
     suguri.setCurrentHP(-1);
     assertEquals(0, suguri.getCurrentHP());
+    assertTrue(suguri.isDown());
     suguri.setCurrentHP(5);
     assertEquals(4, suguri.getCurrentHP());
+    assertFalse(suguri.isDown());
   }
 
   @Test
@@ -234,11 +237,11 @@ public class UnitsTest {
     suguri.setSeed(testSeed);
     final long testSeed1 = new Random().nextLong();
     testBossUnit.setSeed(testSeed1);
-    int attack = suguri.attackedBy(testBossUnit);
-    suguri.defendsFrom(attack);
+    suguri.defendsFrom(testBossUnit);
+    int attack = testBossUnit.getAtk();
     int suguri_damage= suguri.getMaxHP() - suguri.getCurrentHP();
-    assertTrue((suguri_damage==1 || suguri_damage==suguri.getMaxHP() || (suguri_damage <= attack - suguri.getDef() -1 && suguri_damage >= attack - suguri.getDef() -6)),
-            suguri_damage + "is not in [1,"+ (attack- suguri.getDef() -1)+"]. defends" +
+    assertTrue((suguri_damage==1 || suguri_damage==suguri.getMaxHP() || (suguri_damage <= 6+attack && suguri_damage >= 1+attack)),
+            suguri_damage + "is not in [1,"+ 6+attack +"]. defends" +
                     "test failed with random seeds: "+testSeed + ", " + testSeed1);
   }
 
@@ -248,11 +251,11 @@ public class UnitsTest {
     suguri.setSeed(testSeed);
     final long testSeed1 = new Random().nextLong();
     testWildUnit.setSeed(testSeed1);
-    int attack = testWildUnit.attackedBy(suguri);
-    testWildUnit.evades(attack);
+    testWildUnit.evades(suguri);
+    int attack= suguri.getAtk();
     int testWild_damage = testWildUnit.getMaxHP() - testWildUnit.getCurrentHP();
-    assertTrue((testWild_damage==0 || testWild_damage == attack || testWild_damage == testWildUnit.getMaxHP()), testWild_damage +
-            "is not in {0," + attack + "}. evades test failed with random seeds: "+ testSeed + ", "+ testSeed1);
+    assertTrue((testWild_damage==0 || 1+ attack <= testWild_damage && testWild_damage <= 6+ attack || testWild_damage == testWildUnit.getMaxHP()), testWild_damage +
+            "is not in [0," + attack+6 + "]. evades test failed with random seeds: "+ testSeed + ", "+ testSeed1);
   }
 
   // endregion
