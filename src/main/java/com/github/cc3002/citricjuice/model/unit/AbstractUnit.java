@@ -137,6 +137,11 @@ public abstract class AbstractUnit implements IUnit{
     public int getCurrentHP() { return currentHP; }
 
     /**
+     * Returns true if the character is down (has 0 HitPoints)
+     */
+    public boolean isDown() { return getCurrentHP()==0; }
+
+    /**
      * Sets the current unit's hit points.
      * <p>
      * The character's hit points have a constraint to always be between 0 and maxHP, both inclusive.
@@ -152,40 +157,75 @@ public abstract class AbstractUnit implements IUnit{
 
     /**
      * This unit gets attacked by another one, returns the amount of the attack
-     * @param unit
+     * @param attacker
      *      the unit that attacks
      */
-    public int attackedBy(IUnit unit){
-        int roll = unit.roll();
-        int attack = roll + unit.getAtk();
+    public int attackedBy(IUnit attacker){
+        int roll = attacker.roll();
+        int attack = roll + attacker.getAtk();
         return attack;
     }
 
     /**
-     * This unit defends from an attack with a fixed amount
+     * This unit defends from an attack from another unit
      * Sets the new HP of the unit
-     * @param attack
-     *      the amount of the attack
+     * @param attacker
+     *      the unit that is attacking
      */
-    public void defendsFrom(int attack){
+    public void defendsFrom(IUnit attacker){
         int roll = this.roll();
         int defense = roll + this.getDef();
+        int attack = this.attackedBy(attacker);
         int dmg = Math.max(1, (attack-defense));
         this.setCurrentHP(this.getCurrentHP()-dmg);
-    }
-
-    /**
-     * This unit attempts to evade an attack with a fixed amount.
-     * Sets the new HP if evading is unsuccessful
-     * @param attack
-     *      the amount of the attack
-     */
-    public void evades(int attack){
-        int roll = this.roll();
-        int evade = roll + this.getEvd();
-        if (attack > evade){
-            this.setCurrentHP(this.getCurrentHP()-attack);
+        if (this.isDown()){
+            this.defeatedBy(attacker);
         }
     }
 
+    /**
+     * This unit attempts to evade an attack from another unit.
+     * Sets the new HP if evading is unsuccessful
+     * @param attacker
+     *      the attacker
+     */
+    public void evades(IUnit attacker){
+        int roll = this.roll();
+        int evade = roll + this.getEvd();
+        int attack = this.attackedBy(attacker);
+        if (attack > evade){
+            this.setCurrentHP(this.getCurrentHP()-attack);
+        }
+        if (this.isDown()){
+            this.defeatedBy(attacker);
+        }
+    }
+
+    /**
+     * This unit is defeated by another
+     * @param winner
+     *      the unit that won
+     */
+    public abstract void defeatedBy(IUnit winner);
+
+    /**
+     * This unit defeats a Player unit
+     * @param player
+     *      the player that was defeated
+     */
+    public  abstract void defeatPlayer(Player player);
+
+    /**
+     * This unit defeats a Boss unit
+     * @param boss
+     *      the boss unit that was defeated
+     */
+    public abstract void defeatBoss(BossUnit boss);
+
+    /**
+     * This unit defeats a Wild unit
+     * @param wild
+     *      the wild unit that was defeated
+     */
+    public abstract void defeatWild(WildUnit wild);
 }
