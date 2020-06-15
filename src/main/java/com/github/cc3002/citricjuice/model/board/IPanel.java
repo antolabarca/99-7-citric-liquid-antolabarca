@@ -10,5 +10,4 @@ public interface IPanel {
     Set<IPanel> getNextPanels();
     void addNextPanel(final IPanel panel);
     void activatedBy(Player player);
-
 }
