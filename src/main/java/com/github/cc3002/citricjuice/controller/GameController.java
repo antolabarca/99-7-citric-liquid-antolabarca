@@ -7,10 +7,13 @@ import com.github.cc3002.citricjuice.model.unit.Player;
 import com.github.cc3002.citricjuice.model.unit.WildUnit;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GameController {
     protected int game_turn;
     protected ArrayList<Player> players;
+    protected Set<IPanel> panelsSet = new HashSet<>();
 
     public GameController(){
         super();
@@ -19,27 +22,39 @@ public class GameController {
     }
 
     public BonusPanel createBonusPanel(int id) {
-        return new BonusPanel(id);
+        BonusPanel panel= new BonusPanel(id);
+        panelsSet.add(panel);
+        return panel;
     }
 
     public BossPanel createBossPanel(int id) {
-        return new BossPanel(id);
+        BossPanel panel = new BossPanel(id);
+        panelsSet.add(panel);
+        return panel;
     }
 
     public DropPanel createDropPanel(int id) {
-        return new DropPanel(id);
+        DropPanel panel = new DropPanel(id);
+        panelsSet.add(panel);
+        return panel;
     }
 
     public EncounterPanel createEncounterPanel(int id) {
-        return new EncounterPanel(id);
+        EncounterPanel panel = new EncounterPanel(id);
+        panelsSet.add(panel);
+        return panel;
     }
 
     public HomePanel createHomePanel(int id) {
-        return new HomePanel(id);
+        HomePanel panel = new HomePanel(id);
+        panelsSet.add(panel);
+        return panel;
     }
 
     public Panel createNeutralPanel(int id) {
-        return new Panel(id);
+        Panel panel = new Panel(id);
+        panelsSet.add(panel);
+        return panel;
     }
 
     public Player createPlayer(String name, int hitPoints, int attack, int defense, int evasion, IPanel panel) {
@@ -73,4 +88,8 @@ public class GameController {
         int c=game_turn/n_players;
         return c+1; /* 1 is added due to the values of c starting from 0, but game chapters start from 1*/
     }
+
+    public void setNextPanel(IPanel panel, IPanel panel1) { panel.addNextPanel(panel1); }
+
+    public Set<IPanel> getPanels() { return panelsSet;  }
 }
