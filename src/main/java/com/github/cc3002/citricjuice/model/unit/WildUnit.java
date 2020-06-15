@@ -25,4 +25,53 @@ public class WildUnit extends AbstractEnemy{
      */
     public WildUnit copy(){ return new WildUnit(name, maxHP, atk, def, evd);}
 
+    /**
+     * This wild unit is defeated by another unit
+     * @param winner
+     *      the unit that defeated this one
+     */
+    @Override
+    public void defeatedBy(IUnit winner) {
+        winner.defeatWild(this);
+    }
+
+    /**
+     * This wild unit defeats a player, increases this unit's wins and stars, reduces the players stars
+     * @param player
+     *      the defeated player
+     */
+    @Override
+    public void defeatPlayer(Player player) {
+        this.increaseWinsBy(2);
+        int star = player.getStars()/2;
+        this.increaseStarsBy(star);
+        player.reduceStarsBy(star);
+    }
+
+    /**
+     * This wild unit defeats a boss unit, increases this unit's wins and stars, reduces the boss units stars
+     * @param boss
+     *      the defeated boss
+     */
+    @Override
+    public void defeatBoss(BossUnit boss) {
+        this.increaseWinsBy(3);
+        int star = boss.getStars()/2;
+        this.increaseStarsBy(star);
+        boss.reduceStarsBy(star);
+    }
+
+    /**
+     * This wild unit defeats another wild unit, increases this unit's wins and stars, reduces the loosing wild unit's stars
+     * @param wild
+     *      the wild unit that lost
+     */
+    @Override
+    public void defeatWild(WildUnit wild) {
+        this.increaseWinsBy(1);
+        int star = wild.getStars()/2;
+        this.increaseStarsBy(star);
+        wild.reduceStarsBy(star);
+    }
+
 }

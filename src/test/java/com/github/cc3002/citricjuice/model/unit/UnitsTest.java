@@ -174,6 +174,96 @@ public class UnitsTest {
     assertNotSame(testWildUnit, actualWild);
   }
 
+  @Test
+  public void WildDefeatedByWildTest(){
+    WildUnit newWild = new WildUnit("defeated wild", 3, 1, 0, -1);
+    newWild.increaseStarsBy(80);
+    newWild.defeatedBy(testWildUnit);
+    assertEquals(40, testWildUnit.getStars());
+    assertEquals(40, newWild.getStars());
+    assertEquals(1, testBossUnit.getWins());
+  }
+
+  @Test
+  public void WildDefeatedByBossTest(){
+    WildUnit newWild = new WildUnit("defeated wild", 3, 1, 0, -1);
+    newWild.increaseStarsBy(80);
+    newWild.defeatedBy(testBossUnit);
+    assertEquals(40, testBossUnit.getStars());
+    assertEquals(40, newWild.getStars());
+    assertEquals(1, testBossUnit.getWins());
+  }
+
+  @Test
+  public void WildDefeatedByPlayerTest(){
+    WildUnit newWild = new WildUnit("defeated wild", 3, 1, 0, -1);
+    newWild.increaseStarsBy(80);
+    newWild.defeatedBy(suguri);
+    assertEquals(80, suguri.getStars());
+    assertEquals(0, newWild.getStars());
+    assertEquals(1, suguri.getWins());
+  }
+
+  @Test
+  public void BossDefeatedByWildTest(){
+    BossUnit newBoss = new BossUnit("defeated boss", 5, 1, 2, 1);
+    newBoss.increaseStarsBy(80);
+    newBoss.defeatedBy(testWildUnit);
+    assertEquals(40, testWildUnit.getStars());
+    assertEquals(40, newBoss.getStars());
+    assertEquals(3, testWildUnit.getWins());
+  }
+
+  @Test
+  public void BossDefeatedByBossTest(){
+    BossUnit newBoss = new BossUnit("defeated boss", 5, 1, 2, 1);
+    newBoss.increaseStarsBy(80);
+    newBoss.defeatedBy(testBossUnit);
+    assertEquals(40, testBossUnit.getStars());
+    assertEquals(40, newBoss.getStars());
+    assertEquals(3, testBossUnit.getWins());
+  }
+
+  @Test
+  public void BossDefeatedByPlayerTest(){
+    BossUnit newBoss = new BossUnit("defeated boss", 5, 1, 2, 1);
+    newBoss.increaseStarsBy(80);
+    newBoss.defeatedBy(suguri);
+    assertEquals(80, suguri.getStars());
+    assertEquals(0, newBoss.getStars());
+    assertEquals(3, suguri.getWins());
+  }
+
+  @Test
+  public void PlayerDefeatedByWildTest(){
+    Player newPlayer = new Player("defeated player", 5, 1, 0, 1);
+    newPlayer.increaseStarsBy(80);
+    newPlayer.defeatedBy(testWildUnit);
+    assertEquals(40, testWildUnit.getStars());
+    assertEquals(40, newPlayer.getStars());
+    assertEquals(2, testWildUnit.getWins());
+  }
+
+  @Test
+  public void PlayerDefeatedByBossTest(){
+    Player newPlayer = new Player("defeated player", 5, 1, 0, 1);
+    newPlayer.increaseStarsBy(80);
+    newPlayer.defeatedBy(testBossUnit);
+    assertEquals(40, testBossUnit.getStars());
+    assertEquals(40, newPlayer.getStars());
+    assertEquals(2, testBossUnit.getWins());
+  }
+
+  @Test
+  public void PlayerDefeatedByPlayerTest(){
+    Player newPlayer = new Player("defeated player", 5, 1, 0, 1);
+    newPlayer.increaseStarsBy(80);
+    newPlayer.defeatedBy(suguri);
+    assertEquals(40, suguri.getStars());
+    assertEquals(40, newPlayer.getStars());
+    assertEquals(2, suguri.getWins());
+  }
+
   // region : consistency tests
   @RepeatedTest(100)
   public void hitPointsConsistencyTest() {

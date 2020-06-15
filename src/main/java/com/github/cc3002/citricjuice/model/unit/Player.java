@@ -117,5 +117,54 @@ public class Player extends AbstractUnit {
     return new Player(name, maxHP, atk, def, evd);
   }
 
+  /**
+   * This player is defeated by another unit
+   * @param winner
+   *      the unit that defeated this player
+   */
+  @Override
+  public void defeatedBy(IUnit winner) {
+    winner.defeatPlayer(this);
+  }
+
+  /**
+   * This player defeats another player, increases this player's wins and stars, reduces the loosing player's stars
+   * @param player
+   *      the player that lost
+   */
+  @Override
+  public void defeatPlayer(Player player) {
+    this.increaseWinsBy(2);
+    int star = player.getStars()/2;
+    this.increaseStarsBy(star);
+    player.reduceStarsBy(star);
+  }
+
+  /**
+   * This player defeats a boss unit, increases this player's wins and stars, reduces the boss units stars
+   * @param boss
+   *      the defeated boss
+   */
+  @Override
+  public void defeatBoss(BossUnit boss) {
+    this.increaseWinsBy(3);
+    int star = boss.getStars();
+    this.increaseStarsBy(star);
+    boss.reduceStarsBy(star);
+  }
+
+  /**
+   * This player defeats a wild unit, increases this player's wins and stars, reduces the wild units stars
+   * @param wild
+   *      the defeated wild unit
+   */
+  @Override
+  public void defeatWild(WildUnit wild) {
+    this.increaseWinsBy(1);
+    int star = wild.getStars();
+    this.increaseStarsBy(star);
+    wild.reduceStarsBy(star);
+  }
+
 
 }
