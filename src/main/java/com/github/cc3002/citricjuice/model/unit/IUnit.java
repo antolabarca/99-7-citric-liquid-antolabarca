@@ -14,9 +14,14 @@ public interface IUnit {
     int getDef();
     int getEvd();
     int getCurrentHP();
+    boolean isDown();
     void setCurrentHP(int newHP);
     IUnit copy();
-    int attackedBy(IUnit unit);
-    void defendsFrom(int attack);
-    void evades(int attack);
+    int attackedBy(IUnit attacker);
+    void defendsFrom(IUnit attacker);
+    void evades(IUnit attacker);
+    void defeatedBy(IUnit winner);
+    void defeatPlayer(Player player);
+    void defeatBoss(BossUnit boss);
+    void defeatWild(WildUnit wild);
 }
