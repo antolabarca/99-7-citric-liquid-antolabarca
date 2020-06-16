@@ -72,7 +72,14 @@ public class Panel implements IPanel { /*this is a neutral panel*/
    * @param player
    *        the player that lands on the panel
    */
-  public void activatedBy(Player player) { player.changePanel(this);  players.add(player); }
+  public void activatedBy(Player player) { }
+
+    /**
+     * Adds a player to this panel, also adds this panel as player's panel
+     * @param player
+     *      the player
+     */
+    public void addPlayer(Player player){ player.changePanel(this);  players.add(player); }
 
   /**
   * Returns the set of players currently in this panel

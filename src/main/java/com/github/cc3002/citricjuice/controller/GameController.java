@@ -92,4 +92,29 @@ public class GameController {
     public void setNextPanel(IPanel panel, IPanel panel1) { panel.addNextPanel(panel1); }
 
     public Set<IPanel> getPanels() { return panelsSet;  }
+
+    public void movePlayer() {
+        Player player = getTurnOwner();
+        player.getPanel().removePlayer(player);
+        /**
+         * poner alguna wea aca
+         */
+        //IPanel newPanel = algo;
+        player.changePanel(newPanel);
+    }
+
+    public IPanel getPlayerPanel(Player unit) {
+        return unit.getPanel();
+    }
+
+    public void setPlayerHome(Player unit, HomePanel panel) {
+        panel.setPlayer(unit);
+    }
+
+    public void endTurn() {
+        game_turn++;
+        /**
+         * alguna wea mas? idk
+         */
+    }
 }

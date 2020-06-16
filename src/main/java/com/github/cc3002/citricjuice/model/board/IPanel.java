@@ -10,6 +10,7 @@ public interface IPanel {
     Set<IPanel> getNextPanels();
     void addNextPanel(final IPanel panel);
     void activatedBy(Player player);
+    void addPlayer (Player player);
     Set<Player> getPlayers();
     void removePlayer(Player player);
 }

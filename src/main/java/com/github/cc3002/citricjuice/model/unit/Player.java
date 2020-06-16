@@ -62,6 +62,7 @@ public class Player extends AbstractUnit {
    */
   public void changePanel(IPanel newPanel) {
     this.panel = newPanel;
+    newPanel.addPlayer(this);
     newPanel.activatedBy(this);
   }
 

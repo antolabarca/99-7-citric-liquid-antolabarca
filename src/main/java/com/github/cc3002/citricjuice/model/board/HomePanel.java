@@ -14,7 +14,6 @@ public class HomePanel extends Panel{
    * Restores a player's HP in 1.
    */
   public void activatedBy(final @NotNull Player player) {
-    player.changePanel(this);  players.add(player);
     player.setCurrentHP(player.getCurrentHP() + 1);
   }
 
