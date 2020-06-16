@@ -12,6 +12,7 @@ public class BonusPanel extends Panel {
    * norma level and three.
    */
   public void activatedBy(final @NotNull Player player) {
+    player.changePanel(this);  players.add(player);
     player.increaseStarsBy(player.roll() * Math.min(player.getNormaLevel(), 3));
   }
 }

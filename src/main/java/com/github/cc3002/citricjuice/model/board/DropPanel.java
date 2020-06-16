@@ -11,6 +11,7 @@ public class DropPanel extends Panel{
    * Reduces the player's star count by the D6 roll multiplied by the player's norma level.
    */
   public void activatedBy(final @NotNull Player player) {
+    player.changePanel(this);  players.add(player);
     player.reduceStarsBy(player.roll() * player.getNormaLevel());
   }
 }

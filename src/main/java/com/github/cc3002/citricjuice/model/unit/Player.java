@@ -1,6 +1,7 @@
 package com.github.cc3002.citricjuice.model.unit;
 
 import com.github.cc3002.citricjuice.model.NormaGoal;
+import com.github.cc3002.citricjuice.model.board.IPanel;
 
 import static com.github.cc3002.citricjuice.model.NormaGoal.STARS;
 
@@ -15,6 +16,7 @@ import static com.github.cc3002.citricjuice.model.NormaGoal.STARS;
 public class Player extends AbstractUnit {
   private int normaLevel;
   private NormaGoal normaGoal;
+  private IPanel panel;
 
   /**
    * Creates a new character.
@@ -32,8 +34,8 @@ public class Player extends AbstractUnit {
    */
   public Player(final String name, final int hp, final int atk, final int def, final int evd) {
     super(name, hp, atk, def, evd);
-    normaLevel = 1;
-    normaGoal = STARS;
+    this.normaLevel = 1;
+    this.normaGoal = STARS;
   }
 
   /**
@@ -47,6 +49,21 @@ public class Player extends AbstractUnit {
    * Returns the player's norma goal
    */
   public NormaGoal getNormaGoal(){ return normaGoal; }
+
+  /**
+   * Returns the panel where the player is
+   */
+  public IPanel getPanel() { return panel;}
+
+  /**
+   * Changes the panel where the player is
+   * @param newPanel
+   *      the players new panel
+   */
+  public void changePanel(IPanel newPanel) {
+    this.panel = newPanel;
+    newPanel.activatedBy(this);
+  }
 
   /**
    * Checks if the player has reached their norma goal

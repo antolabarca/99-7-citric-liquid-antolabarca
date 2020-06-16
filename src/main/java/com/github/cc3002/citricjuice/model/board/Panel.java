@@ -17,6 +17,7 @@ import java.util.Set;
 public class Panel implements IPanel { /*this is a neutral panel*/
     protected final int id; /* id of Panel*/
     protected Set<IPanel> nextPanels = new HashSet<>();
+    protected Set<Player> players = new HashSet<>();
 
     /**
      * Creates a new panel with coordenates x,y
@@ -71,7 +72,25 @@ public class Panel implements IPanel { /*this is a neutral panel*/
    * @param player
    *        the player that lands on the panel
    */
-  public void activatedBy(Player player) {  }
+  public void activatedBy(Player player) { player.changePanel(this);  players.add(player); }
+
+  /**
+  * Returns the set of players currently in this panel
+  */
+  @Override
+  public Set<Player> getPlayers() {
+      return players;
+  }
+
+    /**
+     * Removes a player from this panel's player set
+     * @param player
+     *      the player to be removed
+     */
+    @Override
+    public void removePlayer(Player player) {
+        players.remove(player);
+    }
 }
 
 
