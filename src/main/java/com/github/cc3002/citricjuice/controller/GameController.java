@@ -6,19 +6,25 @@ import com.github.cc3002.citricjuice.model.unit.BossUnit;
 import com.github.cc3002.citricjuice.model.unit.Player;
 import com.github.cc3002.citricjuice.model.unit.WildUnit;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class GameController {
+public class GameController implements PropertyChangeListener {
     protected int game_turn;
-    protected ArrayList<Player> players;
-    protected Set<IPanel> panelsSet = new HashSet<>();
+    public ArrayList<Player> players;
+    public Set<IPanel> panelsSet = new HashSet<>();
+    protected boolean gameIsWon;
+    protected Player winner;
 
     public GameController(){
         super();
         this.game_turn=0;
         this.players=new ArrayList<Player>();
+        gameIsWon = false;
+        winner = null;
     }
 
     public BonusPanel createBonusPanel(int id) {
@@ -59,8 +65,10 @@ public class GameController {
 
     public Player createPlayer(String name, int hitPoints, int attack, int defense, int evasion, IPanel panel) {
         Player player = new Player(name,hitPoints,attack,defense,evasion);
-        //algo con lo de que el player este en el IPanel
+        player.changePanel(panel);
+        panel.addPlayer(player);
         players.add(player);
+        player.addPlayerListener(this);
         return player;
     }
 
@@ -89,26 +97,45 @@ public class GameController {
         return c+1; /* 1 is added due to the values of c starting from 0, but game chapters start from 1*/
     }
 
-    public void setNextPanel(IPanel panel, IPanel panel1) { panel.addNextPanel(panel1); }
+    public void setNextPanel(IPanel panel, IPanel panel1) {
+        if (panel != panel1){
+            panel.addNextPanel(panel1);
+        }
+    }
 
     public Set<IPanel> getPanels() { return panelsSet;  }
 
+
     public void movePlayer() {
         Player player = getTurnOwner();
-        player.getPanel().removePlayer(player);
-        /**
-         * poner alguna wea aca
-         */
-        //IPanel newPanel = algo;
-        player.changePanel(newPanel);
+        int diceRoll = player.roll();
+        player.increaseStarsBy(1 + getChapter()/5);
+        for (int i=0; i<diceRoll; i++){
+            System.out.println("holi toi en el lup");
+            if(player.getCurrentPanel()==player.getHome()){
+                if (player.checkNorma()){
+                    player.normaClear();
+                }
+                break;
+            }
+            if( player.getCurrentPanel().getNextPanels().size()==1 &&player.getCurrentPanel().getPlayers().size()==1) {
+                    player.getCurrentPanel().removePlayer(player);
+                    IPanel newPanel = player.getCurrentPanel().getNextPanels().iterator().next();
+                    player.changePanel(newPanel);
+                    newPanel.addPlayer(player);
+            }
+            else { break;}
+        }
+        player.activatePanel();
+        //endTurn();
     }
 
     public IPanel getPlayerPanel(Player unit) {
-        return unit.getPanel();
+        return unit.getCurrentPanel();
     }
 
     public void setPlayerHome(Player unit, HomePanel panel) {
-        panel.setPlayer(unit);
+        unit.setHome(panel);
     }
 
     public void endTurn() {
@@ -116,5 +143,11 @@ public class GameController {
         /**
          * alguna wea mas? idk
          */
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        gameIsWon= true;
+        winner = (Player) evt.getNewValue();
     }
 }

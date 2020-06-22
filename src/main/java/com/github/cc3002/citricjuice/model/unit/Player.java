@@ -1,7 +1,11 @@
 package com.github.cc3002.citricjuice.model.unit;
 
 import com.github.cc3002.citricjuice.model.NormaGoal;
+import com.github.cc3002.citricjuice.model.board.HomePanel;
 import com.github.cc3002.citricjuice.model.board.IPanel;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import static com.github.cc3002.citricjuice.model.NormaGoal.STARS;
 
@@ -16,7 +20,9 @@ import static com.github.cc3002.citricjuice.model.NormaGoal.STARS;
 public class Player extends AbstractUnit {
   private int normaLevel;
   private NormaGoal normaGoal;
-  private IPanel panel;
+  private IPanel currentPanel;
+  private HomePanel home;
+  private PropertyChangeSupport playerWins = new PropertyChangeSupport(this);
 
   /**
    * Creates a new character.
@@ -51,9 +57,17 @@ public class Player extends AbstractUnit {
   public NormaGoal getNormaGoal(){ return normaGoal; }
 
   /**
+   * Adds a listener to this players playerWins property change
+   * @param listener
+   */
+  public void addPlayerListener(PropertyChangeListener listener){
+    playerWins.addPropertyChangeListener(listener);
+  }
+
+  /**
    * Returns the panel where the player is
    */
-  public IPanel getPanel() { return panel;}
+  public IPanel getCurrentPanel() { return currentPanel;}
 
   /**
    * Changes the panel where the player is
@@ -61,10 +75,27 @@ public class Player extends AbstractUnit {
    *      the players new panel
    */
   public void changePanel(IPanel newPanel) {
-    this.panel = newPanel;
-    newPanel.addPlayer(this);
-    newPanel.activatedBy(this);
+    this.currentPanel = newPanel;
   }
+
+  /**
+   * This player activates the panel where she is
+   */
+  public void activatePanel(){
+    currentPanel.activatedBy(this);
+  }
+
+  /**
+   * Gets the player's home panel
+   */
+  public HomePanel getHome(){return home;}
+
+  /**
+   * Sets a home panel to be this player's home
+   * @param homePanel
+   *      the home panel
+   */
+  public void setHome(HomePanel homePanel){this.home = homePanel;}
 
   /**
    * Checks if the player has reached their norma goal
@@ -80,9 +111,20 @@ public class Player extends AbstractUnit {
 
   /**
    * Performs a norma clear action; the {@code norma} counter increases in 1.
+   * If the player wins (norma reaches 6), this calls the player.isWinner method
    */
   public void normaClear() {
     normaLevel++;
+    if (normaLevel==6){
+      this.isWinner();
+    }
+  }
+
+  /**
+   * Signals the observers that this player has won
+   */
+  public void isWinner(){
+    this.playerWins.firePropertyChange("winner", null, this);
   }
 
   /**

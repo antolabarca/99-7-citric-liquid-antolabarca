@@ -2,6 +2,9 @@ package com.github.cc3002.citricjuice.model.unit;
 
 import com.github.cc3002.citricjuice.model.NormaGoal;
 
+import com.github.cc3002.citricjuice.model.board.DropPanel;
+import com.github.cc3002.citricjuice.model.board.HomePanel;
+import com.github.cc3002.citricjuice.model.board.Panel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -175,13 +178,32 @@ public class UnitsTest {
   }
 
   @Test
+  public void PlayerPanelTest(){
+    Panel testNeutralPanel = new Panel(0);
+    DropPanel testDropPanel = new DropPanel(1);
+    final var expectedSuguri = suguri.copy();
+    suguri.changePanel(testNeutralPanel);
+    assertEquals(testNeutralPanel, suguri.getCurrentPanel());
+    assertEquals(expectedSuguri, suguri);
+    suguri.changePanel(testDropPanel);
+    assertEquals(testDropPanel, suguri.getCurrentPanel());
+  }
+
+  @Test
+  public void PlayerHomeTest(){
+    HomePanel expectedHome = new HomePanel(0);
+    suguri.setHome(expectedHome);
+    assertEquals(expectedHome, suguri.getHome());
+  }
+
+  @Test
   public void WildDefeatedByWildTest(){
     WildUnit newWild = new WildUnit("defeated wild", 3, 1, 0, -1);
     newWild.increaseStarsBy(80);
     newWild.defeatedBy(testWildUnit);
     assertEquals(40, testWildUnit.getStars());
     assertEquals(40, newWild.getStars());
-    assertEquals(1, testBossUnit.getWins());
+    assertEquals(1, testWildUnit.getWins());
   }
 
   @Test
@@ -328,10 +350,10 @@ public class UnitsTest {
     final long testSeed1 = new Random().nextLong();
     testBossUnit.setSeed(testSeed1);
     suguri.defendsFrom(testBossUnit);
-    int attack = testBossUnit.getAtk();
+    int a = testBossUnit.getAtk();
     int suguri_damage= suguri.getMaxHP() - suguri.getCurrentHP();
-    assertTrue((suguri_damage==1 || suguri_damage==suguri.getMaxHP() || (suguri_damage <= 6+attack && suguri_damage >= 1+attack)),
-            suguri_damage + "is not in [1,"+ 6+attack +"]. defends" +
+    assertTrue((suguri.isDown() || (suguri_damage <= 5+a && suguri_damage >= 1)),
+            suguri_damage + " is not in [1,"+ (5+a) +"]. defends" +
                     "test failed with random seeds: "+testSeed + ", " + testSeed1);
   }
 
@@ -344,7 +366,7 @@ public class UnitsTest {
     testWildUnit.evades(suguri);
     int attack= suguri.getAtk();
     int testWild_damage = testWildUnit.getMaxHP() - testWildUnit.getCurrentHP();
-    assertTrue((testWild_damage==0 || 1+ attack <= testWild_damage && testWild_damage <= 6+ attack || testWild_damage == testWildUnit.getMaxHP()), testWild_damage +
+    assertTrue((testWild_damage==0 || 1+ attack <= testWild_damage && testWild_damage <= 6+ attack || testWildUnit.isDown()), testWild_damage +
             "is not in [0," + attack+6 + "]. evades test failed with random seeds: "+ testSeed + ", "+ testSeed1);
   }
 

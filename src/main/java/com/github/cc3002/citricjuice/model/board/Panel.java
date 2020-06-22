@@ -1,10 +1,9 @@
 package com.github.cc3002.citricjuice.model.board;
 
 import com.github.cc3002.citricjuice.model.unit.Player;
+import com.github.cc3002.citricliquid.mediator.Mediator;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Class that represents a panel in the board of the game.
@@ -16,8 +15,8 @@ import java.util.Set;
  */
 public class Panel implements IPanel { /*this is a neutral panel*/
     protected final int id; /* id of Panel*/
-    protected Set<IPanel> nextPanels = new HashSet<>();
-    protected Set<Player> players = new HashSet<>();
+    protected Set<IPanel> nextPanels;
+    protected Set<Player> players;
 
     /**
      * Creates a new panel with coordenates x,y
@@ -25,6 +24,8 @@ public class Panel implements IPanel { /*this is a neutral panel*/
      */
   public Panel(int id){
       this.id=id;
+      nextPanels = new HashSet<>();
+      players = new HashSet<>();
   }
 
     /**
@@ -45,16 +46,21 @@ public class Panel implements IPanel { /*this is a neutral panel*/
         return Objects.hash(id, nextPanels);
     }
 
-    /**
-     * Returns this panel's id
-     */
-    public int getId(){ return this.id; }
 
     /**
-    * Returns a copy of this panel's next ones.
-    */
+     * Returns a copy of this panel's next ones
+     */
     public Set<IPanel> getNextPanels() {
-    return Set.copyOf(nextPanels);
+        return Set.copyOf(nextPanels);
+    }
+
+    /**
+    * Returns a list of this panel's next ones.
+    */
+    public ArrayList<IPanel> getNextPanelsList() {
+        var nextPanels = new ArrayList<IPanel>();
+        nextPanels.addAll(this.getNextPanels());
+        return nextPanels;
   }
 
   /**
@@ -64,7 +70,9 @@ public class Panel implements IPanel { /*this is a neutral panel*/
    *     the panel to be added.
    */
   public void addNextPanel(final IPanel panel) {
-    nextPanels.add(panel);
+    if (!(this.equals(panel))){
+        nextPanels.add(panel);
+    }
   }
 
   /**
@@ -79,15 +87,13 @@ public class Panel implements IPanel { /*this is a neutral panel*/
      * @param player
      *      the player
      */
-    public void addPlayer(Player player){ player.changePanel(this);  players.add(player); }
+    public void addPlayer(Player player){ players.add(player); }
 
   /**
   * Returns the set of players currently in this panel
   */
   @Override
-  public Set<Player> getPlayers() {
-      return players;
-  }
+  public Set<Player> getPlayers() { return Set.copyOf(players); }
 
     /**
      * Removes a player from this panel's player set
