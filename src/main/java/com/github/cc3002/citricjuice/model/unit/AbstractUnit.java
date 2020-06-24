@@ -1,5 +1,7 @@
 package com.github.cc3002.citricjuice.model.unit;
 
+import com.github.cc3002.citricjuice.model.board.IPanel;
+
 import java.util.Random;
 
 public abstract class AbstractUnit implements IUnit{
@@ -169,36 +171,40 @@ public abstract class AbstractUnit implements IUnit{
     /**
      * This unit defends from an attack from another unit
      * Sets the new HP of the unit
-     * @param attacker
-     *      the unit that is attacking
+     * @param attack
+     *          the amount of the attack
      */
-    public void defendsFrom(IUnit attacker){
+    public void defendsFrom(int attack){
         int roll = this.roll();
         int defense = roll + this.getDef();
-        int attack = this.attackedBy(attacker);
         int dmg = Math.max(1, (attack-defense));
         this.setCurrentHP(this.getCurrentHP()-dmg);
-        if (this.isDown()){
-            this.defeatedBy(attacker);
-        }
     }
 
     /**
      * This unit attempts to evade an attack from another unit.
      * Sets the new HP if evading is unsuccessful
-     * @param attacker
-     *      the attacker
+     * @param attack
+     *         the amount of the attack
      */
-    public void evades(IUnit attacker){
+    public void evades(int attack){
         int roll = this.roll();
         int evade = roll + this.getEvd();
-        int attack = this.attackedBy(attacker);
         if (attack > evade){
             this.setCurrentHP(this.getCurrentHP()-attack);
         }
-        if (this.isDown()){
-            this.defeatedBy(attacker);
-        }
+    }
+
+    /**
+     * A battle round with another unit, this unit attacks
+     * @param unit2 the unit being attacked
+     * @param decision unit2's decision on how to respond
+     */
+    public void battleRound(IUnit unit2, BattleDecision decision){
+        int attack1 = unit2.attackedBy(this);
+        if(decision==BattleDecision.DEFEND){
+            unit2.defendsFrom(attack1);
+        }else {this.evades(attack1);}
     }
 
     /**
@@ -228,4 +234,5 @@ public abstract class AbstractUnit implements IUnit{
      *      the wild unit that was defeated
      */
     public abstract void defeatWild(WildUnit wild);
+
 }

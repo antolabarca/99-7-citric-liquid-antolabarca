@@ -1,6 +1,12 @@
 package com.github.cc3002.citricjuice.model.unit;
 
+import com.github.cc3002.citricjuice.model.board.BossPanel;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 public class BossUnit extends AbstractEnemy{
+    private PropertyChangeSupport defeated = new PropertyChangeSupport(this);
 
     /**
      * Creates a new Boss.
@@ -32,7 +38,22 @@ public class BossUnit extends AbstractEnemy{
      */
     @Override
     public void defeatedBy(IUnit winner) {
+        this.bossWasDefeated();
         winner.defeatBoss(this);
+    }
+
+    /**
+     * Signals the observers that this boss was defeated
+     */
+    public void bossWasDefeated(){
+        this.defeated.firePropertyChange("defeated boss", null, this);
+    }
+
+    /**
+     * Adds a listener
+     */
+    public void addBossListener(PropertyChangeListener listener){
+        defeated.addPropertyChangeListener(listener);
     }
 
     /**
@@ -74,4 +95,14 @@ public class BossUnit extends AbstractEnemy{
         wild.reduceStarsBy(star);
     }
 
+
+    /**
+     * Creates a copy of this unit and puts it in this unit's panel
+     */
+    @Override
+    public void dies() {
+        BossUnit newBoss = this.copy();
+        BossPanel panel = (BossPanel) this.panel;
+        panel.setBoss(newBoss);
+    }
 }

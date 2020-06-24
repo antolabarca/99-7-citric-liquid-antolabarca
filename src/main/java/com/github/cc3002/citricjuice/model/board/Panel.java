@@ -41,11 +41,6 @@ public class Panel implements IPanel { /*this is a neutral panel*/
                 Objects.equals(nextPanels, panel.nextPanels);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nextPanels);
-    }
-
 
     /**
      * Returns a copy of this panel's next ones
@@ -87,7 +82,10 @@ public class Panel implements IPanel { /*this is a neutral panel*/
      * @param player
      *      the player
      */
-    public void addPlayer(Player player){ players.add(player); }
+    public void addPlayer(Player player){
+        players.add(player);
+        player.changePanel(this);
+    }
 
   /**
   * Returns the set of players currently in this panel

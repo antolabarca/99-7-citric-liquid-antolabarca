@@ -14,6 +14,9 @@ public class HomePanel extends Panel{
    */
   public void activatedBy(final @NotNull Player player) {
     player.setCurrentHP(player.getCurrentHP() + 1);
+    if (player.checkNorma()){
+      player.normaClear();
+    }
   }
 
 }

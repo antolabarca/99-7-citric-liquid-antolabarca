@@ -1,6 +1,11 @@
 package com.github.cc3002.citricjuice.model.unit;
 
-public abstract class AbstractEnemy extends AbstractUnit {
+
+import com.github.cc3002.citricjuice.model.board.IEnemyPanel;
+
+public abstract class AbstractEnemy extends AbstractUnit implements IEnemy{
+    IEnemyPanel panel;
+
     /**
      * Creates a new Unit.
      *
@@ -12,5 +17,27 @@ public abstract class AbstractEnemy extends AbstractUnit {
      */
     public AbstractEnemy(String name, int hp, int atk, int def, int evd) {
         super(name, hp, atk, def, evd);
+    }
+
+
+
+    /**
+     * Sets this enemy's panel
+     * @param panel the panel to be set
+     */
+    public void setPanel(IEnemyPanel panel){ this.panel=panel; }
+
+    /**
+     * Returns this enemy's panel
+     */
+    public IEnemyPanel getPanel(){ return panel;}
+
+    /**
+     * Chooses a random response to being attacked
+     */
+    public BattleDecision getBattleDecision(){
+        int rand = (int) Math.round(Math.random());
+        BattleDecision battleDecisions[] = {BattleDecision.DEFEND, BattleDecision.EVADE};
+        return battleDecisions[rand];
     }
 }

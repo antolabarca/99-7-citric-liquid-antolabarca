@@ -1,5 +1,7 @@
 package com.github.cc3002.citricjuice.model.unit;
 
+import com.github.cc3002.citricjuice.model.board.EncounterPanel;
+
 public class WildUnit extends AbstractEnemy{
 
     /**
@@ -72,6 +74,16 @@ public class WildUnit extends AbstractEnemy{
         int star = wild.getStars()/2;
         this.increaseStarsBy(star);
         wild.reduceStarsBy(star);
+    }
+
+    /**
+     * Creates a copy of this unit and puts it in this unit's panel
+     */
+    @Override
+    public void dies() {
+        WildUnit newWild = this.copy();
+        EncounterPanel panel = (EncounterPanel) this.panel;
+        panel.setWild(newWild);
     }
 
 }
