@@ -1,5 +1,8 @@
 package com.github.cc3002.citricjuice.model.board;
 
+import com.github.cc3002.citricjuice.controller.BossBattleHandler;
+import com.github.cc3002.citricjuice.controller.WildBattleHandler;
+import com.github.cc3002.citricjuice.model.unit.IEnemy;
 import com.github.cc3002.citricjuice.model.unit.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -29,6 +32,8 @@ class PanelTest {
   private BossPanel testBossPanel;
   private Player suguri;
   private long testSeed;
+  protected EnemyTestHandler enemyTestHandler = new EnemyTestHandler(this);
+  protected IEnemy attacker;
 
   @BeforeEach
   public void setUp() {
@@ -41,6 +46,11 @@ class PanelTest {
     testSeed = new Random().nextLong();
     suguri = new Player(PLAYER_NAME, BASE_HP, BASE_ATK, BASE_DEF, BASE_EVD);
   }
+
+  /**
+   * Sets the latest attacker
+   */
+  public void setAttacker(IEnemy attacker){this.attacker=attacker;}
 
   @Test
   public void equalsTest() {
@@ -176,6 +186,22 @@ class PanelTest {
     suguri.setCurrentHP(1);
     testHomePanel.activatedBy(suguri);
     assertEquals(2, suguri.getCurrentHP());
+  }
+
+  @Test
+  public void encounterPanelTest() {
+    assertEquals(suguri.getMaxHP(), suguri.getCurrentHP());
+    testEncounterPanel.addEncounterPanelListener(enemyTestHandler);
+    testEncounterPanel.activatedBy(suguri);
+    assertEquals(testEncounterPanel.getUnit(), attacker);
+  }
+
+  @Test
+  public void bossPanelTest() {
+    assertEquals(suguri.getMaxHP(), suguri.getCurrentHP());
+    testBossPanel.addBossPanelListener(enemyTestHandler);
+    testBossPanel.activatedBy(suguri);
+    assertEquals(testBossPanel.getUnit(), attacker);
   }
 
   // region : Consistency tests

@@ -133,11 +133,13 @@ class MediatorTest {
         int expectedLevel = 1;
         assertEquals(expectedLevel++, player.getNormaLevel(), "Player should start with level 1.");
         for (int starGoal : List.of(10, 30, 70, 120, 200)) {
-            while (player.getStars() < starGoal && !homePanel.getPlayers().equals(List.of(player))) {
+            mediator.movePlayer();
+            while (player.getStars() < starGoal) {
                 mediator.movePlayer();
             }
-            System.out.println(homePanel.getPlayers());
-            System.out.println(player.getStars());
+            while (!homePanel.getPlayers().equals(List.of(player))){
+                mediator.movePlayer();
+            }
             assertEquals(expectedLevel, player.getNormaLevel(),
                     "Player's norma level should be " + expectedLevel);
             expectedLevel++;
@@ -171,7 +173,7 @@ class MediatorTest {
         var panel2 = panelSuppliers.get(random.nextInt(panelSuppliers.size())).apply(2);
         mediator.setNextPanel(panel1, homePanel);
         mediator.setNextPanel(homePanel, panel2);
-        var player = mediator.createPlayer(homePanel, testPlayers.get(0)).getFirst();
+        var player = mediator.createPlayer(panel1, testPlayers.get(0)).getFirst();
         mediator.setPlayerHome(player, homePanel);
         mediator.movePlayer();
         assertTrue(homePanel.getPlayers().contains(player), "Player didn't stop at it's home panel");
@@ -186,7 +188,9 @@ class MediatorTest {
         mediator.setNextPanel(panel1, panel2);
         mediator.setNextPanel(panel2, panel3);
         mediator.setNextPanel(panel2, panel4);
+        System.out.println(1);
         var player = mediator.createPlayer(panel1, testPlayers.get(0)).getFirst();
+        System.out.println(2);
         mediator.movePlayer();
         assertTrue(panel2.getPlayers().contains(player), "Player didn't stop at split");
     }

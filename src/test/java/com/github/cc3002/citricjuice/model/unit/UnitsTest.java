@@ -2,13 +2,12 @@ package com.github.cc3002.citricjuice.model.unit;
 
 import com.github.cc3002.citricjuice.model.NormaGoal;
 
-import com.github.cc3002.citricjuice.model.board.DropPanel;
-import com.github.cc3002.citricjuice.model.board.HomePanel;
-import com.github.cc3002.citricjuice.model.board.Panel;
+import com.github.cc3002.citricjuice.model.board.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -286,7 +285,104 @@ public class UnitsTest {
     assertEquals(2, suguri.getWins());
   }
 
+  @Test
+  public void testEnemyPanel(){
+    BossPanel bossPanel = new BossPanel(1);
+    EncounterPanel encounterPanel = new EncounterPanel(2);
+    testBossUnit.setPanel(bossPanel);
+    testWildUnit.setPanel(encounterPanel);
+    assertEquals(bossPanel, testBossUnit.getPanel());
+    assertEquals(encounterPanel, testWildUnit.getPanel());
+  }
+
+  @Test
+  public void testMovePlayer(){
+    List<IPanel> panels = List.of(new Panel(0), new HomePanel(1), new Panel(2), new Panel(3), new Panel(4));
+    panels.get(0).addNextPanel(panels.get(1));
+    panels.get(1).addNextPanel(panels.get(2));
+    panels.get(2).addNextPanel(panels.get(3));
+    suguri.changePanel(panels.get(0));
+    panels.get(0).addPlayer(suguri);
+    int n= suguri.move(2); //suguri moves normally
+    assertEquals(panels.get(2), suguri.getCurrentPanel());
+    assertEquals(0,n);
+    suguri.setHome((HomePanel) panels.get(1));
+    suguri.changePanel(panels.get(0));
+    n= suguri.move(2); //suguri moves but her home panel is in the way
+    assertEquals(panels.get(1), suguri.getCurrentPanel());
+    assertEquals(1, n);
+    n = suguri.move(1); //suguri moves normally
+    assertEquals(panels.get(2), suguri.getCurrentPanel());
+    assertEquals(0, n);
+    panels.get(2).addNextPanel(panels.get(4));
+    n = suguri.move(2); //suguri moves but there are 2 panel options
+    assertEquals(panels.get(2), suguri.getCurrentPanel());
+    assertEquals(2, n);
+    suguri.changePanel(panels.get(0));
+    panels.get(0).addPlayer(suguri);
+    panels.get(1).addPlayer(new Player("sugurint", 4, 1, 3, 0));
+    n= suguri.move(2); //suguri moves but there is another player in the next panel
+    assertEquals(panels.get(1), suguri.getCurrentPanel());
+    assertEquals(1, n);
+  }
+
+  @Test
+  public void testRequiredRoll(){
+    suguri.dies();
+    assertEquals(6, suguri.getRequiredRoll());
+    suguri.setRequiredRoll(3);
+    assertEquals(3, suguri.getRequiredRoll());
+  }
+
+  @Test
+  public void testWildDies(){
+    EncounterPanel panel = new EncounterPanel(1);
+    panel.setWild(testWildUnit);
+    testWildUnit.dies();
+    WildUnit expected = testWildUnit.copy();
+    assertEquals(expected, panel.getUnit());
+    assertEquals(testWildUnit.getMaxHP(), panel.getUnit().getCurrentHP());
+  }
+
+  @Test
+  public void testBossDies(){
+    BossPanel panel = new BossPanel(1);
+    panel.setBoss(testBossUnit);
+    testBossUnit.dies();
+    BossUnit expected = testBossUnit.copy();
+    assertEquals(expected, panel.getUnit());
+    assertEquals(expected.getMaxHP(), panel.getUnit().getCurrentHP());
+  }
+
+  @Test
+  public void testPlayerDecisions(){
+    suguri.setFightDecision(FightDecision.ENGAGE);
+    assertEquals(FightDecision.ENGAGE,suguri.getFightDecision());
+    suguri.setFightDecision(FightDecision.IGNORE);
+    assertEquals(FightDecision.IGNORE, suguri.getFightDecision());
+    suguri.setBattleDecision(BattleDecision.DEFEND);
+    assertEquals(BattleDecision.DEFEND,suguri.getBattleDecision());
+    suguri.setBattleDecision(BattleDecision.EVADE);
+    assertEquals(BattleDecision.EVADE, suguri.getBattleDecision());
+    IPanel expected = new Panel(3);
+    suguri.setPanelDecision(expected);
+    assertEquals(expected, suguri.getPanelDecision());
+    suguri.setHomeDecision(true);
+    assertTrue(suguri.getHomeDecision());
+    suguri.setHomeDecision(false);
+    assertTrue(!suguri.getHomeDecision());
+  }
+
   // region : consistency tests
+
+  @RepeatedTest(50)
+  public void testEnemyDecision(){
+    BattleDecision enemyDecision1 = testBossUnit.getBattleDecision();
+    BattleDecision enemyDecision2 = testWildUnit.getBattleDecision();
+    assertTrue(enemyDecision1==BattleDecision.DEFEND || enemyDecision1==BattleDecision.EVADE);
+    assertTrue(enemyDecision2==BattleDecision.DEFEND || enemyDecision2==BattleDecision.EVADE);
+  }
+
   @RepeatedTest(100)
   public void hitPointsConsistencyTest() {
     final long testSeed = new Random().nextLong();
@@ -349,10 +445,12 @@ public class UnitsTest {
     suguri.setSeed(testSeed);
     final long testSeed1 = new Random().nextLong();
     testBossUnit.setSeed(testSeed1);
-    suguri.defendsFrom(testBossUnit);
+    int attack = suguri.attackedBy(testBossUnit);
+    suguri.defendsFrom(attack);
     int a = testBossUnit.getAtk();
     int suguri_damage= suguri.getMaxHP() - suguri.getCurrentHP();
-    assertTrue((suguri.isDown() || (suguri_damage <= 5+a && suguri_damage >= 1)),
+    int def = suguri.getDef();
+    assertTrue((suguri.isDown() || suguri_damage==1 || (suguri_damage <= attack-def && suguri_damage >= 1+def)),
             suguri_damage + " is not in [1,"+ (5+a) +"]. defends" +
                     "test failed with random seeds: "+testSeed + ", " + testSeed1);
   }
@@ -363,12 +461,84 @@ public class UnitsTest {
     suguri.setSeed(testSeed);
     final long testSeed1 = new Random().nextLong();
     testWildUnit.setSeed(testSeed1);
-    testWildUnit.evades(suguri);
-    int attack= suguri.getAtk();
+    int attack = testWildUnit.attackedBy(suguri);
+    testWildUnit.evades(attack);
     int testWild_damage = testWildUnit.getMaxHP() - testWildUnit.getCurrentHP();
-    assertTrue((testWild_damage==0 || 1+ attack <= testWild_damage && testWild_damage <= 6+ attack || testWildUnit.isDown()), testWild_damage +
+    assertTrue((testWild_damage==0 || testWild_damage==attack || testWildUnit.isDown()), testWild_damage +
             "is not in [0," + attack+6 + "]. evades test failed with random seeds: "+ testSeed + ", "+ testSeed1);
   }
 
+  @RepeatedTest(200)
+  public void testBattleRound(){
+    suguri.battleRound(testBossUnit, BattleDecision.EVADE);
+    int dmg = testBossUnit.getMaxHP() - testBossUnit.getCurrentHP();
+    assertTrue(testBossUnit.isDown() || dmg ==0 || (1+suguri.getAtk()<=dmg && dmg<= 6+suguri.getAtk()));
+    testWildUnit.battleRound(suguri, BattleDecision.DEFEND);
+    dmg = suguri.getMaxHP() - suguri.getCurrentHP();
+    int def = suguri.getDef();
+    int atk = testWildUnit.getAtk();
+    assertTrue(suguri.isDown() || dmg==1 || (1<= dmg+def && dmg+def <= 6+atk));
+  }
+
   // endregion
+
+  //region: activate panel tests
+
+  @Test
+  public void activateNeutralPanelTest() {
+    Panel testNeutralPanel = new Panel(0);
+    suguri.changePanel(testNeutralPanel);
+    final var expectedSuguri = suguri.copy();
+    suguri.activatePanel();
+    assertEquals(expectedSuguri, suguri);
+  }
+
+  @Test
+  public void homePanelTest() {
+    HomePanel testHomePanel = new HomePanel(0);
+    suguri.changePanel(testHomePanel);
+    assertEquals(suguri.getMaxHP(), suguri.getCurrentHP());
+    suguri.activatePanel();
+    assertEquals(suguri.getMaxHP(), suguri.getCurrentHP());
+    suguri.setCurrentHP(1);
+    suguri.activatePanel();
+    assertEquals(2, suguri.getCurrentHP());
+  }
+
+  @RepeatedTest(100)
+  public void bonusPanelConsistencyTest() {
+    long testSeed = new Random().nextLong();
+    BonusPanel testBonusPanel = new BonusPanel(0);
+    suguri.changePanel(testBonusPanel);
+    int expectedStars = 0;
+    assertEquals(expectedStars, suguri.getStars());
+    final var testRandom = new Random(testSeed);
+    suguri.setSeed(testSeed);
+    for (int normaLvl = 1; normaLvl <= 6; normaLvl++) {
+      final int roll = testRandom.nextInt(6) + 1;
+      suguri.activatePanel();
+      expectedStars += roll * Math.min(3, normaLvl);
+      assertEquals(expectedStars, suguri.getStars(),"Test failed with seed: " + testSeed);
+      suguri.normaClear();
+    }
+  }
+
+  @RepeatedTest(100)
+  public void dropPanelConsistencyTest() {
+    long testSeed = new Random().nextLong();
+    DropPanel testDropPanel= new DropPanel(2);
+    int expectedStars = 30;
+    suguri.increaseStarsBy(30);
+    suguri.changePanel(testDropPanel);
+    assertEquals(expectedStars, suguri.getStars());
+    final var testRandom = new Random(testSeed);
+    suguri.setSeed(testSeed);
+    for (int normaLvl = 1; normaLvl <= 6; normaLvl++) {
+      final int roll = testRandom.nextInt(6) + 1;
+      suguri.activatePanel();
+      expectedStars = Math.max(expectedStars - roll * normaLvl, 0);
+      assertEquals(expectedStars, suguri.getStars(),"Test failed with seed: " + testSeed);
+      suguri.normaClear();
+    }
+  }
 }
