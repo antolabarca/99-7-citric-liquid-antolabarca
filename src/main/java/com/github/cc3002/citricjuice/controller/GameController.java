@@ -278,6 +278,17 @@ public class GameController{
         winner=player;
     }
 
+
+    /**
+     * Returns the winner player
+     */
+    public Player getWinner(){return winner;}
+
+    /**
+     * Returns true if the game has been won
+     */
+    public boolean isGameWon(){return gameIsWon;}
+
     /**
      * Player reaches norma 4, changes the norma4 property to true
      */
@@ -286,11 +297,22 @@ public class GameController{
     }
 
     /**
+     * Returns true if a player has reached norma 4
+     */
+    public boolean isNorma4(){return norma4;}
+
+
+    /**
      * Boss has been defeated, changes the bossDefeated property to true
      */
     public void bossDefeated(BossUnit boss) {
         bossDefeated=true;
     }
+
+    /**
+     * Returns the boss defeated property
+     */
+    public boolean isBossDefeated(){return bossDefeated;}
 
     /**
      * Ends the current turn

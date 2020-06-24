@@ -5,11 +5,10 @@ import com.github.cc3002.citricjuice.model.unit.Player;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class WinHandler implements PropertyChangeListener{
-    private GameController controller;
+public class WinHandler extends AbstractHandler{
 
     public WinHandler(GameController controller){
-        this.controller= controller;
+        super(controller);
     }
 
     /**

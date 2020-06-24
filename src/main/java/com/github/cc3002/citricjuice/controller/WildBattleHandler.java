@@ -6,11 +6,10 @@ import com.github.cc3002.citricjuice.model.unit.IUnit;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class WildBattleHandler implements PropertyChangeListener {
-    private GameController controller;
+public class WildBattleHandler extends AbstractHandler {
 
     public WildBattleHandler(GameController controller){
-        this.controller= controller;
+        super(controller);
     }
 
     /**

@@ -1,16 +1,14 @@
 package com.github.cc3002.citricjuice.controller;
 
 import com.github.cc3002.citricjuice.model.unit.BossUnit;
-import com.github.cc3002.citricjuice.model.unit.Player;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class BossDefeatHandler implements PropertyChangeListener {
-    private GameController controller;
+public class BossDefeatHandler extends AbstractHandler {
 
     public BossDefeatHandler(GameController controller){
-        this.controller= controller;
+        super(controller);
     }
 
     /**

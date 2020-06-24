@@ -138,6 +138,17 @@ public class ControllerTest {
     }
 
     @Test
+    public void testHandlerProperties(){
+        controller.playerWins(testPlayers.get(0));
+        assertEquals(testPlayers.get(0), controller.getWinner());
+        assertTrue(controller.isGameWon());
+        controller.playerReachedNorma4(testPlayers.get(0));
+        assertTrue(controller.isNorma4());
+        controller.bossDefeated(testBosses.get(0));
+        assertTrue(controller.isBossDefeated());
+    }
+
+    @Test
     public void testSetNextPanels(){
         assertTrue(panelSuppliers.get(0).getNextPanels().isEmpty());
         final var expectedPanel1 = panelSuppliers.get(1);
