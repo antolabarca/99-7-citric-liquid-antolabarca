@@ -10,7 +10,6 @@ public class FightPhase extends AbstractPhase {
 
     @Override
     public void action() {
-        System.out.println(12);
         Player current = turn.getPlayer();
         IPanel panel = current.getCurrentPanel();
         panel.removePlayer(current);

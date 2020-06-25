@@ -96,7 +96,6 @@ public class ControllerTest {
     @Test
     public void testCreatePlayer(){
         Player expectedPlayer = new Player(player_names[1],hp[1],atk[1],def[1],evd[1]);
-        System.out.println(testPlayers.size());
         assertEquals(expectedPlayer, testPlayers.get(1));
         assertEquals(panelSuppliers.get(1),testPlayers.get(1).getCurrentPanel());
         assertTrue(panelSuppliers.get(1).getPlayers().contains(testPlayers.get(1)));
@@ -178,9 +177,7 @@ public class ControllerTest {
         assertTrue(panelSuppliers.get(0).getPlayers().contains(testPlayers.get(0)));
         assertEquals(1, panelSuppliers.get(2).getPlayers().size());
         assertTrue(panelSuppliers.get(2).getPlayers().contains(testPlayers.get(2)));
-        System.out.println(1);
         controller.movePlayer();
-        System.out.println(2);
         assertEquals(0, panelSuppliers.get(0).getPlayers().size());
         assertEquals(2, panelSuppliers.get(2).getPlayers().size());
         assertTrue(panelSuppliers.get(2).getPlayers().contains(testPlayers.get(0)));

@@ -188,9 +188,7 @@ class MediatorTest {
         mediator.setNextPanel(panel1, panel2);
         mediator.setNextPanel(panel2, panel3);
         mediator.setNextPanel(panel2, panel4);
-        System.out.println(1);
         var player = mediator.createPlayer(panel1, testPlayers.get(0)).getFirst();
-        System.out.println(2);
         mediator.movePlayer();
         assertTrue(panel2.getPlayers().contains(player), "Player didn't stop at split");
     }

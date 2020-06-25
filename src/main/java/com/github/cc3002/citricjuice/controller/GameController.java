@@ -130,7 +130,6 @@ public class GameController{
      */
     public Player createPlayer(String name, int hitPoints, int attack, int defense, int evasion, IPanel panel) {
         Player player = new Player(name,hitPoints,attack,defense,evasion);
-        player.changePanel(panel);
         panel.addPlayer(player);
         players.add(player);
         player.addPlayerWinsListener(winHandler);
@@ -251,7 +250,6 @@ public class GameController{
      * @param unit2
      */
     public void battle(IUnit unit1, IUnit unit2){
-        System.out.println(unit2);
         if (!unit2.isDown()) {
             BattleDecision decision2 = unit2.getBattleDecision();
             unit1.battleRound(unit2, decision2);

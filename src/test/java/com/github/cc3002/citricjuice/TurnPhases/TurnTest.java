@@ -23,9 +23,7 @@ public class TurnTest {
         assertFalse(turn.equals(null));
         assertNotSame(new Turn(player, i), turn);
         assertEquals(new Turn(player, i), turn);//uwu
-        System.out.println(14);
         FirstPhase expected = new FirstPhase();
-        System.out.println(15);
         expected.setTurn(turn);
         assertEquals(expected, turn.getPhase());
     }
@@ -73,9 +71,5 @@ public class TurnTest {
         assertEquals(2, turn2.getChapter());
 
     }
-
-
-
-
 
 }
