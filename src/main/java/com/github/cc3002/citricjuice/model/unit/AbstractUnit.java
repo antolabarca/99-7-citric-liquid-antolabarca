@@ -1,8 +1,11 @@
-package com.github.cc3002.citricjuice.model.units;
+package com.github.cc3002.citricjuice.model.unit;
+
+import com.github.cc3002.citricjuice.model.board.IPanel;
 
 import java.util.Random;
 
-public abstract class Unit {
+public abstract class AbstractUnit implements IUnit{
+    protected final String name;
     protected final Random random;
     protected final int maxHP;
     protected int currentHP;
@@ -24,7 +27,8 @@ public abstract class Unit {
      * @param evd
      *     the base evasion of the unit.
      */
-    public Unit(final int hp, final int atk, final int def, final int evd){
+    public AbstractUnit(final String name, final int hp, final int atk, final int def, final int evd){
+        this.name=name;
         this.maxHP=hp;
         this.currentHP=hp;
         this.atk=atk;
@@ -42,7 +46,7 @@ public abstract class Unit {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Unit unit = (Unit) o;
+        AbstractUnit unit = (AbstractUnit) o;
         return maxHP == unit.maxHP &&
                 currentHP == unit.currentHP &&
                 wins == unit.wins &&
@@ -50,6 +54,13 @@ public abstract class Unit {
                 atk == unit.atk &&
                 def == unit.def &&
                 evd == unit.evd;
+    }
+
+    /**
+     * Returns the unit's name.
+     */
+    public String getName() {
+        return name;
     }
 
     /**
@@ -62,7 +73,7 @@ public abstract class Unit {
     /**
      * Increases this unit's star count by an amount.
      */
-    public void increaseStarsBy(final int amount) {
+    public void increaseStarsBy(int amount) {
         stars += amount;
     }
 
@@ -71,7 +82,7 @@ public abstract class Unit {
      * <p>
      * The star count will must always be greater or equal to 0
      */
-    public void reduceStarsBy(final int amount) {
+    public void reduceStarsBy(int amount) {
         stars = Math.max(0, stars - amount);
     }
 
@@ -128,35 +139,40 @@ public abstract class Unit {
     public int getCurrentHP() { return currentHP; }
 
     /**
+     * Returns true if the character is down (has 0 HitPoints)
+     */
+    public boolean isDown() { return getCurrentHP()==0; }
+
+    /**
      * Sets the current unit's hit points.
      * <p>
      * The character's hit points have a constraint to always be between 0 and maxHP, both inclusive.
      */
-    public void setCurrentHP(final int newHP) {
+    public void setCurrentHP(int newHP) {
         this.currentHP = Math.max(Math.min(newHP, maxHP), 0);
     }
 
     /**
      * Returns a copy of this unit.
      */
-    public abstract Unit copy();
+    public abstract IUnit copy();
 
     /**
      * This unit gets attacked by another one, returns the amount of the attack
-     * @param unit
+     * @param attacker
      *      the unit that attacks
      */
-    public int attackedBy(Unit unit){
-        int roll = unit.roll();
-        int attack = roll + unit.getAtk();
+    public int attackedBy(IUnit attacker){
+        int roll = attacker.roll();
+        int attack = roll + attacker.getAtk();
         return attack;
     }
 
     /**
-     * This unit defends from an attack with a fixed amount
+     * This unit defends from an attack from another unit
      * Sets the new HP of the unit
      * @param attack
-     *      the amount of the attack
+     *          the amount of the attack
      */
     public void defendsFrom(int attack){
         int roll = this.roll();
@@ -166,10 +182,10 @@ public abstract class Unit {
     }
 
     /**
-     * This unit attempts to evade an attack with a fixed amount.
+     * This unit attempts to evade an attack from another unit.
      * Sets the new HP if evading is unsuccessful
      * @param attack
-     *      the amount of the attack
+     *         the amount of the attack
      */
     public void evades(int attack){
         int roll = this.roll();
@@ -178,5 +194,45 @@ public abstract class Unit {
             this.setCurrentHP(this.getCurrentHP()-attack);
         }
     }
+
+    /**
+     * A battle round with another unit, this unit attacks
+     * @param unit2 the unit being attacked
+     * @param decision unit2's decision on how to respond
+     */
+    public void battleRound(IUnit unit2, BattleDecision decision){
+        int attack1 = unit2.attackedBy(this);
+        if(decision==BattleDecision.DEFEND){
+            unit2.defendsFrom(attack1);
+        }else {this.evades(attack1);}
+    }
+
+    /**
+     * This unit is defeated by another
+     * @param winner
+     *      the unit that won
+     */
+    public abstract void defeatedBy(IUnit winner);
+
+    /**
+     * This unit defeats a Player unit
+     * @param player
+     *      the player that was defeated
+     */
+    public  abstract void defeatPlayer(Player player);
+
+    /**
+     * This unit defeats a Boss unit
+     * @param boss
+     *      the boss unit that was defeated
+     */
+    public abstract void defeatBoss(BossUnit boss);
+
+    /**
+     * This unit defeats a Wild unit
+     * @param wild
+     *      the wild unit that was defeated
+     */
+    public abstract void defeatWild(WildUnit wild);
 
 }

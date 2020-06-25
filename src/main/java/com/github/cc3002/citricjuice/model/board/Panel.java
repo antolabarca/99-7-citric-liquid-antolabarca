@@ -1,10 +1,9 @@
 package com.github.cc3002.citricjuice.model.board;
 
-import com.github.cc3002.citricjuice.model.units.Player;
+import com.github.cc3002.citricjuice.model.unit.Player;
+import com.github.cc3002.citricliquid.mediator.Mediator;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Class that represents a panel in the board of the game.
@@ -14,54 +13,49 @@ import java.util.Set;
  * @version 1.0.6-rc.2
  * @since 1.0
  */
-public class Panel { /*this is a neutral panel*/
-    protected final int x; /* x coord of Panel*/
-    protected final int y; /* y coord of Panel*/
-    protected final Set<Panel> nextPanels = new HashSet<>();
+public class Panel implements IPanel { /*this is a neutral panel*/
+    protected final int id; /* id of Panel*/
+    protected Set<IPanel> nextPanels;
+    protected Set<Player> players;
 
     /**
      * Creates a new panel with coordenates x,y
-     * @param x the x coordenate of the panel
-     * @param y the y coordenate of the panel
+     * @param id the id of the panel
      */
-  public Panel(int x, int y){
-      this.x=x;
-      this.y=y;
+  public Panel(int id){
+      this.id=id;
+      nextPanels = new HashSet<>();
+      players = new HashSet<>();
   }
 
-  /**
-   * Checks if a panel equals this one
-   */
+    /**
+     * Checks if an object o is equal to this Panel
+     * @param o the object
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Panel panel = (Panel) o;
-        return x == panel.x &&
-                y == panel.y &&
+        return id == panel.id &&
                 Objects.equals(nextPanels, panel.nextPanels);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getX(), getY(), getNextPanels(), getClass());
+
+    /**
+     * Returns a copy of this panel's next ones
+     */
+    public Set<IPanel> getNextPanels() {
+        return Set.copyOf(nextPanels);
     }
 
     /**
-     * Returns this panel's X coordintate
-     */
-    public int getX(){ return this.x; }
-
-    /**
-     * Returns this panel's Y coordinate
-     */
-    public int getY(){ return this.y; }
-
-    /**
-    * Returns a copy of this panel's next ones.
+    * Returns a list of this panel's next ones.
     */
-    public Set<Panel> getNextPanels() {
-    return Set.copyOf(nextPanels);
+    public ArrayList<IPanel> getNextPanelsList() {
+        var nextPanels = new ArrayList<IPanel>();
+        nextPanels.addAll(this.getNextPanels());
+        return nextPanels;
   }
 
   /**
@@ -70,14 +64,44 @@ public class Panel { /*this is a neutral panel*/
    * @param panel
    *     the panel to be added.
    */
-  public void addNextPanel(final Panel panel) {
-    nextPanels.add(panel);
+  public void addNextPanel(final IPanel panel) {
+    if (!(this.equals(panel))){
+        nextPanels.add(panel);
+    }
   }
 
   /**
-   *
+   * Activates the panel's action when a player lands on it
+   * @param player
+   *        the player that lands on the panel
    */
-  public void activatedBy(final Player player) {  }
+  public void activatedBy(Player player) { }
+
+    /**
+     * Adds a player to this panel, also adds this panel as player's panel
+     * @param player
+     *      the player
+     */
+    public void addPlayer(Player player){
+        players.add(player);
+        player.changePanel(this);
+    }
+
+  /**
+  * Returns the set of players currently in this panel
+  */
+  @Override
+  public Set<Player> getPlayers() { return Set.copyOf(players); }
+
+    /**
+     * Removes a player from this panel's player set
+     * @param player
+     *      the player to be removed
+     */
+    @Override
+    public void removePlayer(Player player) {
+        players.remove(player);
+    }
 }
 
 

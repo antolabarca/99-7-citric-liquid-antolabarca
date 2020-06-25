@@ -1,11 +1,11 @@
 package com.github.cc3002.citricjuice.model.board;
 
-import com.github.cc3002.citricjuice.model.units.Player;
+import com.github.cc3002.citricjuice.model.unit.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class BonusPanel extends Panel {
 
-  public BonusPanel(int x, int y){super(x,y);}
+  public BonusPanel(int id){super(id);}
 
   /**
    * Increases the player's star count by the D6 roll multiplied by the maximum between the player's
