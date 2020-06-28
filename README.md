@@ -64,13 +64,14 @@ These are implemented using a state pattern. The turn class has a player and a t
 * Stars Phase: the player earns the specified amount of stars (currentchapter/5 +1) and moves on to a card Phase
 * Card Phase: the player has the option to play a card. For now, this phase does nothing, as cards are not yet implemented. It rolls the dice and continues to a Move Phase for the amount of steps rolled
 * Move Phase: recieves an int x as an attribute. The player moves according to the rules, at most x steps. 
-The getters for the player's decision are used for the cases in which a decision is required (if there are multiple next panels or another player in the next panel). If the player stops, a land at panel phase starts, if she decides to keep moving another move phase starts for the amount of steps the player has left (x - the amount of steps already done).
+The getters for the player's decision are used for the cases in which a decision is required (if there are multiple next panels, her home panel or another player in the next panel). If the player stops, a land at panel phase starts, or a Fight phase in case there was another player and she chose to fight them, if she decides to keep moving another move phase starts for the amount of steps the player has left (x - the amount of steps already done).
+* Fight Phase: starts a fight with the other player in the panel (the player who'se turn it is attacks first). If the player is alive at the end of the battle, she lands at the panel and a Land at Panel Phase starts. If she is down, the turn ends.
 * Land at Panel Phase: the player finally stops a panel. If there is a card, it is played (not yet implemented) and the panel is activated by the player. This is the last phase of the turn.
 * Recovery phase: the player rolls the dice. If the amount is more or equal to the required amount, they recover their full HP and move on to a stars Phase. If not, their required amount decreases by one, and their turn ends.
 
 ----------------------------------------------------------
 
-*este es el readme que estaba cuando entregué:*
+*este es el readme que estaba cuando entregué. estoy dejando una versión más actualizada arriba para facilitar la corrección. el Tomás me dijo que no se me descontaría más puntaje por atraso por hacer esta actualización*
 
 
 
