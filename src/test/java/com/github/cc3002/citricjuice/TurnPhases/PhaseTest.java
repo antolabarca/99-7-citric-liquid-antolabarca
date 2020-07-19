@@ -18,12 +18,14 @@ public class PhaseTest {
     Player player;
     int i = 0;
     FirstPhase first;
-    CardPhase card;
     LandAtPanelPhase landAtPanel;
     MovePhase move;
     RecoveryPhase recovery;
     StarsPhase stars;
     FightPhase fight;
+    FightDecisionPhase fightDecision;
+    HomeDecisionPhase homeDecision;
+    PanelDecisionPhase panelDecision;
 
 
     @BeforeEach
@@ -32,8 +34,6 @@ public class PhaseTest {
         turn = new Turn(player, i);
         first = new FirstPhase();
         first.setTurn(turn);
-        card = new CardPhase();
-        card.setTurn(turn);
         landAtPanel = new LandAtPanelPhase();
         landAtPanel.setTurn(turn);
         move = new MovePhase(4);
@@ -44,6 +44,12 @@ public class PhaseTest {
         stars.setTurn(turn);
         fight = new FightPhase();
         fight.setTurn(turn);
+        fightDecision = new FightDecisionPhase(3);
+        fightDecision.setTurn(turn);
+        homeDecision = new HomeDecisionPhase(3);
+        homeDecision.setTurn(turn);
+        panelDecision = new PanelDecisionPhase(3);
+        panelDecision.setTurn(turn);
     }
 
     @Test
@@ -53,15 +59,6 @@ public class PhaseTest {
         assertFalse(first.equals(null));
         assertNotSame(new FirstPhase(), first);
         assertEquals(new FirstPhase(), first);
-    }
-
-    @Test
-    public void testCardPhaseConstructor() {
-        assertEquals(card, card);
-        assertNotEquals(card, new Object());
-        assertFalse(card.equals(null));
-        assertNotSame(new CardPhase(), card);
-        assertEquals(new CardPhase(), card);
     }
 
     @Test
@@ -110,14 +107,43 @@ public class PhaseTest {
     }
 
     @Test
+    public void testFightDecisionPhaseConstructor() {
+        assertEquals(fightDecision, fightDecision);
+        assertNotEquals(fightDecision, new Object());
+        assertFalse(fightDecision.equals(null));
+        assertNotSame(new FightDecisionPhase(3), fightDecision);
+        assertEquals(new FightDecisionPhase(3), fightDecision);
+    }
+
+    @Test
+    public void testHomeDecisionPhaseConstructor() {
+        assertEquals(homeDecision, homeDecision);
+        assertNotEquals(homeDecision, new Object());
+        assertFalse(homeDecision.equals(null));
+        assertNotSame(new HomeDecisionPhase(3), homeDecision);
+        assertEquals(new HomeDecisionPhase(3), homeDecision);
+    }
+
+    @Test
+    public void testPanelDecisionPhaseConstructor() {
+        assertEquals(panelDecision, panelDecision);
+        assertNotEquals(panelDecision, new Object());
+        assertFalse(panelDecision.equals(null));
+        assertNotSame(new PanelDecisionPhase(3), panelDecision);
+        assertEquals(new PanelDecisionPhase(3), panelDecision);
+    }
+
+    @Test
     public void testSetTurn(){
         assertEquals(turn, first.getTurn());
-        assertEquals(turn, card.getTurn());
         assertEquals(turn, landAtPanel.getTurn());
         assertEquals(turn, move.getTurn());
         assertEquals(turn, recovery.getTurn());
         assertEquals(turn, stars.getTurn());
         assertEquals(turn, fight.getTurn());
+        assertEquals(turn, fightDecision.getTurn());
+        assertEquals(turn, homeDecision.getTurn());
+        assertEquals(turn, panelDecision.getTurn());
     }
 
     @Test
@@ -130,29 +156,19 @@ public class PhaseTest {
         assertEquals(new RecoveryPhase(), turn.getPhase());
     }
 
-    @RepeatedTest(100)
-    public void testCardPhaseAction(){
-        long random = new Random().nextLong();
-        final var testRandom = new Random(random);
-        player.setSeed(random);
-        final int roll = testRandom.nextInt(6) + 1;
-        card.action();
-        assertEquals(new MovePhase(roll), turn.getPhase());
-    }
-
     @Test
     public void testLandAtPanelPhaseAction(){
         IPanel panel= new Panel(1);
         player.changePanel(panel);
         landAtPanel.action();
-        //card test
         //the panel being activated is tested specifically in the panels
         //and I don't know if there is an assert to check that a specific method was called
         //and the turn ends, so the next phase doesn't exist
     }
 
     @Test
-    public void testMovePhaseAction(){
+    public void testMovePhasesAction(){
+        //normal movement
         IPanel panel= new Panel(0);
         IPanel panel1 = new Panel(1);
         panel.addNextPanel(panel1);
@@ -162,61 +178,76 @@ public class PhaseTest {
         assertEquals(new LandAtPanelPhase(), turn.getPhase());
         assertEquals(panel, player.getCurrentPanel());
 
+        //2 next panels
         move = new MovePhase(1);
         turn.setPhase(move);
         IPanel panel2= new Panel(2);
         IPanel panel3 = new Panel(3);
         panel.addNextPanel(panel2);
         panel2.addNextPanel(panel3);
-        player.setPanelDecision(panel2);
         move.action();
-        assertEquals(new MovePhase(0), turn.getPhase());
+        assertEquals(new PanelDecisionPhase(1), turn.getPhase());
+        player.setPanelDecision(panel2);
+        turn.getPhase().action();
         assertEquals(panel2, player.getCurrentPanel());
         turn.getPhase().action();
         assertEquals(new LandAtPanelPhase(), turn.getPhase());
         assertEquals(panel2, player.getCurrentPanel());
 
+        //Player in a next panel, decision is IGNORE
         move= new MovePhase(2);
         turn.setPhase(move);
         IPanel panel4 = new Panel(4);
         panel3.addNextPanel(panel4);
         Player player1 = new Player("kai", 2, 1, 1, 0);
         panel3.addPlayer(player1);
-        player.setFightDecision(FightDecision.IGNORE);
         move.action();
-        assertEquals(new MovePhase(1), turn.getPhase());
+        assertEquals(new FightDecisionPhase(1), turn.getPhase());
+        player.setFightDecision(FightDecision.IGNORE);
+        turn.getPhase().action();
         assertEquals(panel3, player.getCurrentPanel());
+        assertEquals(new MovePhase(1), turn.getPhase());
         turn.getPhase().action();
         assertEquals(new LandAtPanelPhase(), turn.getPhase());
         assertEquals(panel4, player.getCurrentPanel());
 
+        //player in a next panel, decision is ENGAGE
         move= new MovePhase(2);
         turn.setPhase(move);
         player.changePanel(panel2);
-        player.setFightDecision(FightDecision.ENGAGE);
         move.action();
-        assertEquals(new FightPhase(), turn.getPhase());
+        assertEquals(new FightDecisionPhase(1), turn.getPhase());
+        player.setFightDecision(FightDecision.ENGAGE);
+        turn.getPhase().action();
         assertEquals(panel3, player.getCurrentPanel());
 
+        //Player comes across home panel, chooses to stop
         move = new MovePhase(2);
         turn.setPhase(move);
         IPanel panel5 = new Panel(5);
         HomePanel home = new HomePanel(6);
         player.setHome(home);
-        player.setHomeDecision(true);
         IPanel panel6 = new Panel(6);
         panel5.addNextPanel(home);
         home.addNextPanel(panel6);
         panel5.addPlayer(player);
         move.action();
-        assertEquals(new LandAtPanelPhase(), turn.getPhase());
+        assertEquals(new HomeDecisionPhase(1), turn.getPhase());
         assertEquals(home, player.getCurrentPanel());
+        player.setHomeDecision(true);
+        turn.getPhase().action();
+        assertEquals(home, player.getCurrentPanel());
+        assertEquals(new LandAtPanelPhase(), turn.getPhase());
 
+        //player comes across home panel, decides to keep moving
         panel5.addPlayer(player);
-        player.setHomeDecision(false);
         move.action();
         assertEquals(home, player.getCurrentPanel());
+        assertEquals(new HomeDecisionPhase(1), turn.getPhase());
+        player.setHomeDecision(false);
+        turn.getPhase().action();
         assertEquals(new MovePhase(1), turn.getPhase());
+        assertEquals(home, player.getCurrentPanel());
         turn.getPhase().action();
         assertEquals(new LandAtPanelPhase(), turn.getPhase());
         assertEquals(panel6, player.getCurrentPanel());
@@ -229,12 +260,16 @@ public class PhaseTest {
         assertTrue((turn.getPhase().equals(new StarsPhase()) && player.getCurrentHP()==player.getMaxHP()) || player.getRequiredRoll()==3);
     }
 
-    @Test
+    @RepeatedTest(100)
     public void testStarsPhaseAction(){
         assertEquals(0, player.getStars());
+        long random = new Random().nextLong();
+        final var testRandom = new Random(random);
+        player.setSeed(random);
         stars.action();
+        final int roll = testRandom.nextInt(6) + 1;
         assertEquals(turn.getChapter()/5 + 1, player.getStars());
-        assertEquals(new CardPhase(), turn.getPhase());
+        assertEquals(new MovePhase(roll), turn.getPhase());
     }
 
     @RepeatedTest(100)
