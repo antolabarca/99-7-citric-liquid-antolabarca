@@ -4,13 +4,14 @@ public class StarsPhase extends AbstractPhase{
 
     /**
      * The player gets the amount of stars required as per the chapter of the game.
-     * The phase changes to a card phase
+     * The player rolls the dice and the phase changes to a move phase
      */
     @Override
     public void action() {
         int stars = turn.getChapter()/5 + 1;
         turn.getPlayer().increaseStarsBy(stars);
-        turn.setPhase(new CardPhase());
+        int x = turn.getPlayer().roll();
+        turn.setPhase(new MovePhase(x));
     }
 
 }

@@ -67,4 +67,3 @@ These are implemented using a state pattern. The turn class has a player and a t
 The getters for the player's decision are used for the cases in which a decision is required (if there are multiple next panels or another player in the next panel). If the player stops, a land at panel phase starts, if she decides to keep moving another move phase starts for the amount of steps the player has left (x - the amount of steps already done).
 * Land at Panel Phase: the player finally stops a panel. If there is a card, it is played (not yet implemented) and the panel is activated by the player. This is the last phase of the turn.
 * Recovery phase: the player rolls the dice. If the amount is more or equal to the required amount, they recover their full HP and move on to a stars Phase. If not, their required amount decreases by one, and their turn ends.
-
