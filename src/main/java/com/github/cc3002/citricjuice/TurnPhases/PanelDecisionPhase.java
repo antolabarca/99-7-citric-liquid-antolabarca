@@ -8,7 +8,9 @@ public class PanelDecisionPhase extends AbstractMovementPhase{
         super(y);
     }
 
-
+    /**
+     * Gets the players panel decision and moves to that panel. Creates a new MovePhase to keep moving
+     */
     @Override
     public void action() {
         IPanel decision = turn.getPlayer().getPanelDecision();

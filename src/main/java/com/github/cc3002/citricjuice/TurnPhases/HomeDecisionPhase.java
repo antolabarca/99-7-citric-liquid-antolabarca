@@ -6,6 +6,9 @@ public class HomeDecisionPhase extends AbstractMovementPhase{
         super(y);
     }
 
+    /**
+     * Checks the players homeDecision and creates a new LandAtPanelPhase if its true, a new MovePhase if its false
+     */
     @Override
     public void action() {
         boolean stopAtHome = turn.getPlayer().getHomeDecision();

@@ -9,6 +9,9 @@ public class FightDecisionPhase extends AbstractMovementPhase{
     }
 
 
+    /**
+     * gets the players fight decision and creates a new FightPhase if its ENGAGE, a new MovePhase if its IGNORE
+     */
     @Override
     public void action() {
         FightDecision decision = turn.getPlayer().getFightDecision();

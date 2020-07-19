@@ -13,7 +13,6 @@ public class LandAtPanelPhase extends AbstractPhase{
      */
     @Override
     public void action() {
-        //if there is a card at the panel, do something
         turn.getPlayer().activatePanel();
         turn.end();
     }
