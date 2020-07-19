@@ -3,6 +3,7 @@ package com.github.cc3002.citricjuice.controller;
 import com.github.cc3002.citricjuice.model.NormaGoal;
 import com.github.cc3002.citricjuice.model.board.*;
 import com.github.cc3002.citricjuice.model.unit.*;
+import com.github.cc3002.citricliquid.gui.Board;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,6 +23,7 @@ public class GameController{
     protected BossDefeatHandler bossDefeatHandler = new BossDefeatHandler(this);
     protected BossBattleHandler bossBattleHandler = new BossBattleHandler(this);
     protected WildBattleHandler wildBattleHandler = new WildBattleHandler(this);
+    protected Board board = Board.getBoard();
 
     public GameController(){
         super();
@@ -29,6 +31,7 @@ public class GameController{
         this.players=new ArrayList<Player>();
         gameIsWon = false;
         winner = null;
+        board.setController(this);
     }
 
     /**
