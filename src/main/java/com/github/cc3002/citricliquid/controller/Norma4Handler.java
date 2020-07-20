@@ -1,9 +1,8 @@
-package com.github.cc3002.citricjuice.controller;
+package com.github.cc3002.citricliquid.controller;
 
 import com.github.cc3002.citricjuice.model.unit.Player;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 public class Norma4Handler extends AbstractHandler {
 

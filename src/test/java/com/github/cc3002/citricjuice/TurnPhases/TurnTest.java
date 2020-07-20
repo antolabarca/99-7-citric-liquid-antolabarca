@@ -1,6 +1,8 @@
 package com.github.cc3002.citricjuice.TurnPhases;
 
+import com.github.cc3002.citricjuice.model.board.Panel;
 import com.github.cc3002.citricjuice.model.unit.Player;
+import com.github.cc3002.citricliquid.controller.GameController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,12 +10,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TurnTest {
     Turn turn;
-    Player player = new Player("suguri", 5, 2, -1, 0);
+    Player player;
+    Player p2;
+    Player p3;
+    Player p4;
     int i=0;
+    GameController controller = new GameController();
 
     @BeforeEach
     public void setUp(){
-        turn = new Turn(player, i);
+        player = controller.createPlayer("p1",4,1,0,0,new Panel(0));
+        p2 = controller.createPlayer("p2",4,1,0,0,new Panel(0));
+        p3 = controller.createPlayer("p3",4,1,0,0,new Panel(0));
+        p4 = controller.createPlayer("p4",4,1,0,0,new Panel(0));
+        turn = new Turn(controller);
     }
 
     @Test
@@ -21,8 +31,8 @@ public class TurnTest {
         assertEquals(turn, turn);
         assertNotEquals(turn, new Object());
         assertFalse(turn.equals(null));
-        assertNotSame(new Turn(player, i), turn);
-        assertEquals(new Turn(player, i), turn);//uwu
+        assertNotSame(new Turn(controller), turn);
+        assertEquals(new Turn(controller), turn);//uwu
         FirstPhase expected = new FirstPhase();
         expected.setTurn(turn);
         assertEquals(expected, turn.getPhase());
@@ -73,11 +83,14 @@ public class TurnTest {
     @Test
     public void getChapter(){
         assertEquals(1, turn.getChapter());
-        Turn turn1 = new Turn(new Player("sugurint", 4, 1,1,0),3);
+        controller.endTurn();
+        Turn turn1 = new Turn(controller);
         assertEquals(1, turn1.getChapter());
-        Turn turn2 = new Turn(new Player("kai", 4, 1,1,0),5);
-        assertEquals(2, turn2.getChapter());
-
+        controller.endTurn();
+        controller.endTurn();
+        controller.endTurn();
+        controller.endTurn();
+        assertEquals(2,turn1.getChapter());
     }
 
 }

@@ -14,10 +14,15 @@ public class FightDecisionPhase extends AbstractMovementPhase{
      */
     @Override
     public void action() {
+        while (turn.getPlayer().getFightDecision() == null){
+            ;
+        }
         FightDecision decision = turn.getPlayer().getFightDecision();
         if (decision== FightDecision.IGNORE){
+            turn.getPlayer().setFightDecision(null);
             turn.setPhase(new MovePhase(y));
         }else{
+            turn.getPlayer().setFightDecision(null);
             turn.setPhase(new FightPhase());
         }
     }

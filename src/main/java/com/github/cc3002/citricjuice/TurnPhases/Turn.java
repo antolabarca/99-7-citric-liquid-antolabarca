@@ -1,6 +1,7 @@
 package com.github.cc3002.citricjuice.TurnPhases;
 
 import com.github.cc3002.citricjuice.model.unit.Player;
+import com.github.cc3002.citricliquid.controller.GameController;
 
 import java.util.Objects;
 
@@ -8,11 +9,15 @@ public class Turn {
     private final Player player;
     private IPhase phase;
     private final int turn_number;
+    private boolean isActive;
+    private GameController controller;
 
-    public Turn(Player player, int turn_number){
+    public Turn(GameController controller){
         setPhase(new FirstPhase());
-        this.player=player;
-        this.turn_number=turn_number;
+        this.controller = controller;
+        this.player=controller.getTurnOwner();
+        this.turn_number=controller.getGameTurn();
+        isActive=true;
     }
 
     /**
@@ -58,16 +63,28 @@ public class Turn {
      * Returns the current chapter of the game
      */
     public int getChapter(){
-        int c=turn_number/4;
-        return c+1;
+        return controller.getChapter();
     }
 
     /**
      * Ends the current turn
      */
     public void end(){
+        isActive = false;
+    }
 
+    /**
+     * Checks if the current turn is active
+     */
+    public Boolean isActive(){
+        return isActive;
     }
 
 
+    /**
+     * Returns this turns controller
+     */
+    public GameController getController() {
+        return controller;
+    }
 }

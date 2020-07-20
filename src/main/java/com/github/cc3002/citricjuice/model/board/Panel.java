@@ -94,6 +94,15 @@ public class Panel implements IPanel { /*this is a neutral panel*/
   public Set<Player> getPlayers() { return Set.copyOf(players); }
 
     /**
+     * Returns a list of this panel's players.
+     */
+    public ArrayList<Player> getPlayersList() {
+        var nextPlayers = new ArrayList<Player>();
+        nextPlayers.addAll(this.getPlayers());
+        return nextPlayers;
+    }
+
+    /**
      * Removes a player from this panel's player set
      * @param player
      *      the player to be removed
@@ -102,6 +111,8 @@ public class Panel implements IPanel { /*this is a neutral panel*/
     public void removePlayer(Player player) {
         players.remove(player);
     }
+
+
 }
 
 

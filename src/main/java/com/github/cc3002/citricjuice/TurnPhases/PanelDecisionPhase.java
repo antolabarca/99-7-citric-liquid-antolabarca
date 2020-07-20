@@ -13,8 +13,12 @@ public class PanelDecisionPhase extends AbstractMovementPhase{
      */
     @Override
     public void action() {
+        while (turn.getPlayer().getPanelDecision()==null){
+            ;
+        }
         IPanel decision = turn.getPlayer().getPanelDecision();
         turn.getPlayer().changePanel(decision);
+        turn.getPlayer().setPanelDecision(null);
         turn.setPhase(new MovePhase(y-1));
     }
 }

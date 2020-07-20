@@ -1,14 +1,13 @@
-package com.github.cc3002.citricjuice.controller;
+package com.github.cc3002.citricliquid.controller;
 
 import com.github.cc3002.citricjuice.model.NormaGoal;
 import com.github.cc3002.citricjuice.model.board.*;
 import com.github.cc3002.citricjuice.model.unit.*;
 import com.github.cc3002.citricliquid.gui.Board;
+import com.github.cc3002.citricliquid.gui.node.MovableNode;
+import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class GameController{
     protected int game_turn;
@@ -23,7 +22,8 @@ public class GameController{
     protected BossDefeatHandler bossDefeatHandler = new BossDefeatHandler(this);
     protected BossBattleHandler bossBattleHandler = new BossBattleHandler(this);
     protected WildBattleHandler wildBattleHandler = new WildBattleHandler(this);
-    protected Board board = Board.getBoard();
+    protected Board board;
+    Map<IPanel, Pair<Integer, Integer>> panelPositions = new HashMap<>();
 
     public GameController(){
         super();
@@ -31,7 +31,7 @@ public class GameController{
         this.players=new ArrayList<Player>();
         gameIsWon = false;
         winner = null;
-        board.setController(this);
+        //board = new Board(this);
     }
 
     /**
@@ -45,10 +45,23 @@ public class GameController{
         GameController that = (GameController) o;
         return game_turn == that.game_turn &&
                 gameIsWon == that.gameIsWon &&
-                Objects.equals(players, that.players) &&
+                norma4 == that.norma4 &&
+                bossDefeated == that.bossDefeated &&
+                players.equals(that.players) &&
                 Objects.equals(panelsSet, that.panelsSet) &&
-                Objects.equals(winner, that.winner);
+                Objects.equals(winner, that.winner) &&
+                Objects.equals(board, that.board);
     }
+
+    /**
+     * Sets this controllers board
+     */
+    public void setBoard() {this.board = new Board(this);}
+
+    /**
+     * Gets this controllers board
+     */
+    public Board getBoard() {return board;}
 
     /**
      * Creates a new bonus panel and adds it to the panelsSet
@@ -189,8 +202,15 @@ public class GameController{
      */
     public Player getTurnOwner() {
         int n_players=players.size();
-        int current=game_turn%n_players;
+        int current=game_turn%4;
         return players.get(current);
+    }
+
+    /**
+     * Returns the current turn of the game
+     */
+    public int getGameTurn(){
+        return game_turn;
     }
 
     /**
@@ -225,7 +245,7 @@ public class GameController{
     public void movePlayer() {
         Player player = getTurnOwner();
         int roll = player.roll();
-        int y = player.move(roll);
+        int y = move(player, roll);
         player.activatePanel();
     }
 
@@ -244,6 +264,16 @@ public class GameController{
      */
     public void setPlayerHome(Player unit, HomePanel panel) {
         unit.setHome(panel);
+    }
+
+    /**
+     * Sets a panels position
+     * @param panel the panel
+     * @param x the x coordenate
+     * @param y the y coordenate
+     */
+    public void setPanelPosition(IPanel panel, int x, int y){
+        panelPositions.put(panel, new Pair<>(x,y));
     }
 
 
@@ -323,4 +353,30 @@ public class GameController{
     }
 
 
+    /**
+     * Sets a player position to the position of the panel where she is
+     * @param p the player
+     */
+    public Pair<Integer, Integer> getPlayerPosition(Player p) {
+        Pair<Integer, Integer> position = panelPositions.get(p.getCurrentPanel());
+        return position;
+    }
+
+    /**
+     * Moves this player according to the rules, returns the "moves" that were left in case the
+     * player stopped to make a decision
+     */
+    public int move(Player player, int x){
+        for (int i=0; i<x; i++){
+            if( player.getCurrentPanel().getNextPanels().size()==1) {
+                player.getCurrentPanel().removePlayer(player);
+                IPanel newPanel = player.getCurrentPanel().getNextPanels().iterator().next();
+                player.changePanel(newPanel);
+                newPanel.addPlayer(player);
+                if(player.getCurrentPanel().equals(player.getHome())){return x-i-1; }
+                if (player.getCurrentPanel().getPlayers().size()>1){return x-i-1;}
+            } else { return x-i; }
+        }
+        return 0;
+    }
 }

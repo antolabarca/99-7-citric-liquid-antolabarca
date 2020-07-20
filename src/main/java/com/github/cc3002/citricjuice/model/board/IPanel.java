@@ -13,5 +13,6 @@ public interface IPanel {
     void activatedBy(Player player);
     void addPlayer (Player player);
     Set<Player> getPlayers();
+    ArrayList<Player> getPlayersList();
     void removePlayer(Player player);
 }

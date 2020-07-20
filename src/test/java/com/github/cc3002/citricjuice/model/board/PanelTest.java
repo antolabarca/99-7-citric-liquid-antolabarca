@@ -1,7 +1,5 @@
 package com.github.cc3002.citricjuice.model.board;
 
-import com.github.cc3002.citricjuice.controller.BossBattleHandler;
-import com.github.cc3002.citricjuice.controller.WildBattleHandler;
 import com.github.cc3002.citricjuice.model.unit.IEnemy;
 import com.github.cc3002.citricjuice.model.unit.Player;
 import org.junit.jupiter.api.BeforeEach;
@@ -121,6 +119,7 @@ class PanelTest {
     assertEquals(new HomePanel(1), testHomePanel);
   }
 
+
   @Test
   public void nextPanelTest() {
     assertTrue(testNeutralPanel.getNextPanels().isEmpty());
@@ -153,22 +152,39 @@ class PanelTest {
   public void playersTest() {
     Player sugurint = new Player("not suguri", BASE_HP, BASE_ATK, BASE_DEF, BASE_EVD);
     assertEquals(0, testNeutralPanel.getPlayers().size());
+    assertEquals(0, testNeutralPanel.getPlayersList().size());
     testNeutralPanel.addPlayer(suguri);
     assertEquals(1, testNeutralPanel.getPlayers().size());
+    assertEquals(1, testNeutralPanel.getPlayersList().size());
     assertTrue(testNeutralPanel.getPlayers().contains(suguri));
+    assertTrue(testNeutralPanel.getPlayersList().contains(suguri));
     testNeutralPanel.addPlayer(sugurint);
     assertEquals(2, testNeutralPanel.getPlayers().size());
+    assertEquals(2, testNeutralPanel.getPlayersList().size());
     testNeutralPanel.addPlayer(sugurint);
     assertEquals(2, testNeutralPanel.getPlayers().size());
+    assertEquals(2, testNeutralPanel.getPlayersList().size());
     assertEquals(Set.of(suguri, sugurint), testNeutralPanel.getPlayers());
+    assertTrue(testNeutralPanel.getPlayersList().contains(suguri));
+    assertTrue(testNeutralPanel.getPlayersList().contains(sugurint));
 
     testNeutralPanel.removePlayer(suguri);
     assertEquals(1, testNeutralPanel.getPlayers().size());
+    assertEquals(1, testNeutralPanel.getPlayersList().size());
     assertFalse(testNeutralPanel.getPlayers().contains(suguri));
+    assertFalse(testNeutralPanel.getPlayersList().contains(suguri));
+    assertTrue(testNeutralPanel.getPlayers().contains(sugurint));
+    assertTrue(testNeutralPanel.getPlayersList().contains(sugurint));
     testNeutralPanel.removePlayer(suguri);
     assertEquals(1, testNeutralPanel.getPlayers().size());
+    assertEquals(1, testNeutralPanel.getPlayersList().size());
+    assertFalse(testNeutralPanel.getPlayers().contains(suguri));
+    assertFalse(testNeutralPanel.getPlayersList().contains(suguri));
+    assertTrue(testNeutralPanel.getPlayers().contains(sugurint));
+    assertTrue(testNeutralPanel.getPlayersList().contains(sugurint));
     testNeutralPanel.removePlayer(sugurint);
     assertEquals(0, testNeutralPanel.getPlayers().size());
+    assertEquals(0, testNeutralPanel.getPlayersList().size());
   }
 
   @Test

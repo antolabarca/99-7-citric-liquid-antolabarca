@@ -1,9 +1,8 @@
-package com.github.cc3002.citricjuice.controller;
+package com.github.cc3002.citricliquid.controller;
 
 import com.github.cc3002.citricjuice.model.unit.BossUnit;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 public class BossDefeatHandler extends AbstractHandler {
 

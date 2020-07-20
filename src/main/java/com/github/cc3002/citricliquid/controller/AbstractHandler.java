@@ -1,4 +1,4 @@
-package com.github.cc3002.citricjuice.controller;
+package com.github.cc3002.citricliquid.controller;
 
 import java.util.Objects;
 

@@ -3,6 +3,7 @@ package com.github.cc3002.citricjuice.model.unit;
 import com.github.cc3002.citricjuice.model.NormaGoal;
 import com.github.cc3002.citricjuice.model.board.HomePanel;
 import com.github.cc3002.citricjuice.model.board.IPanel;
+import com.github.cc3002.citricliquid.gui.node.MovableNode;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -25,10 +26,11 @@ public class Player extends AbstractUnit {
   private HomePanel home;
   private PropertyChangeSupport playerWins = new PropertyChangeSupport(this);
   private PropertyChangeSupport playerNorma4 = new PropertyChangeSupport(this);
-  BattleDecision battleDecision;
-  FightDecision fightDecision;
-  IPanel panelDecision;
-  boolean homeDecision;
+  private BattleDecision battleDecision = null;
+  private FightDecision fightDecision = null;
+  private IPanel panelDecision = null;
+  private HomeDecision homeDecision = null;
+  private MovableNode sprite;
 
   /**
    * Creates a new character.
@@ -248,25 +250,6 @@ public class Player extends AbstractUnit {
     wild.reduceStarsBy(star);
   }
 
-
-  /**
-   * Moves this player according to the rules, returns the "moves" that were left in case the
-   * player stopped to make a decision
-   */
-  public int move(int x){
-    for (int i=0; i<x; i++){
-      if( getCurrentPanel().getNextPanels().size()==1) {
-        getCurrentPanel().removePlayer(this);
-        IPanel newPanel = getCurrentPanel().getNextPanels().iterator().next();
-        this.changePanel(newPanel);
-        newPanel.addPlayer(this);
-        if(this.getCurrentPanel().equals(this.getHome())){return x-i-1; }
-        if (this.getCurrentPanel().getPlayers().size()>1){return x-i-1;}
-      } else { return x-i; }
-    }
-    return 0;
-  }
-
   /**
    * Returns the dice amount required to recover
    */
@@ -326,11 +309,28 @@ public class Player extends AbstractUnit {
    * Sets this players decision to stop at their home panel
    * true if they choose to stop, false if they choose to continue moving
    */
-  public void setHomeDecision(boolean decision){ this.homeDecision = decision;}
+  public void setHomeDecision(HomeDecision decision){ this.homeDecision = decision;}
 
   /**
    * Returns the players decision to stop at their home panel
    * (true if they want to stop, false if they choose to continue)
    */
-  public boolean getHomeDecision() { return homeDecision;  }
+  public HomeDecision getHomeDecision() { return homeDecision;  }
+
+
+  /**
+   * Sets this players sprite
+   * @param sprite
+   */
+    public void setSprite(MovableNode sprite) {
+      this.sprite=sprite;
+    }
+
+  /**
+   * Returns this players sprite
+   */
+  public MovableNode getSprite(){
+    return sprite;
+  }
+
 }

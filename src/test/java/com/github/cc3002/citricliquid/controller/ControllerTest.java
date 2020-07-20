@@ -1,10 +1,10 @@
 package com.github.cc3002.citricliquid.controller;
 
-import com.github.cc3002.citricjuice.controller.GameController;
 import com.github.cc3002.citricjuice.model.board.*;
 import com.github.cc3002.citricjuice.model.unit.BossUnit;
 import com.github.cc3002.citricjuice.model.unit.Player;
 import com.github.cc3002.citricjuice.model.unit.WildUnit;
+import com.github.cc3002.citricliquid.gui.Board;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,13 +22,13 @@ public class ControllerTest {
     private List<Player> testPlayers;
     private List<WildUnit> testWildUnits;
     private List<BossUnit> testBosses;
-    private String[] player_names = {"suguri", "kai", "yuki"};
+    private String[] player_names = {"suguri", "kai", "yuki", "poppo"};
     private String[] boss_names = {"flying castle", "boss", "uwu"};
     private String[] wild_names = {"wild", "wilder", "wildest"};
-    private int[] hp = {4,6,5};
-    private int[] def = {2, -1, 0};
-    private int[] atk = {1, 2, -1};
-    private int[] evd = {1, -1, -2};
+    private int[] hp = {4,6,5, 4};
+    private int[] def = {2, -1, 0, 0};
+    private int[] atk = {1, 2, -1, 1};
+    private int[] evd = {1, -1, -2, 0};
 
     @BeforeEach
     public void setUp() {
@@ -39,11 +39,12 @@ public class ControllerTest {
                         controller.createEncounterPanel(3), controller.createHomePanel(4),
                         controller.createNeutralPanel(5));
         testPlayers = new ArrayList<Player>();
-        for (int i=0; i<3; i++){testPlayers.add(controller.createPlayer(player_names[i],hp[i],atk[i],def[i],evd[i], panelSuppliers.get(i)));}
+        for (int i=0; i<4; i++){testPlayers.add(controller.createPlayer(player_names[i],hp[i],atk[i],def[i],evd[i], panelSuppliers.get(i)));}
         testWildUnits = new ArrayList<WildUnit>();
         for (int i=0; i<3; i++){testWildUnits.add(controller.createWildUnit(wild_names[i],hp[i],atk[i],def[i],evd[i]));}
         testBosses = new ArrayList<BossUnit>();
         for (int i=0; i<3; i++){testBosses.add(controller.createBossUnit(boss_names[i],hp[i],atk[i],def[i],evd[i]));}
+        controller.setBoard();
     }
 
     @Test
@@ -53,6 +54,11 @@ public class ControllerTest {
         assertFalse(newController.equals(null));
         assertNotSame(new GameController(), newController);
         assertEquals(new GameController(), newController);
+    }
+
+    @Test
+    public void testBoard(){
+        assertEquals(new Board(controller), controller.getBoard());
     }
 
     @Test
@@ -104,7 +110,7 @@ public class ControllerTest {
 
     @Test
     public void testGetPlayers(){
-        List<Player> expectedPlayers = List.of(testPlayers.get(0), testPlayers.get(1), testPlayers.get(2));
+        List<Player> expectedPlayers = List.of(testPlayers.get(0), testPlayers.get(1), testPlayers.get(2), testPlayers.get(3));
         assertEquals(expectedPlayers, controller.getPlayers());
         assertTrue(newController.getPlayers().isEmpty());
     }
@@ -125,15 +131,19 @@ public class ControllerTest {
     public void testTurnAndChapter(){
         assertEquals(testPlayers.get(0), controller.getTurnOwner());
         assertEquals(1, controller.getChapter());
+        assertEquals(0, controller.getGameTurn());
         controller.endTurn();
         assertEquals(testPlayers.get(1), controller.getTurnOwner());
         assertEquals(1, controller.getChapter());
+        assertEquals(1, controller.getGameTurn());
         controller.endTurn();
         assertEquals(testPlayers.get(2),controller.getTurnOwner());
+        assertEquals(2, controller.getGameTurn());
         controller.endTurn();
-        assertEquals(testPlayers.get(0), controller.getTurnOwner());
+        assertEquals(testPlayers.get(3), controller.getTurnOwner());
         controller.endTurn();
         assertEquals(2, controller.getChapter());
+        assertEquals(testPlayers.get(0), controller.getTurnOwner());
     }
 
     @Test
@@ -170,6 +180,39 @@ public class ControllerTest {
     }
 
     //region: move player tests
+
+    @Test
+    public void testMovePlayer(){
+        List<IPanel> panels = List.of(new Panel(0), new HomePanel(1), new Panel(2), new Panel(3), new Panel(4));
+        Player suguri = testPlayers.get(0);
+        newController.setNextPanel(panels.get(0), panels.get(1));
+        newController.setNextPanel(panels.get(1),panels.get(2));
+        newController.setNextPanel(panels.get(2),panels.get(3));
+        suguri.changePanel(panels.get(0));
+        panels.get(0).addPlayer(suguri);
+        int n= newController.move(suguri, 2); //suguri moves normally
+        assertEquals(panels.get(2), suguri.getCurrentPanel());
+        assertEquals(0,n);
+        newController.setPlayerHome(suguri,(HomePanel) panels.get(1));
+        suguri.changePanel(panels.get(0));
+        n= newController.move(suguri,2); //suguri moves but her home panel is in the way
+        assertEquals(panels.get(1), suguri.getCurrentPanel());
+        assertEquals(1, n);
+        n = newController.move(suguri,1); //suguri moves normally
+        assertEquals(panels.get(2), suguri.getCurrentPanel());
+        assertEquals(0, n);
+        panels.get(2).addNextPanel(panels.get(4));
+        n = newController.move(suguri,2); //suguri moves but there are 2 panel options
+        assertEquals(panels.get(2), suguri.getCurrentPanel());
+        assertEquals(2, n);
+        suguri.changePanel(panels.get(0));
+        panels.get(0).addPlayer(suguri);
+        panels.get(1).addPlayer(new Player("sugurint", 4, 1, 3, 0));
+        n= newController.move(suguri,2); //suguri moves but there is another player in the next panel
+        assertEquals(panels.get(1), suguri.getCurrentPanel());
+        assertEquals(1, n);
+    }
+
     @Test
     public void testMeetPlayer() {
         controller.setNextPanel(panelSuppliers.get(0), panelSuppliers.get(2));

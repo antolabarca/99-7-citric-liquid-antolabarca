@@ -4,7 +4,9 @@ import com.github.cc3002.citricjuice.model.board.HomePanel;
 import com.github.cc3002.citricjuice.model.board.IPanel;
 import com.github.cc3002.citricjuice.model.board.Panel;
 import com.github.cc3002.citricjuice.model.unit.FightDecision;
+import com.github.cc3002.citricjuice.model.unit.HomeDecision;
 import com.github.cc3002.citricjuice.model.unit.Player;
+import com.github.cc3002.citricliquid.controller.GameController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PhaseTest {
     Turn turn;
     Player player;
+    Player p2;
+    Player p3;
+    Player p4;
+    GameController controller;
     int i = 0;
     FirstPhase first;
     LandAtPanelPhase landAtPanel;
@@ -30,8 +36,12 @@ public class PhaseTest {
 
     @BeforeEach
     public void setUp() {
-        player = new Player("suguri", 5, 2, -1, 0);
-        turn = new Turn(player, i);
+        controller = new GameController();
+        player = controller.createPlayer("p1",4,1,0,0,new Panel(0));
+        p2 = controller.createPlayer("p2",4,1,0,0,new Panel(0));
+        p3 = controller.createPlayer("p3",4,1,0,0,new Panel(0));
+        p4 = controller.createPlayer("p4",4,1,0,0,new Panel(0));
+        turn = new Turn(controller);
         first = new FirstPhase();
         first.setTurn(turn);
         landAtPanel = new LandAtPanelPhase();
@@ -191,6 +201,7 @@ public class PhaseTest {
         turn.getPhase().action();
         assertEquals(panel2, player.getCurrentPanel());
         turn.getPhase().action();
+        assertEquals(null,player.getPanelDecision());
         assertEquals(new LandAtPanelPhase(), turn.getPhase());
         assertEquals(panel2, player.getCurrentPanel());
 
@@ -205,6 +216,7 @@ public class PhaseTest {
         assertEquals(new FightDecisionPhase(1), turn.getPhase());
         player.setFightDecision(FightDecision.IGNORE);
         turn.getPhase().action();
+        assertEquals(null,player.getFightDecision());
         assertEquals(panel3, player.getCurrentPanel());
         assertEquals(new MovePhase(1), turn.getPhase());
         turn.getPhase().action();
@@ -219,6 +231,7 @@ public class PhaseTest {
         assertEquals(new FightDecisionPhase(1), turn.getPhase());
         player.setFightDecision(FightDecision.ENGAGE);
         turn.getPhase().action();
+        assertEquals(null,player.getFightDecision());
         assertEquals(panel3, player.getCurrentPanel());
 
         //Player comes across home panel, chooses to stop
@@ -234,9 +247,10 @@ public class PhaseTest {
         move.action();
         assertEquals(new HomeDecisionPhase(1), turn.getPhase());
         assertEquals(home, player.getCurrentPanel());
-        player.setHomeDecision(true);
+        player.setHomeDecision(HomeDecision.STOP);
         turn.getPhase().action();
         assertEquals(home, player.getCurrentPanel());
+        assertEquals(null,player.getHomeDecision());
         assertEquals(new LandAtPanelPhase(), turn.getPhase());
 
         //player comes across home panel, decides to keep moving
@@ -244,8 +258,9 @@ public class PhaseTest {
         move.action();
         assertEquals(home, player.getCurrentPanel());
         assertEquals(new HomeDecisionPhase(1), turn.getPhase());
-        player.setHomeDecision(false);
+        player.setHomeDecision(HomeDecision.KEEPMOVING);
         turn.getPhase().action();
+        assertEquals(null,player.getHomeDecision());
         assertEquals(new MovePhase(1), turn.getPhase());
         assertEquals(home, player.getCurrentPanel());
         turn.getPhase().action();

@@ -1,6 +1,6 @@
 package com.github.cc3002.citricliquid.controller;
 
-import com.github.cc3002.citricjuice.controller.*;
+import com.github.cc3002.citricliquid.controller.*;
 import com.github.cc3002.citricjuice.model.board.Panel;
 import com.github.cc3002.citricjuice.model.unit.BossUnit;
 import com.github.cc3002.citricjuice.model.unit.Player;

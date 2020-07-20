@@ -1,9 +1,8 @@
 package com.github.cc3002.citricjuice.TurnPhases;
 
-import com.github.cc3002.citricjuice.model.board.IPanel;
-import com.github.cc3002.citricjuice.model.unit.FightDecision;
 
-import java.util.Objects;
+import com.github.cc3002.citricjuice.model.unit.Player;
+
 
 public class MovePhase extends AbstractMovementPhase{
 
@@ -17,7 +16,8 @@ public class MovePhase extends AbstractMovementPhase{
      */
     @Override
     public void action() {
-        int x = turn.getPlayer().move(y);
+        Player player = turn.getPlayer();
+        int x = turn.getController().move(player,y);
         if (x==0){ //the player moved all the steps they had left
             turn.setPhase(new LandAtPanelPhase());
         } else if (turn.getPlayer().getCurrentPanel().getPlayers().size()>1){ //there is another player in the panel

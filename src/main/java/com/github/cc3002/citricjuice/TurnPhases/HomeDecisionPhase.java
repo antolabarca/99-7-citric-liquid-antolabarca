@@ -1,5 +1,7 @@
 package com.github.cc3002.citricjuice.TurnPhases;
 
+import com.github.cc3002.citricjuice.model.unit.HomeDecision;
+
 public class HomeDecisionPhase extends AbstractMovementPhase{
 
     public HomeDecisionPhase(int y) {
@@ -11,10 +13,15 @@ public class HomeDecisionPhase extends AbstractMovementPhase{
      */
     @Override
     public void action() {
-        boolean stopAtHome = turn.getPlayer().getHomeDecision();
-        if (stopAtHome){
+        while (turn.getPlayer().getHomeDecision()==null){
+            ;
+        }
+        HomeDecision stopAtHome = turn.getPlayer().getHomeDecision();
+        if (stopAtHome == HomeDecision.STOP){
+            turn.getPlayer().setHomeDecision(null);
             turn.setPhase(new LandAtPanelPhase());
         } else{
+            turn.getPlayer().setHomeDecision(null);
             turn.setPhase(new MovePhase(y));
         }
     }
