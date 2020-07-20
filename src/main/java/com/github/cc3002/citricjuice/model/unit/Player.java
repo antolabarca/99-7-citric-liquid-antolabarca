@@ -271,6 +271,24 @@ public class Player extends AbstractUnit {
   @Override
   public BattleDecision getBattleDecision() { return battleDecision; }
 
+  /**
+   * Moves this player according to the rules, returns the "moves" that were left in case the
+   * player stopped to make a decision
+   */
+  public int move(int x){
+    for (int i=0; i<x; i++){
+      if(getCurrentPanel().getNextPanels().size()==1) {
+        getCurrentPanel().removePlayer(this);
+        IPanel newPanel = getCurrentPanel().getNextPanels().iterator().next();
+        this.changePanel(newPanel);
+        newPanel.addPlayer(this);
+        if(getCurrentPanel().equals(getHome())){return x-i-1; }
+        if (getCurrentPanel().getPlayers().size()>1){return x-i-1;}
+      } else { return x-i; }
+    }
+    return 0;
+  }
+
     /**
      * Sets the player's decision in case of being in a battle
      */

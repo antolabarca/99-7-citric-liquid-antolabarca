@@ -296,6 +296,37 @@ public class UnitsTest {
   }
 
   @Test
+  public void testMovePlayer(){
+    List<IPanel> panels = List.of(new Panel(0), new HomePanel(1), new Panel(2), new Panel(3), new Panel(4));
+    panels.get(0).addNextPanel(panels.get(1));
+    panels.get(1).addNextPanel(panels.get(2));
+    panels.get(2).addNextPanel(panels.get(3));
+    suguri.changePanel(panels.get(0));
+    panels.get(0).addPlayer(suguri);
+    int n= suguri.move(2); //suguri moves normally
+    assertEquals(panels.get(2), suguri.getCurrentPanel());
+    assertEquals(0,n);
+    suguri.setHome((HomePanel) panels.get(1));
+    suguri.changePanel(panels.get(0));
+    n= suguri.move(2); //suguri moves but her home panel is in the way
+    assertEquals(panels.get(1), suguri.getCurrentPanel());
+    assertEquals(1, n);
+    n = suguri.move(1); //suguri moves normally
+    assertEquals(panels.get(2), suguri.getCurrentPanel());
+    assertEquals(0, n);
+    panels.get(2).addNextPanel(panels.get(4));
+    n = suguri.move(2); //suguri moves but there are 2 panel options
+    assertEquals(panels.get(2), suguri.getCurrentPanel());
+    assertEquals(2, n);
+    suguri.changePanel(panels.get(0));
+    panels.get(0).addPlayer(suguri);
+    panels.get(1).addPlayer(new Player("sugurint", 4, 1, 3, 0));
+    n= suguri.move(2); //suguri moves but there is another player in the next panel
+    assertEquals(panels.get(1), suguri.getCurrentPanel());
+    assertEquals(1, n);
+  }
+
+  @Test
   public void testRequiredRoll(){
     suguri.dies();
     assertEquals(6, suguri.getRequiredRoll());

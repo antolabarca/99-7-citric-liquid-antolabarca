@@ -245,7 +245,7 @@ public class GameController{
     public void movePlayer() {
         Player player = getTurnOwner();
         int roll = player.roll();
-        int y = move(player, roll);
+        int y = player.move(roll);
         player.activatePanel();
     }
 
@@ -363,20 +363,11 @@ public class GameController{
     }
 
     /**
-     * Moves this player according to the rules, returns the "moves" that were left in case the
-     * player stopped to make a decision
+     * Sets a players sprite
+     * @param player the player
+     * @param sprite the sprite
      */
-    public int move(Player player, int x){
-        for (int i=0; i<x; i++){
-            if( player.getCurrentPanel().getNextPanels().size()==1) {
-                player.getCurrentPanel().removePlayer(player);
-                IPanel newPanel = player.getCurrentPanel().getNextPanels().iterator().next();
-                player.changePanel(newPanel);
-                newPanel.addPlayer(player);
-                if(player.getCurrentPanel().equals(player.getHome())){return x-i-1; }
-                if (player.getCurrentPanel().getPlayers().size()>1){return x-i-1;}
-            } else { return x-i; }
-        }
-        return 0;
+    public void setPlayerSprite(Player player, MovableNode sprite) {
+
     }
 }

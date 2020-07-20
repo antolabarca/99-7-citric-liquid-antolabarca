@@ -180,39 +180,6 @@ public class ControllerTest {
     }
 
     //region: move player tests
-
-    @Test
-    public void testMovePlayer(){
-        List<IPanel> panels = List.of(new Panel(0), new HomePanel(1), new Panel(2), new Panel(3), new Panel(4));
-        Player suguri = testPlayers.get(0);
-        newController.setNextPanel(panels.get(0), panels.get(1));
-        newController.setNextPanel(panels.get(1),panels.get(2));
-        newController.setNextPanel(panels.get(2),panels.get(3));
-        suguri.changePanel(panels.get(0));
-        panels.get(0).addPlayer(suguri);
-        int n= newController.move(suguri, 2); //suguri moves normally
-        assertEquals(panels.get(2), suguri.getCurrentPanel());
-        assertEquals(0,n);
-        newController.setPlayerHome(suguri,(HomePanel) panels.get(1));
-        suguri.changePanel(panels.get(0));
-        n= newController.move(suguri,2); //suguri moves but her home panel is in the way
-        assertEquals(panels.get(1), suguri.getCurrentPanel());
-        assertEquals(1, n);
-        n = newController.move(suguri,1); //suguri moves normally
-        assertEquals(panels.get(2), suguri.getCurrentPanel());
-        assertEquals(0, n);
-        panels.get(2).addNextPanel(panels.get(4));
-        n = newController.move(suguri,2); //suguri moves but there are 2 panel options
-        assertEquals(panels.get(2), suguri.getCurrentPanel());
-        assertEquals(2, n);
-        suguri.changePanel(panels.get(0));
-        panels.get(0).addPlayer(suguri);
-        panels.get(1).addPlayer(new Player("sugurint", 4, 1, 3, 0));
-        n= newController.move(suguri,2); //suguri moves but there is another player in the next panel
-        assertEquals(panels.get(1), suguri.getCurrentPanel());
-        assertEquals(1, n);
-    }
-
     @Test
     public void testMeetPlayer() {
         controller.setNextPanel(panelSuppliers.get(0), panelSuppliers.get(2));

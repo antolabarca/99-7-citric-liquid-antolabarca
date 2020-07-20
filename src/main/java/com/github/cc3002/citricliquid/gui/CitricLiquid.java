@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 public class CitricLiquid extends Application{
     private Game game = new Game();
+    private GameController controller;
     private static final String RESOURCE_PATH = "src/main/resources/";
 
     @Override
@@ -35,7 +36,7 @@ public class CitricLiquid extends Application{
         var background = new ImageView(new Image(new FileInputStream(RESOURCE_PATH + "board.png")));
         root.getChildren().add(background);
 
-        GameController controller = game.getController();
+        controller = game.getController();
 
         controller.setBoard();
         Board board = controller.getBoard();
@@ -55,7 +56,7 @@ public class CitricLiquid extends Application{
                 .setSize(50, 50)
                 .build();
         root.getChildren().add(sprite0.getNode());
-        suguri.setSprite(sprite0);
+        controller.setPlayerSprite(suguri,sprite0);
 
         var sprite1 = new MovableNodeBuilder(scene).setImagePath(RESOURCE_PATH + "sprite1.png")
                 .setPosition(480, 130)
