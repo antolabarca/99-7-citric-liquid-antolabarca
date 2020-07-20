@@ -1,6 +1,4 @@
-package com.github.cc3002.citricjuice.TurnPhases;
-
-import com.github.cc3002.citricjuice.model.board.IPanel;
+package com.github.cc3002.citricliquid.TurnPhases;
 
 public class LandAtPanelPhase extends AbstractPhase{
 

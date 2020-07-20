@@ -1,4 +1,4 @@
-package com.github.cc3002.citricjuice.TurnPhases;
+package com.github.cc3002.citricliquid.TurnPhases;
 
 import com.github.cc3002.citricjuice.model.unit.FightDecision;
 

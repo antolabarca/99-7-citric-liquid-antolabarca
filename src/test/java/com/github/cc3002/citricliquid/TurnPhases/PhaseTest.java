@@ -1,4 +1,4 @@
-package com.github.cc3002.citricjuice.TurnPhases;
+package com.github.cc3002.citricliquid.TurnPhases;
 
 import com.github.cc3002.citricjuice.model.board.HomePanel;
 import com.github.cc3002.citricjuice.model.board.IPanel;
@@ -6,6 +6,7 @@ import com.github.cc3002.citricjuice.model.board.Panel;
 import com.github.cc3002.citricjuice.model.unit.FightDecision;
 import com.github.cc3002.citricjuice.model.unit.HomeDecision;
 import com.github.cc3002.citricjuice.model.unit.Player;
+import com.github.cc3002.citricliquid.TurnPhases.*;
 import com.github.cc3002.citricliquid.controller.GameController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;

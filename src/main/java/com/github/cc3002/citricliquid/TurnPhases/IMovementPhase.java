@@ -1,4 +1,4 @@
-package com.github.cc3002.citricjuice.TurnPhases;
+package com.github.cc3002.citricliquid.TurnPhases;
 
 public interface IMovementPhase extends IPhase{
     int getY();

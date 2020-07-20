@@ -1,11 +1,9 @@
-package com.github.cc3002.citricliquid.gui;
+package com.github.cc3002.citricliquid;
 
 import com.github.cc3002.citricliquid.controller.GameController;
 import com.github.cc3002.citricjuice.model.board.*;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class Board {
@@ -60,9 +58,9 @@ public class Board {
         controller.setPanelPosition(neutralPanels.get(3),548,198);
         controller.setPanelPosition(neutralPanels.get(4),548,538);
         controller.setPanelPosition(neutralPanels.get(5),548,606);
-        controller.setPanelPosition(neutralPanels.get(6),616,62);
-        controller.setPanelPosition(neutralPanels.get(7),616,130);
-        controller.setPanelPosition(neutralPanels.get(8),616,470);
+        controller.setPanelPosition(neutralPanels.get(6),684,62);
+        controller.setPanelPosition(neutralPanels.get(7),684,130);
+        controller.setPanelPosition(neutralPanels.get(8),684,470);
         controller.setPanelPosition(neutralPanels.get(9),750,266);
         controller.setPanelPosition(neutralPanels.get(10),820,402);
         controller.setPanelPosition(neutralPanels.get(11),882,402);
@@ -76,12 +74,12 @@ public class Board {
         controller.setPanelPosition(dropPanels.get(6),750,606);
         controller.setPanelPosition(dropPanels.get(7),882,198);
         //set bonus panel positions:
-        controller.setPanelPosition(bonusPanels.get(0),342,470);
-        controller.setPanelPosition(bonusPanels.get(1),342,266);
+        controller.setPanelPosition(bonusPanels.get(0),342,402);
+        controller.setPanelPosition(bonusPanels.get(1),480,266);
         controller.setPanelPosition(bonusPanels.get(2),548,62);
         controller.setPanelPosition(bonusPanels.get(3),548,470);
-        controller.setPanelPosition(bonusPanels.get(4),616,198);
-        controller.setPanelPosition(bonusPanels.get(5),616,606);
+        controller.setPanelPosition(bonusPanels.get(4),684,198);
+        controller.setPanelPosition(bonusPanels.get(5),684,606);
         controller.setPanelPosition(bonusPanels.get(6),750,402);
         controller.setPanelPosition(bonusPanels.get(7),882,266);
         //set encounter panel positions:

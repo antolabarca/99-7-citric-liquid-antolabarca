@@ -1,6 +1,4 @@
-package com.github.cc3002.citricjuice.TurnPhases;
-
-import java.util.Objects;
+package com.github.cc3002.citricliquid.TurnPhases;
 
 public abstract class AbstractPhase implements IPhase {
     Turn turn;

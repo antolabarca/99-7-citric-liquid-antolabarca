@@ -3,39 +3,40 @@ package com.github.cc3002.citricliquid.controller;
 import com.github.cc3002.citricjuice.model.NormaGoal;
 import com.github.cc3002.citricjuice.model.board.*;
 import com.github.cc3002.citricjuice.model.unit.*;
-import com.github.cc3002.citricliquid.gui.Board;
+import com.github.cc3002.citricliquid.Board;
 import com.github.cc3002.citricliquid.gui.node.MovableNode;
 import javafx.util.Pair;
 
 import java.util.*;
 
-public class GameController{
+public class GameController {
     protected int game_turn;
     public ArrayList<Player> players;
     public Set<IPanel> panelsSet = new HashSet<>();
-    protected boolean gameIsWon=false;
+    protected boolean gameIsWon = false;
     protected Player winner;
-    protected boolean norma4=false;
-    protected boolean bossDefeated=false;
+    protected boolean norma4 = false;
+    protected boolean bossDefeated = false;
     protected WinHandler winHandler = new WinHandler(this);
     protected Norma4Handler norma4Handler = new Norma4Handler(this);
     protected BossDefeatHandler bossDefeatHandler = new BossDefeatHandler(this);
     protected BossBattleHandler bossBattleHandler = new BossBattleHandler(this);
     protected WildBattleHandler wildBattleHandler = new WildBattleHandler(this);
     protected Board board;
-    Map<IPanel, Pair<Integer, Integer>> panelPositions = new HashMap<>();
+    private Map<IPanel, Pair<Integer, Integer>> panelPositions = new HashMap<>();
+    private Map<Player, MovableNode> sprites = new HashMap<>();
 
-    public GameController(){
+    public GameController() {
         super();
-        this.game_turn=0;
-        this.players=new ArrayList<Player>();
+        this.game_turn = 0;
+        this.players = new ArrayList<Player>();
         gameIsWon = false;
         winner = null;
-        //board = new Board(this);
     }
 
     /**
      * Checks if an object equals this one
+     *
      * @param o the object that is checked
      */
     @Override
@@ -56,26 +57,32 @@ public class GameController{
     /**
      * Sets this controllers board
      */
-    public void setBoard() {this.board = new Board(this);}
+    public void setBoard() {
+        this.board = new Board(this);
+    }
 
     /**
      * Gets this controllers board
      */
-    public Board getBoard() {return board;}
+    public Board getBoard() {
+        return board;
+    }
 
     /**
      * Creates a new bonus panel and adds it to the panelsSet
+     *
      * @param id the id of the panel
      * @return the new panel
      */
     public BonusPanel createBonusPanel(int id) {
-        BonusPanel panel= new BonusPanel(id);
+        BonusPanel panel = new BonusPanel(id);
         panelsSet.add(panel);
         return panel;
     }
 
     /**
      * Creates a new boss panel and adds it to the panelsSet
+     *
      * @param id the id of the panel
      * @return the new panel
      */
@@ -89,6 +96,7 @@ public class GameController{
 
     /**
      * Creates a new drop panel and adds it to the panelsSet
+     *
      * @param id the id of the panel
      * @return the new panel
      */
@@ -100,6 +108,7 @@ public class GameController{
 
     /**
      * Creates a new encounter panel and adds it to the panelsSet
+     *
      * @param id the id of the panel
      * @return the new panel
      */
@@ -113,6 +122,7 @@ public class GameController{
 
     /**
      * Creates a new home panel and adds it to the panelsSet
+     *
      * @param id the id of the panel
      * @return the new panel
      */
@@ -124,6 +134,7 @@ public class GameController{
 
     /**
      * Creates a new neutral panel and adds it to the panelsSet
+     *
      * @param id the id of the panel
      * @return the new panel
      */
@@ -136,16 +147,17 @@ public class GameController{
     /**
      * Creates a new player, and adds it to the playersList. It also adds the player
      * to a specific panel
-     * @param name the name of the player
+     *
+     * @param name      the name of the player
      * @param hitPoints the max (and initial) HP value of the player
-     * @param attack the initial atk value of the player
-     * @param defense the initial def value of the player
-     * @param evasion the initial evd value of the player
-     * @param panel the IPanel where the player will be added
+     * @param attack    the initial atk value of the player
+     * @param defense   the initial def value of the player
+     * @param evasion   the initial evd value of the player
+     * @param panel     the IPanel where the player will be added
      * @return the new player
      */
     public Player createPlayer(String name, int hitPoints, int attack, int defense, int evasion, IPanel panel) {
-        Player player = new Player(name,hitPoints,attack,defense,evasion);
+        Player player = new Player(name, hitPoints, attack, defense, evasion);
         panel.addPlayer(player);
         players.add(player);
         player.addPlayerWinsListener(winHandler);
@@ -156,44 +168,47 @@ public class GameController{
     /**
      * Returns a list of the players in the game
      */
-    public ArrayList<Player> getPlayers(){
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 
     /**
      * Creates a new wild unit
-     * @param name the name
+     *
+     * @param name      the name
      * @param hitPoints the initial and max HP value of the unit
-     * @param attack the atk value of the unit
-     * @param defense the def value of the unit
-     * @param evasion the evd value of the unit
+     * @param attack    the atk value of the unit
+     * @param defense   the def value of the unit
+     * @param evasion   the evd value of the unit
      * @return the new wild unit
      */
     public WildUnit createWildUnit(String name, int hitPoints, int attack, int defense, int evasion) {
-        return new WildUnit(name,hitPoints,attack,defense,evasion);
+        return new WildUnit(name, hitPoints, attack, defense, evasion);
     }
 
     /**
      * Creates a new boss unit
-     * @param name the name
+     *
+     * @param name      the name
      * @param hitPoints the initial and max HP value of the unit
-     * @param attack the atk value of the unit
-     * @param defense the def value of the unit
-     * @param evasion the evd value of the unit
+     * @param attack    the atk value of the unit
+     * @param defense   the def value of the unit
+     * @param evasion   the evd value of the unit
      * @return the new boss unit
      */
     public BossUnit createBossUnit(String name, int hitPoints, int attack, int defense, int evasion) {
-        BossUnit boss= new BossUnit(name,hitPoints,attack,defense,evasion);
+        BossUnit boss = new BossUnit(name, hitPoints, attack, defense, evasion);
         boss.addBossListener(bossDefeatHandler);
         return boss;
     }
 
     /**
      * Sets the turn owner's new norma goal
+     *
      * @param goal the type of goal
      */
     public void setCurrPlayerNormaGoal(NormaGoal goal) {
-        Player player=getTurnOwner();
+        Player player = getTurnOwner();
         player.setNormaGoal(goal);
     }
 
@@ -201,30 +216,31 @@ public class GameController{
      * Returns the player who's turn it currently is
      */
     public Player getTurnOwner() {
-        int n_players=players.size();
-        int current=game_turn%4;
+        int n_players = players.size();
+        int current = game_turn % 4;
         return players.get(current);
     }
 
     /**
      * Returns the current turn of the game
      */
-    public int getGameTurn(){
+    public int getGameTurn() {
         return game_turn;
     }
 
     /**
      * Returns the current chapter of the game
      */
-    public int getChapter(){
-        int n_players=4;
-        int c=game_turn/n_players;
-        return c+1; /* 1 is added due to the values of c starting from 0, but game chapters start from 1*/
+    public int getChapter() {
+        int n_players = 4;
+        int c = game_turn / n_players;
+        return c + 1; /* 1 is added due to the values of c starting from 0, but game chapters start from 1*/
     }
 
     /**
      * Adds a panel to another one's nextPanels
-     * @param panel the original panel
+     *
+     * @param panel  the original panel
      * @param panel1 the panel that will be added as nextPanel
      */
     public void setNextPanel(IPanel panel, IPanel panel1) {
@@ -234,7 +250,18 @@ public class GameController{
     /**
      * Returns a set of the panels in the game
      */
-    public Set<IPanel> getPanels() { return panelsSet;  }
+    public Set<IPanel> getPanels() {
+        return panelsSet;
+    }
+
+    /**
+     * Returns a list of the panels in the game
+     */
+    public ArrayList<IPanel> getPanelsList() {
+        var panels = new ArrayList<IPanel>();
+        panels.addAll(panelsSet);
+        return panels;
+    }
 
 
     /**
@@ -251,6 +278,7 @@ public class GameController{
 
     /**
      * Returns the panel where a player is
+     *
      * @param unit the player
      */
     public IPanel getPlayerPanel(Player unit) {
@@ -259,30 +287,22 @@ public class GameController{
 
     /**
      * Sets a player's home panel
-     * @param unit the player
+     *
+     * @param unit  the player
      * @param panel the home panel
      */
     public void setPlayerHome(Player unit, HomePanel panel) {
         unit.setHome(panel);
     }
 
-    /**
-     * Sets a panels position
-     * @param panel the panel
-     * @param x the x coordenate
-     * @param y the y coordenate
-     */
-    public void setPanelPosition(IPanel panel, int x, int y){
-        panelPositions.put(panel, new Pair<>(x,y));
-    }
-
 
     /**
      * Battle between unit1 and unit2
+     *
      * @param unit1
      * @param unit2
      */
-    public void battle(IUnit unit1, IUnit unit2){
+    public void battle(IUnit unit1, IUnit unit2) {
         if (!unit2.isDown()) {
             BattleDecision decision2 = unit2.getBattleDecision();
             unit1.battleRound(unit2, decision2);
@@ -302,48 +322,57 @@ public class GameController{
 
     /**
      * Player wins, changes the gameiswon property to true, and sets the winner player
+     *
      * @param player the winning player
      */
-    public void playerWins(Player player){
-        gameIsWon=true;
-        winner=player;
+    public void playerWins(Player player) {
+        gameIsWon = true;
+        winner = player;
     }
 
 
     /**
      * Returns the winner player
      */
-    public Player getWinner(){return winner;}
+    public Player getWinner() {
+        return winner;
+    }
 
     /**
      * Returns true if the game has been won
      */
-    public boolean isGameWon(){return gameIsWon;}
+    public boolean isGameWon() {
+        return gameIsWon;
+    }
 
     /**
      * Player reaches norma 4, changes the norma4 property to true
      */
     public void playerReachedNorma4(Player norma4Player) {
-        norma4=true;
+        norma4 = true;
     }
 
     /**
      * Returns true if a player has reached norma 4
      */
-    public boolean isNorma4(){return norma4;}
+    public boolean isNorma4() {
+        return norma4;
+    }
 
 
     /**
      * Boss has been defeated, changes the bossDefeated property to true
      */
     public void bossDefeated(BossUnit boss) {
-        bossDefeated=true;
+        bossDefeated = true;
     }
 
     /**
      * Returns the boss defeated property
      */
-    public boolean isBossDefeated(){return bossDefeated;}
+    public boolean isBossDefeated() {
+        return bossDefeated;
+    }
 
     /**
      * Ends the current turn
@@ -355,19 +384,42 @@ public class GameController{
 
     /**
      * Sets a player position to the position of the panel where she is
+     *
      * @param p the player
      */
-    public Pair<Integer, Integer> getPlayerPosition(Player p) {
-        Pair<Integer, Integer> position = panelPositions.get(p.getCurrentPanel());
+    public Pair<Integer, Integer> getPanelPosition(IPanel p) {
+        Pair<Integer, Integer> position = panelPositions.get(p);
         return position;
     }
 
     /**
+     * Sets a panels position
+     *
+     * @param panel the panel
+     * @param x     the x coordenate
+     * @param y     the y coordenate
+     */
+    public void setPanelPosition(IPanel panel, int x, int y) {
+        panelPositions.put(panel, new Pair<>(x, y));
+    }
+
+    /**
+     * Returns a players sprite
+     *
+     * @param p the player
+     */
+    public MovableNode getPlayerSprite(Player p) {
+        return sprites.get(p);
+    }
+
+    /**
      * Sets a players sprite
+     *
      * @param player the player
      * @param sprite the sprite
      */
     public void setPlayerSprite(Player player, MovableNode sprite) {
-
+        sprites.put(player, sprite);
     }
+
 }

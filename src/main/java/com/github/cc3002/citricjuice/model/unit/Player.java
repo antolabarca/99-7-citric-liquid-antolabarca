@@ -3,10 +3,13 @@ package com.github.cc3002.citricjuice.model.unit;
 import com.github.cc3002.citricjuice.model.NormaGoal;
 import com.github.cc3002.citricjuice.model.board.HomePanel;
 import com.github.cc3002.citricjuice.model.board.IPanel;
-import com.github.cc3002.citricliquid.gui.node.MovableNode;
+import com.github.cc3002.citricliquid.gui.choicehandlers.FightChoiceHandler;
+import com.github.cc3002.citricliquid.gui.choicehandlers.HomeChoiceHandler;
+import javafx.util.Pair;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Set;
 
 import static com.github.cc3002.citricjuice.model.NormaGoal.STARS;
 
@@ -26,11 +29,14 @@ public class Player extends AbstractUnit {
   private HomePanel home;
   private PropertyChangeSupport playerWins = new PropertyChangeSupport(this);
   private PropertyChangeSupport playerNorma4 = new PropertyChangeSupport(this);
+  private PropertyChangeSupport playerMoves = new PropertyChangeSupport(this);
+  private PropertyChangeSupport panelDecisionProperty = new PropertyChangeSupport(this);
+  private PropertyChangeSupport homePanelProperty = new PropertyChangeSupport(this);
+  private PropertyChangeSupport fightChoiceProperty = new PropertyChangeSupport(this);
   private BattleDecision battleDecision = null;
   private FightDecision fightDecision = null;
   private IPanel panelDecision = null;
   private HomeDecision homeDecision = null;
-  private MovableNode sprite;
 
   /**
    * Creates a new character.
@@ -278,18 +284,59 @@ public class Player extends AbstractUnit {
   public int move(int x){
     for (int i=0; i<x; i++){
       if(getCurrentPanel().getNextPanels().size()==1) {
-        getCurrentPanel().removePlayer(this);
-        IPanel newPanel = getCurrentPanel().getNextPanels().iterator().next();
+        IPanel old = getCurrentPanel();
+        old.removePlayer(this);
+        IPanel newPanel = old.getNextPanels().iterator().next();
         this.changePanel(newPanel);
         newPanel.addPlayer(this);
-        if(getCurrentPanel().equals(getHome())){return x-i-1; }
-        if (getCurrentPanel().getPlayers().size()>1){return x-i-1;}
-      } else { return x-i; }
+        moveNotification(old, newPanel);
+        if(getCurrentPanel().equals(getHome())){
+          homePanelNotification();
+          return x-i-1;
+        }
+        if (getCurrentPanel().getPlayers().size()>1){
+          fightChoiceNotification();
+          return x-i-1;
+        }
+      } else {
+        choosePanelNotification(getCurrentPanel().getNextPanels());
+        return x-i; }
     }
     return 0;
   }
 
-    /**
+  /**
+   * Sends a notification to the interface that the player runs into another player
+   */
+  private void fightChoiceNotification() {
+    this.fightChoiceProperty.firePropertyChange("fight choice", null, this);
+  }
+
+  /**
+   * Sends a notification to the interface that the player is in the home panel
+   */
+  private void homePanelNotification() {
+    this.homePanelProperty.firePropertyChange("home panel choice", null, this);
+  }
+
+  /**
+   * Sends a notification to the interface to choose the next panel
+   * @param nextPanels the options
+   */
+  private void choosePanelNotification(Set<IPanel> nextPanels) {
+    this.panelDecisionProperty.firePropertyChange("panels choice", null, nextPanels);
+  }
+
+  /**
+   * Sends a notification to the interface to move the player's sprite
+   * @param old the previous panel
+   * @param newPanel the panel to move to
+   */
+  private void moveNotification(IPanel old, IPanel newPanel) {
+    this.playerMoves.firePropertyChange("moves", old, new Pair<>(this, newPanel));
+  }
+
+  /**
      * Sets the player's decision in case of being in a battle
      */
     public void setBattleDecision(BattleDecision decision) { battleDecision = decision;}
@@ -337,18 +384,34 @@ public class Player extends AbstractUnit {
 
 
   /**
-   * Sets this players sprite
-   * @param sprite
+   * Adds a listener to this players movement
+   * @param listener the listener that is added
    */
-    public void setSprite(MovableNode sprite) {
-      this.sprite=sprite;
-    }
-
-  /**
-   * Returns this players sprite
-   */
-  public MovableNode getSprite(){
-    return sprite;
+  public void addPlayerMovementListener(PropertyChangeListener listener) {
+    playerMoves.addPropertyChangeListener(listener);
   }
 
+  /**
+   * Adds a listener to this player
+   * @param listener the listener that is added
+   */
+  public void addPanelChoiceListener(PropertyChangeListener listener) {
+    panelDecisionProperty.addPropertyChangeListener(listener);
+  }
+
+  /**
+   * Adds a listener to this player
+   * @param listener the listener that is added
+   */
+  public void addHomeChoiceListener(PropertyChangeListener listener) {
+    homePanelProperty.addPropertyChangeListener(listener);
+  }
+
+  /**
+   * Adds a listener to this player
+   * @param listener the listener that is added
+   */
+  public void addFightChoiceListener(PropertyChangeListener listener) {
+    fightChoiceProperty.addPropertyChangeListener(listener);
+  }
 }
