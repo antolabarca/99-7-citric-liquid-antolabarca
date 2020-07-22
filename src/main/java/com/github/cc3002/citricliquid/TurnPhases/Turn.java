@@ -1,24 +1,25 @@
 package com.github.cc3002.citricliquid.TurnPhases;
 
+import com.github.cc3002.citricjuice.model.board.IPanel;
 import com.github.cc3002.citricjuice.model.unit.Player;
 import com.github.cc3002.citricliquid.controller.GameController;
+import javafx.util.Pair;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Objects;
 
 public class Turn {
-    private final Player player;
     private IPhase phase;
-    private final int turn_number;
-    private boolean isActive;
     private GameController controller;
+    private PropertyChangeSupport msgProperty = new PropertyChangeSupport(this);
+    private PropertyChangeSupport playerMoves = new PropertyChangeSupport(this);
 
     public Turn(GameController controller){
         setPhase(new FirstPhase());
         this.controller = controller;
-        this.player=controller.getTurnOwner();
-        this.turn_number=controller.getGameTurn();
-        isActive=true;
     }
+
 
     /**
      * Checks if an object is equal to this turn
@@ -29,9 +30,8 @@ public class Turn {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Turn turn = (Turn) o;
-        return turn_number == turn.turn_number &&
-                Objects.equals(player, turn.player);
-                // && phase.equals(turn.phase); //this was removed to avoid infinite recurssion, it's not really relevant to check whether turns are equal anyways
+        return phase.equals(turn.phase) &&
+                Objects.equals(controller, turn.controller);
     }
 
 
@@ -56,7 +56,7 @@ public class Turn {
      * Returns the current player
      */
     public Player getPlayer(){
-        return this.player;
+        return this.controller.getTurnOwner();
     }
 
     /**
@@ -67,24 +67,49 @@ public class Turn {
     }
 
     /**
-     * Ends the current turn
+     * Ends the current turn (goes back to the first phase with a new player)
      */
     public void end(){
-        isActive = false;
+        controller.endTurn();
+        setPhase(new FirstPhase());
+    }
+
+
+    /**
+     * Sends a notification to display a message
+     */
+    public void sendMsg(String s){
+        msgProperty.firePropertyChange("message", null, s);
     }
 
     /**
-     * Checks if the current turn is active
+     * Adds a listener for this objects messages
      */
-    public Boolean isActive(){
-        return isActive;
+    public void addMsgListener(PropertyChangeListener listener){
+        msgProperty.addPropertyChangeListener(listener);
     }
-
 
     /**
      * Returns this turns controller
      */
     public GameController getController() {
         return controller;
+    }
+
+    /**
+     * Adds a listener to players movement
+     * @param listener the listener that is added
+     */
+    public void addPlayerMovementListener(PropertyChangeListener listener) {
+        playerMoves.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * Sends a notification to the interface to move the player's sprite
+     * @param old the previous panel
+     * @param newPanel the panel to move to
+     */
+    public void moveNotification(IPanel old, IPanel newPanel, Player player) {
+        playerMoves.firePropertyChange("moves", old, new Pair<>(player, newPanel));
     }
 }

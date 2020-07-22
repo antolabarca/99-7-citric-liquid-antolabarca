@@ -2,7 +2,6 @@ package com.github.cc3002.citricliquid.TurnPhases;
 
 import com.github.cc3002.citricjuice.model.board.Panel;
 import com.github.cc3002.citricjuice.model.unit.Player;
-import com.github.cc3002.citricliquid.TurnPhases.*;
 import com.github.cc3002.citricliquid.controller.GameController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -85,13 +84,13 @@ public class TurnTest {
     public void getChapter(){
         assertEquals(1, turn.getChapter());
         controller.endTurn();
-        Turn turn1 = new Turn(controller);
-        assertEquals(1, turn1.getChapter());
+        assertEquals(p2, turn.getPlayer());
+        assertEquals(1, turn.getChapter());
         controller.endTurn();
         controller.endTurn();
         controller.endTurn();
         controller.endTurn();
-        assertEquals(2,turn1.getChapter());
+        assertEquals(2,turn.getChapter());
     }
 
 }

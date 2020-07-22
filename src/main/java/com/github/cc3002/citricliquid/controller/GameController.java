@@ -2,11 +2,15 @@ package com.github.cc3002.citricliquid.controller;
 
 import com.github.cc3002.citricjuice.model.NormaGoal;
 import com.github.cc3002.citricjuice.model.board.*;
+import com.github.cc3002.citricjuice.model.board.Panel;
 import com.github.cc3002.citricjuice.model.unit.*;
 import com.github.cc3002.citricliquid.Board;
 import com.github.cc3002.citricliquid.gui.node.MovableNode;
 import javafx.util.Pair;
 
+import java.awt.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 public class GameController {
@@ -25,6 +29,7 @@ public class GameController {
     protected Board board;
     private Map<IPanel, Pair<Integer, Integer>> panelPositions = new HashMap<>();
     private Map<Player, MovableNode> sprites = new HashMap<>();
+    private PropertyChangeSupport BattleStartProperty = new PropertyChangeSupport(this);
 
     public GameController() {
         super();
@@ -216,7 +221,6 @@ public class GameController {
      * Returns the player who's turn it currently is
      */
     public Player getTurnOwner() {
-        int n_players = players.size();
         int current = game_turn % 4;
         return players.get(current);
     }
@@ -304,6 +308,10 @@ public class GameController {
      */
     public void battle(IUnit unit1, IUnit unit2) {
         if (!unit2.isDown()) {
+            battleNotification(unit1, unit2);
+            while (unit1.getBattleDecision()==null || unit2.getBattleDecision()==null){
+                ;
+            }
             BattleDecision decision2 = unit2.getBattleDecision();
             unit1.battleRound(unit2, decision2);
             if (unit2.isDown()) {
@@ -317,7 +325,26 @@ public class GameController {
                     unit1.dies();
                 }
             }
+            unit1.setBattleDecision(null);
+            unit2.setBattleDecision(null);
         }
+    }
+
+    /**
+     * Adds a listener to this controllers battle
+     * @param listener the listener that is added
+     */
+    public void addStartBattleListener(PropertyChangeListener listener) {
+        this.BattleStartProperty.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * Notifies the interface to display a battle between 2 units
+     * @param unit1
+     * @param unit2
+     */
+    private void battleNotification(IUnit unit1, IUnit unit2) {
+        this.BattleStartProperty.firePropertyChange("battle starts", null, new Pair<IUnit, IUnit>(unit1, unit2));
     }
 
     /**
@@ -379,6 +406,8 @@ public class GameController {
      */
     public void endTurn() {
         game_turn++;
+        Player player = getTurnOwner();
+        //notification to interface :(
     }
 
 
@@ -422,4 +451,12 @@ public class GameController {
         sprites.put(player, sprite);
     }
 
+    /**
+     * Sets a players image path
+     * @param player
+     * @param path
+     */
+    public void setPlayerImg(Player player, String path) {
+        player.setIcon(path);
+    }
 }

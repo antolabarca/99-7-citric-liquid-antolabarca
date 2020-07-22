@@ -17,6 +17,7 @@ public abstract class AbstractEnemy extends AbstractUnit implements IEnemy{
      */
     public AbstractEnemy(String name, int hp, int atk, int def, int evd) {
         super(name, hp, atk, def, evd);
+        this.icon = "/src/resources/enemy.png";
     }
 
 
@@ -39,5 +40,13 @@ public abstract class AbstractEnemy extends AbstractUnit implements IEnemy{
         int rand = (int) Math.round(Math.random());
         BattleDecision battleDecisions[] = {BattleDecision.DEFEND, BattleDecision.EVADE};
         return battleDecisions[rand];
+    }
+
+    /**
+     * Does nothing, this is sort of a null pattern to use unit.setBattleDecision in the controller/interface without
+     * having to use a lot of ifs
+     */
+    public void setBattleDecision(BattleDecision decision){
+
     }
 }

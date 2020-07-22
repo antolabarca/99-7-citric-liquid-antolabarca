@@ -27,4 +27,6 @@ public interface IUnit {
     void dies();
     void battleRound(IUnit unit1, BattleDecision decision1);
     BattleDecision getBattleDecision();
+    void setBattleDecision(BattleDecision o);
+    String getIcon();
 }

@@ -12,6 +12,7 @@ public class LandAtPanelPhase extends AbstractPhase{
     @Override
     public void action() {
         turn.getPlayer().activatePanel();
-        turn.end();
+        turn.getController().endTurn();
+        turn.setPhase(new FirstPhase());
     }
 }

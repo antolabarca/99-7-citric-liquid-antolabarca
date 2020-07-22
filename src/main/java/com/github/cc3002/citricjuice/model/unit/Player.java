@@ -289,7 +289,6 @@ public class Player extends AbstractUnit {
         IPanel newPanel = old.getNextPanels().iterator().next();
         this.changePanel(newPanel);
         newPanel.addPlayer(this);
-        moveNotification(old, newPanel);
         if(getCurrentPanel().equals(getHome())){
           homePanelNotification();
           return x-i-1;
@@ -325,15 +324,6 @@ public class Player extends AbstractUnit {
    */
   private void choosePanelNotification(Set<IPanel> nextPanels) {
     this.panelDecisionProperty.firePropertyChange("panels choice", null, nextPanels);
-  }
-
-  /**
-   * Sends a notification to the interface to move the player's sprite
-   * @param old the previous panel
-   * @param newPanel the panel to move to
-   */
-  private void moveNotification(IPanel old, IPanel newPanel) {
-    this.playerMoves.firePropertyChange("moves", old, new Pair<>(this, newPanel));
   }
 
   /**
@@ -383,13 +373,6 @@ public class Player extends AbstractUnit {
   public HomeDecision getHomeDecision() { return homeDecision;  }
 
 
-  /**
-   * Adds a listener to this players movement
-   * @param listener the listener that is added
-   */
-  public void addPlayerMovementListener(PropertyChangeListener listener) {
-    playerMoves.addPropertyChangeListener(listener);
-  }
 
   /**
    * Adds a listener to this player
@@ -414,4 +397,10 @@ public class Player extends AbstractUnit {
   public void addFightChoiceListener(PropertyChangeListener listener) {
     fightChoiceProperty.addPropertyChangeListener(listener);
   }
+
+  /**
+   * Sets this players icon path
+   * @param path the path to the icon
+   */
+  public void setIcon(String path){this.icon = path;}
 }

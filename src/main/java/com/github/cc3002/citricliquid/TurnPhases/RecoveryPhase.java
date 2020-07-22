@@ -11,9 +11,11 @@ public class RecoveryPhase extends AbstractPhase{
         int x = turn.getPlayer().roll();
         int required_roll = turn.getPlayer().getRequiredRoll();
         if (x >= required_roll){
+            turn.sendMsg(turn.getPlayer().getName()+" needed to roll "+required_roll+" to recover and she rolled a "+x+" so she has recovered!");
             turn.getPlayer().setCurrentHP(turn.getPlayer().getMaxHP());
             turn.setPhase(new StarsPhase());
         }else {
+            turn.sendMsg(turn.getPlayer().getName()+" needed to roll "+required_roll+" to recover and she rolled a "+x+" so she couldn't recover");
             turn.getPlayer().setRequiredRoll(turn.getPlayer().getRequiredRoll()-1);
             turn.end();
         }

@@ -3,6 +3,7 @@ package com.github.cc3002.citricliquid.TurnPhases;
 import com.github.cc3002.citricjuice.model.board.HomePanel;
 import com.github.cc3002.citricjuice.model.board.IPanel;
 import com.github.cc3002.citricjuice.model.board.Panel;
+import com.github.cc3002.citricjuice.model.unit.BattleDecision;
 import com.github.cc3002.citricjuice.model.unit.FightDecision;
 import com.github.cc3002.citricjuice.model.unit.HomeDecision;
 import com.github.cc3002.citricjuice.model.unit.Player;
@@ -295,6 +296,8 @@ public class PhaseTest {
         Player other=new Player("marc", 5, 1, 0, 0);
         panel.addPlayer(player);
         panel.addPlayer(other);
+        player.setBattleDecision(BattleDecision.DEFEND);
+        other.setBattleDecision(BattleDecision.EVADE);
         fight.action();
         assertTrue(player.isDown() || turn.getPhase().equals(new LandAtPanelPhase()));
     }

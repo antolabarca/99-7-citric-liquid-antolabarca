@@ -14,6 +14,7 @@ public abstract class AbstractUnit implements IUnit{
     protected int atk;
     protected int def;
     protected int evd;
+    protected String icon;
 
     /**
      * Creates a new Unit.
@@ -234,5 +235,10 @@ public abstract class AbstractUnit implements IUnit{
      *      the wild unit that was defeated
      */
     public abstract void defeatWild(WildUnit wild);
+
+    /**
+     * Returns the path to this units icon
+     */
+    public String getIcon(){ return icon;}
 
 }

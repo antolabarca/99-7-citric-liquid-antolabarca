@@ -3,6 +3,7 @@ package com.github.cc3002.citricliquid.gui;
 import com.github.cc3002.citricjuice.model.board.IPanel;
 import com.github.cc3002.citricjuice.model.unit.FightDecision;
 import com.github.cc3002.citricjuice.model.unit.HomeDecision;
+import com.github.cc3002.citricjuice.model.unit.IUnit;
 import com.github.cc3002.citricjuice.model.unit.Player;
 import com.github.cc3002.citricliquid.Board;
 import com.github.cc3002.citricliquid.Game;
@@ -30,7 +31,9 @@ import java.util.*;
 
 public class CitricLiquid extends Application {
     private static Game game = new Game();
+    private GameController controller = game.getController();
     private static Credits credits = new Credits();
+    private static Map<IUnit, String> battleIcons= new HashMap<>();
     private static Map<IPanel, Button> panelButtons = new HashMap<>();
     private static Map<Button, IPanel> buttonPanels = new HashMap<>();
     private static Set<Button> homeDecisionButtons = new HashSet<>();
@@ -39,6 +42,8 @@ public class CitricLiquid extends Application {
     private PanelChoiceHandler panelChoiceHandler = new PanelChoiceHandler(this);
     private HomeChoiceHandler homeChoiceHandler = new HomeChoiceHandler(this);
     private FightChoiceHandler fightChoiceHandler = new FightChoiceHandler(this);
+    private StartBattleHandler startBattleHandler = new StartBattleHandler(this);
+    private DisplayMessageHandler displayMessageHandler = new DisplayMessageHandler(this);
     private static final String RESOURCE_PATH = "src/resources/";
 
     @Override
@@ -51,14 +56,15 @@ public class CitricLiquid extends Application {
         var background = new ImageView(new Image(new FileInputStream(RESOURCE_PATH + "board.png")));
         root.getChildren().add(background);
 
-        GameController controller = game.getController();
         controller.setBoard();
         Board board = controller.getBoard();
         game.setUp();
+        controller.addStartBattleListener(this.startBattleHandler);
+        game.getTurn().addMsgListener(displayMessageHandler);
+        game.getTurn().addPlayerMovementListener(playerMovementHandler);
 
         ArrayList<Player> players = controller.getPlayers();
         for (int i = 0; i < 4; i++) {
-            players.get(i).addPlayerMovementListener(playerMovementHandler);
             players.get(i).addPanelChoiceListener(panelChoiceHandler);
             players.get(i).addHomeChoiceListener(homeChoiceHandler);
             players.get(i).addFightChoiceListener(fightChoiceHandler);
@@ -75,6 +81,7 @@ public class CitricLiquid extends Application {
                 .build();
         root.getChildren().add(sprite0.getNode());
         controller.setPlayerSprite(suguri, sprite0);
+        controller.setPlayerImg(suguri, RESOURCE_PATH + "player0.png");
 
         var sprite1 = new MovableNodeBuilder(scene).setImagePath(RESOURCE_PATH + "sprite1.png")
                 .setPosition(480, 130)
@@ -82,6 +89,7 @@ public class CitricLiquid extends Application {
                 .build();
         root.getChildren().add(sprite1.getNode());
         controller.setPlayerSprite(kai, sprite1);
+        controller.setPlayerImg(kai, RESOURCE_PATH + "player1.png");
 
         var sprite2 = new MovableNodeBuilder(scene).setImagePath(RESOURCE_PATH + "sprite2.png")
                 .setPosition(750, 540)
@@ -89,6 +97,7 @@ public class CitricLiquid extends Application {
                 .build();
         root.getChildren().add(sprite2.getNode());
         controller.setPlayerSprite(qp, sprite2);
+        controller.setPlayerImg(qp, RESOURCE_PATH + "player2.png");
 
         var sprite3 = new MovableNodeBuilder(scene).setImagePath(RESOURCE_PATH + "sprite3.png")
                 .setPosition(820, 200)
@@ -96,6 +105,7 @@ public class CitricLiquid extends Application {
                 .build();
         root.getChildren().add(sprite3.getNode());
         controller.setPlayerSprite(marc, sprite3);
+        controller.setPlayerImg(marc, RESOURCE_PATH + "player3.png");
 
         root.getChildren().add(creditsButton());
 
@@ -110,10 +120,43 @@ public class CitricLiquid extends Application {
         root.getChildren().add(fightPlayerButton());
         root.getChildren().add(ignorePlayerButton());
 
-        qp.move(3);
+        root.getChildren().add(StartGameButton());
+
+        root.getChildren().add(actionButton());
 
         mainStage.setScene(scene);
         mainStage.show();
+
+    }
+
+    private Node actionButton() {
+        Button b = new Button("Perform turn action");
+        b.setLayoutX(1000);
+        b.setLayoutY(350);
+        b.setOnAction(CitricLiquid::turnAction);
+        return b;
+    }
+
+    private static void turnAction(ActionEvent actionEvent) {
+        game.getTurn().getPhase().action();
+    }
+
+    private Node StartGameButton() {
+        Button b = new Button("Start Game!");
+        b.setLayoutX(600);
+        b.setLayoutY(350);
+        b.setOnAction(CitricLiquid::startGame);
+        return b;
+    }
+
+    private static void startGame(ActionEvent actionEvent) {
+        turn();
+        Button b = (Button) actionEvent.getSource();
+        b.setVisible(false);
+    }
+
+    private static void turn(){
+
     }
 
     private Node ignorePlayerButton() {
@@ -247,5 +290,13 @@ public class CitricLiquid extends Application {
             Button next = (Button) iterator.next();
             next.setVisible(true);
         }
+    }
+
+    public void startBattle(IUnit unit1, IUnit unit2) throws FileNotFoundException {
+        BattleInterface battle = new BattleInterface(unit1, unit2, this.game);
+    }
+
+    public void displayMsg(String msg) {
+        MessagePopUp message = new MessagePopUp(msg);
     }
 }

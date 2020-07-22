@@ -22,5 +22,6 @@ public class PlayerMovementHandler implements PropertyChangeListener {
         Player player= pair.getKey();
         IPanel panel= pair.getValue();
         citricLiquid.moveSprite(player,panel);
+
     }
 }

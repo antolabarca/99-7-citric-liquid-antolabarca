@@ -155,15 +155,15 @@ class MediatorTest {
         var players = new Mediator.MediatorPlayer<?>[]{
                 mediator.createPlayer(panels[0], testPlayers.get(0)).getFirst(),
                 mediator.createPlayer(panels[1], testPlayers.get(1)).getFirst()};
-        assertEquals(1, panels[0].getPlayers().size(), "1");
-        assertTrue(panels[0].getPlayers().contains(players[0]), "2");
-        assertEquals(1, panels[1].getPlayers().size(), "3");
-        assertTrue(panels[1].getPlayers().contains(players[1]), "4");
+        assertEquals(1, panels[0].getPlayers().size());
+        assertTrue(panels[0].getPlayers().contains(players[0]));
+        assertEquals(1, panels[1].getPlayers().size());
+        assertTrue(panels[1].getPlayers().contains(players[1]));
         mediator.movePlayer();
-        assertEquals(0, panels[0].getPlayers().size(), "5");
-        assertEquals(2, panels[1].getPlayers().size(), "6");
-        assertTrue(panels[1].getPlayers().contains(players[0]), "7");
-        assertTrue(panels[1].getPlayers().contains(players[1]), "8");
+        assertEquals(0, panels[0].getPlayers().size());
+        assertEquals(2, panels[1].getPlayers().size());
+        assertTrue(panels[1].getPlayers().contains(players[0]));
+        assertTrue(panels[1].getPlayers().contains(players[1]));
     }
 
     @Test

@@ -18,6 +18,7 @@ public class MovePhase extends AbstractMovementPhase{
     public void action() {
         Player player = turn.getPlayer();
         int x = player.move(y);
+        turn.moveNotification(null, player.getCurrentPanel(), player);
         if (x==0){ //the player moved all the steps they had left
             turn.setPhase(new LandAtPanelPhase());
         } else if (turn.getPlayer().getCurrentPanel().getPlayers().size()>1){ //there is another player in the panel
