@@ -16,6 +16,10 @@ public class PlayerMovementHandler implements PropertyChangeListener {
     }
 
 
+    /**
+     * calls the gui method that moves the sprite
+     * @param evt
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         Pair<Player, IPanel> pair = (Pair<Player, IPanel>) evt.getNewValue();

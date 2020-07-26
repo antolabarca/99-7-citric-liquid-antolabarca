@@ -48,6 +48,11 @@ public class CitricLiquid extends Application {
     private DisplayMessageHandler displayMessageHandler = new DisplayMessageHandler(this);
     private static final String RESOURCE_PATH = "src/resources/";
 
+    /**
+     * Displays the initial state of the game
+     * @param mainStage the stage
+     * @throws FileNotFoundException
+     */
     @Override
     public void start(@NotNull Stage mainStage) throws FileNotFoundException {
         mainStage.setTitle("99.7% Citric Liquid");
@@ -131,8 +136,6 @@ public class CitricLiquid extends Application {
         root.getChildren().add(fightPlayerButton());
         root.getChildren().add(ignorePlayerButton());
 
-        root.getChildren().add(StartGameButton());
-
         root.getChildren().add(actionButton());
 
         mainStage.setScene(scene);
@@ -142,6 +145,11 @@ public class CitricLiquid extends Application {
 
     }
 
+    /**
+     * Creates a label that displays a players stats on screen
+     * @param player the player
+     * @param yPos the vertical position to display the stats
+     */
     private Node playerText(Player player, int yPos) {
         String text = player.getName()+"\nHP: "+player.getCurrentHP()+"/"+player.getMaxHP()+"\n"
                 +"Current norma level: "+ player.getNormaLevel()+"\nCurrent stars: "+player.getStars()+
@@ -153,6 +161,9 @@ public class CitricLiquid extends Application {
         return t;
     }
 
+    /**
+     * Generates a Turn Action button, that will keep the game moving
+     */
     private Node actionButton() {
         Button b = new Button("Perform turn action");
         b.setLayoutX(1000);
@@ -161,11 +172,18 @@ public class CitricLiquid extends Application {
         return b;
     }
 
+    /**
+     * Makes the game advance by calling the turn's phase's action
+     * @param actionEvent the pressing of the button
+     */
     private static void turnAction(ActionEvent actionEvent) {
         game.getTurn().getPhase().action();
         updatePlayerLabels();
     }
 
+    /**
+     * Updates the players stat labels onscreen
+     */
     private static void updatePlayerLabels() {
         Set<Player> players= playerTexts.keySet();
         Iterator iterator = players.iterator();
@@ -175,6 +193,10 @@ public class CitricLiquid extends Application {
         }
     }
 
+    /**
+     * Updates a specific players stats label onscreen
+     * @param player the player
+     */
     private static void updateLabel(Player player) {
         String text = player.getName()+"\nHP: "+player.getCurrentHP()+"/"+player.getMaxHP()+"\n"
                 +"Current norma level: "+ player.getNormaLevel()+"\nCurrent stars: "+player.getStars()+
@@ -184,24 +206,9 @@ public class CitricLiquid extends Application {
     }
 
 
-    private Node StartGameButton() {
-        Button b = new Button("Start Game!");
-        b.setLayoutX(600);
-        b.setLayoutY(350);
-        b.setOnAction(CitricLiquid::startGame);
-        return b;
-    }
-
-    private static void startGame(ActionEvent actionEvent) {
-        turn();
-        Button b = (Button) actionEvent.getSource();
-        b.setVisible(false);
-    }
-
-    private static void turn(){
-
-    }
-
+    /**
+     * Creates a button for ignorePlayer()
+     */
     private Node ignorePlayerButton() {
         Button b = new Button("Ignore");
         b.setLayoutX(630);
@@ -212,6 +219,10 @@ public class CitricLiquid extends Application {
         return b;
     }
 
+    /**
+     * Sets the current players fight decision to IGNORE
+     * @param actionEvent the pressing of the button
+     */
     private static void ignorePlayer(ActionEvent actionEvent) {
         game.getController().getTurnOwner().setFightDecision(FightDecision.IGNORE);
         Iterator iterator = fightChoiceButtons.iterator();
@@ -220,6 +231,9 @@ public class CitricLiquid extends Application {
         }
     }
 
+    /**
+     * Creates a button for fightPlayer
+     */
     private Node fightPlayerButton() {
         Button b = new Button("Fight!");
         b.setLayoutX(570);
@@ -230,6 +244,10 @@ public class CitricLiquid extends Application {
         return b;
     }
 
+    /**
+     * Sets the turn owners fight decision to FIGHT
+     * @param actionEvent the pressing of the button
+     */
     private static void fightPlayer(ActionEvent actionEvent) {
         game.getController().getTurnOwner().setFightDecision(FightDecision.ENGAGE);
         Iterator iterator = fightChoiceButtons.iterator();
@@ -238,6 +256,9 @@ public class CitricLiquid extends Application {
         }
     }
 
+    /**
+     * creates a button for stopAtHome
+     */
     private Node stopAtHomeButton() {
         Button b = new Button("Stop");
         b.setLayoutX(570);
@@ -248,6 +269,10 @@ public class CitricLiquid extends Application {
         return b;
     }
 
+    /**
+     * sets the turn owners decision to stop at home
+     * @param actionEvent the pressing of the button
+     */
     private static void stopAtHome(ActionEvent actionEvent) {
         game.getController().getTurnOwner().setHomeDecision(HomeDecision.STOP);
         Iterator iterator = homeDecisionButtons.iterator();
@@ -256,6 +281,9 @@ public class CitricLiquid extends Application {
         }
     }
 
+    /**
+     * creates a button for keepMovingHome
+     */
     private Node movePastHomeButton() {
         Button b = new Button("Keep Moving");
         b.setLayoutX(630);
@@ -266,6 +294,10 @@ public class CitricLiquid extends Application {
         return b;
     }
 
+    /**
+     * Sets the turn owners decision to move past their home
+     * @param actionEvent the pressing of the button
+     */
     private static void keepMovingHome(ActionEvent actionEvent) {
         game.getController().getTurnOwner().setHomeDecision(HomeDecision.KEEPMOVING);
         Iterator iterator = homeDecisionButtons.iterator();
@@ -274,6 +306,10 @@ public class CitricLiquid extends Application {
         }
     }
 
+    /**
+     * Creates a button to choose to move to a panel
+     * @param panel the panel
+     */
     private Node panelChoiceButton(IPanel panel) {
         Button b = new Button();
         buttonPanels.put(b,panel);
@@ -286,6 +322,10 @@ public class CitricLiquid extends Application {
         return b;
     }
 
+    /**
+     * Sets the panel decision to this buttons panel
+     * @param actionEvent the button being pressed
+     */
     private static void panelChosen(ActionEvent actionEvent) {
         Button b = (Button) actionEvent.getSource();
         IPanel panel = buttonPanels.get(b);
@@ -299,17 +339,29 @@ public class CitricLiquid extends Application {
     }
 
 
+    /**
+     * Moves a sprite in the gui
+     * @param player the player that moves
+     * @param panel the panel the sprite should move to
+     */
     public void moveSprite(Player player, IPanel panel) {
         MovableNode sprite = game.getController().getPlayerSprite(player);
         Pair<Integer, Integer> position = game.getController().getPanelPosition(panel);
         sprite.moveTo(position.getKey(), position.getValue());
     }
 
+    /**
+     * Makes a button to display credits
+     */
     private Node creditsButton() {
         Button b = credits.getButton();
         return b;
     }
 
+    /**
+     * Enables the buttons corresponding to a set of panels
+     * @param panels the panels
+     */
     public void enablePanelButtons(Set<IPanel> panels) {
         Iterator iterator = panels.iterator();
         while (iterator.hasNext()){ //enable all the panel buttons
@@ -319,6 +371,9 @@ public class CitricLiquid extends Application {
         }
     }
 
+    /**
+     * Enables the buttons to make a stopping at home choice
+     */
     public void enableHomeButtons() {
         Iterator iterator = homeDecisionButtons.iterator();
         while (iterator.hasNext()){
@@ -327,6 +382,9 @@ public class CitricLiquid extends Application {
         }
     }
 
+    /**
+     * Enables the buttons to make a fighting or ignoring another player choice
+     */
     public void enableFightChoiceButtons() {
         Iterator iterator = fightChoiceButtons.iterator();
         while (iterator.hasNext()){
@@ -335,10 +393,20 @@ public class CitricLiquid extends Application {
         }
     }
 
+    /**
+     * Creates a battle interface for a battle between 2 units
+     * @param unit1 the 1st unit
+     * @param unit2 the 2nd unit
+     * @throws FileNotFoundException
+     */
     public void startBattle(IUnit unit1, IUnit unit2) throws FileNotFoundException {
         BattleInterface battle = new BattleInterface(unit1, unit2, this.game);
     }
 
+    /**
+     * Creates a popup for a message
+     * @param msg the message to be displayed
+     */
     public void displayMsg(String msg) {
         MessagePopUp message = new MessagePopUp(msg);
     }

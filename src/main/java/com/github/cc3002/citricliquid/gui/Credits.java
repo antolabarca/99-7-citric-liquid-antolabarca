@@ -15,6 +15,9 @@ public class Credits {
         super();
     }
 
+    /**
+     * Creates a button that opens a new window for the games credits
+     */
     public Button getButton(){
         Button b = new Button("Credits");
         b.setLayoutX(10);

@@ -7,9 +7,13 @@ import com.github.cc3002.citricjuice.model.unit.Player;
 import com.github.cc3002.citricjuice.model.unit.WildUnit;
 import com.github.cc3002.citricliquid.Board;
 import com.github.cc3002.citricliquid.TurnPhases.StarsPhase;
+import com.github.cc3002.citricliquid.gui.node.MovableNode;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -152,6 +156,13 @@ public class ControllerTest {
         controller.endTurn();
         assertEquals(2, controller.getChapter());
         assertEquals(testPlayers.get(0), controller.getTurnOwner());
+    }
+
+    @Test
+    public void testPanelPositions(){
+        controller.setPanelPosition(panelSuppliers.get(0),100,37);
+        assertEquals(100, (int)controller.getPanelPosition(panelSuppliers.get(0)).getKey());
+        assertEquals(37, (int)controller.getPanelPosition(panelSuppliers.get(0)).getValue());
     }
 
     @Test

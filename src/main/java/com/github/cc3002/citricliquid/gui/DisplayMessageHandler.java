@@ -11,6 +11,10 @@ public class DisplayMessageHandler implements PropertyChangeListener {
         this.citricLiquid = citricLiquid;
     }
 
+    /**
+     * calls the gui method to display a message popup
+     * @param evt the event
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String msg = (String) evt.getNewValue();

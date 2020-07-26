@@ -15,6 +15,10 @@ public class StartBattleHandler implements PropertyChangeListener {
         this.citricLiquid = citricLiquid;
     }
 
+    /**
+     * Calls the gui method that opens a new battle window
+     * @param evt
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         Pair<IUnit, IUnit> pair = (Pair<IUnit, IUnit>) evt.getNewValue();

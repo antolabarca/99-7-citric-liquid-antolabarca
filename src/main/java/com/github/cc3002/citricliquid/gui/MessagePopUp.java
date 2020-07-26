@@ -20,6 +20,9 @@ public class MessagePopUp {
         show();
     }
 
+    /**
+     * Shows the message as a popup window
+     */
     private void show() {
         Stage stage = new Stage();
         Group root = new Group();
@@ -36,6 +39,9 @@ public class MessagePopUp {
         stage.show();
     }
 
+    /**
+     * Creates a button for ok
+     */
     private Node okButton() {
         Button b = new Button("OK");
         b.setLayoutX(80);
@@ -44,6 +50,10 @@ public class MessagePopUp {
         return b;
     }
 
+    /**
+     * Closes the window
+     * @param actionEvent
+     */
     private static void ok(ActionEvent actionEvent) {
         Button button = (Button) actionEvent.getSource();
         Stage stage = (Stage) button.getScene().getWindow();

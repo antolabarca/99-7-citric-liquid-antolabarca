@@ -281,7 +281,6 @@ public class GameController {
 
     /**
      * Returns the panel where a player is
-     *
      * @param unit the player
      */
     public IPanel getPlayerPanel(Player unit) {

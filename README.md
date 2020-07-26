@@ -85,9 +85,13 @@ The general flow of the game is done pressing the "Perform turn action" button. 
 When a popup message is displayed, it can be closed with the window's X or the OK button.
 Popups displays are triggered by some turn phases and some panels activations.
 
+When a player wins the game, this button will display a "game over" message instead of performing more actions
+
 There is also a credits button, that opens a window with the game's credits and attributions (this was added because the freepik icons need to be attributed to be used)
 This window can be closed with the window's X.
 
 When a battle starts, a new window will also open. This window will show both units that battle and their stats, and will have buttons to set the unit's battle decisions (wether to evade or defend)
 This window can be closed with the X. (I'm not sure why this only worked sometimes when I played the game, but one of this windows was left to open automatically in case this happens when you're correcting, so that it can be seen)
 A possible improvement for this would be that the window can't be closed until the battle ends.
+A note is that the battle works (when the window popup wasn't there and the decisions were set by hand, the players stats actually changed, so a battle was done, but it didn't show anywhere). Actually showing this battle will have to be worked on in the future.
+Also, a good thing to do would be to show "shaking" or some other effect of being attacked, and updating the stats during the battle.
