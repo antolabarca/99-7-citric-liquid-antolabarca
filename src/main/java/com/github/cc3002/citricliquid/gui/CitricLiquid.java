@@ -19,6 +19,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -38,6 +39,7 @@ public class CitricLiquid extends Application {
     private static Map<Button, IPanel> buttonPanels = new HashMap<>();
     private static Set<Button> homeDecisionButtons = new HashSet<>();
     private static Set<Button> fightChoiceButtons = new HashSet<>();
+    private static Map<Player, Label> playerTexts = new HashMap<>();
     private PlayerMovementHandler playerMovementHandler = new PlayerMovementHandler(this);
     private PanelChoiceHandler panelChoiceHandler = new PanelChoiceHandler(this);
     private HomeChoiceHandler homeChoiceHandler = new HomeChoiceHandler(this);
@@ -62,6 +64,10 @@ public class CitricLiquid extends Application {
         controller.addStartBattleListener(this.startBattleHandler);
         game.getTurn().addMsgListener(displayMessageHandler);
         game.getTurn().addPlayerMovementListener(playerMovementHandler);
+        List<IPanel> panels = game.getController().getPanelsList();
+        for (int i=0; i<panels.size();i++){
+            panels.get(i).addMsgListener(displayMessageHandler);
+        }
 
         ArrayList<Player> players = controller.getPlayers();
         for (int i = 0; i < 4; i++) {
@@ -114,6 +120,11 @@ public class CitricLiquid extends Application {
             root.getChildren().add(panelChoiceButton(panelList.get(i)));
         }
 
+        for (int i=0; i<4; i++){
+            int yPos = 150 + i*125;
+            root.getChildren().add(playerText(players.get(i), yPos));
+        }
+
         root.getChildren().add(stopAtHomeButton());
         root.getChildren().add(movePastHomeButton());
 
@@ -127,6 +138,19 @@ public class CitricLiquid extends Application {
         mainStage.setScene(scene);
         mainStage.show();
 
+        startBattle(suguri, marc);
+
+    }
+
+    private Node playerText(Player player, int yPos) {
+        String text = player.getName()+"\nHP: "+player.getCurrentHP()+"/"+player.getMaxHP()+"\n"
+                +"Current norma level: "+ player.getNormaLevel()+"\nCurrent stars: "+player.getStars()+
+                "\nCurrent wins: "+player.getWins()+"\nGoal: "+player.getNormaGoal();
+        Label t = new Label(text);
+        t.setLayoutX(60);
+        t.setLayoutY(yPos);
+        playerTexts.put(player, t);
+        return t;
     }
 
     private Node actionButton() {
@@ -139,7 +163,26 @@ public class CitricLiquid extends Application {
 
     private static void turnAction(ActionEvent actionEvent) {
         game.getTurn().getPhase().action();
+        updatePlayerLabels();
     }
+
+    private static void updatePlayerLabels() {
+        Set<Player> players= playerTexts.keySet();
+        Iterator iterator = players.iterator();
+        while (iterator.hasNext()){
+            Player player = (Player)iterator.next();
+            updateLabel(player);
+        }
+    }
+
+    private static void updateLabel(Player player) {
+        String text = player.getName()+"\nHP: "+player.getCurrentHP()+"/"+player.getMaxHP()+"\n"
+                +"Current norma level: "+ player.getNormaLevel()+"\nCurrent stars: "+player.getStars()+
+                "\nCurrent wins: "+player.getWins()+"\nGoal: "+player.getNormaGoal();
+        Label t = playerTexts.get(player);
+        t.setText(text);
+    }
+
 
     private Node StartGameButton() {
         Button b = new Button("Start Game!");

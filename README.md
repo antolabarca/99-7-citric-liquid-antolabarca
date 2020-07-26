@@ -3,9 +3,8 @@
 The project consists in creating a (simplified) clone of the game **100% Orange Juice**
 developed by [Orange_Juice](http://daidai.moo.jp) and distributed by [Fruitbat Factory](https://fruitbatfactory.com).
 
-This project is not yet playable, but methods are tested. Those tests have been passed all of the times they were run. If those tests are correctly made, it can be asumed that the classes and methods tested are also correct.
+This project is semi playable, and methods are tested. Those tests have been passed all of the times they were run. If those tests are correctly made, it can be asumed that the classes and methods tested are also correct.
 
-For now, it is assumed that user interface and communication will be implemented in the future.
 
 
 
@@ -13,6 +12,7 @@ For now, it is assumed that user interface and communication will be implemented
 
 The design of the board consists of a *Panel* class (that can be instantiated as a "neutral" Panel in the game, meaning a Panel that does nothing and has no special attribute), and subclasses that extend *Panel* for all other panel types: *Bonus*, *Boss*, *Drop*, *Encounter*, *Home*. *Panel* implements the *IPanel* interface. The method *activatedBy* is implemented for *Bonus*, *Drop*, *Encounter* and *Home*.
 For *Boss* and *Encounter* panels, an observer pattern is used to signal the start of an attack to the controller. They both implement IEnemyPanel, and in the future maybe an AbstractEnemyPanel class could be used.
+*Panel* also has methods to be observed by the GUI and display popup messages, but for now those have been causing an error that I don't really understand so they're not being used.
 
 The initial boss/wild of the Enemy panels need to be implemented correctly, since for now it just adds a Enemy unit at the beginning of each panel, but it doesn't really fit the rules of random enemies and Boss panels starting with a wild.
 
@@ -35,7 +35,7 @@ Units also have a dies() method, which in case of the player sets the required r
 
 There is a game rule that changes some of the Encounter panels to boss Panels and then back to encounter panels. This needs to be implemented in the future when I understand how that's supposed to work.
 
-In the future, player interactions to decide wether to evade or defend are required. This needs an interface to be implemented. In the case of Enemy Units, this is decided by a random.
+Units have a getIcon method that returns the path to the unit's icon, to be displayed in battles in the interface.
 
 ####Player
 The *Player* class has unique methods for setting atk, def and evd, and for getting and increasing the player's Norma level. The players also have an observer method to signal if Norma reaches 4 or 6, since norma 4 makes a boss appear and norma 6 means she won the game.
@@ -52,10 +52,13 @@ Extend the AbstractEnemyUnit class, which has methods to set and get the panel w
 
 
 ##Game Controller
-The game controller has all of the methods required by the Mediator. In the future, this could be implemented using a facade pattern, but for now it just is a class with a lot of methods.
+The game controller has all of the methods required by the Mediator. 
 
 The controller has methods for creating all of the types of panels and units described previously, and these methods also add them to the controllers list of panels and players when necessary, and add the listeners for the observer patterns.
 
+
+##Board
+This class is in charge of starting and setting up the game's board, in accordance to the background board. It creates the panels and their positions, and sets the panels next panels using methods from the controller
 
 
 ##Turn Phases
@@ -63,8 +66,28 @@ These are implemented using a state pattern. The turn class has a player and a t
 * First Phase: in which it is checked if the player isDown, in which case it moves to a recovery phase. If not, it continues to a Stars Phase
 * Stars Phase: the player earns the specified amount of stars (currentchapter/5 +1) and moves on to a card Phase
 * Card Phase: the player has the option to play a card. For now, this phase does nothing, as cards are not yet implemented. It rolls the dice and continues to a Move Phase for the amount of steps rolled
-* Move Phase: recieves an int x as an attribute. The player moves according to the rules, at most x steps. 
-The getters for the player's decision are used for the cases in which a decision is required (if there are multiple next panels, her home panel or another player in the next panel). If the player stops, a land at panel phase starts, or a Fight phase in case there was another player and she chose to fight them, if she decides to keep moving another move phase starts for the amount of steps the player has left (x - the amount of steps already done).
+* Move Phase: recieves an int x as an attribute. The player moves according to the rules, at most x steps. If a decision is required to keep moving, a decision phase is started. If not, a LandAtPanelPhase is started.
+* Decision Phases: 3 types, for setting a player's panel decision, fight decision and home decision. This class signals to the GUI to display buttons that will set the decisions. This phases can start new movement phases (if the player chooses to keep moving), Fight phases (if the player chooses to fight), land at panel phase (if the player chooses to stop at their home)
 * Fight Phase: starts a fight with the other player in the panel (the player who'se turn it is attacks first). If the player is alive at the end of the battle, she lands at the panel and a Land at Panel Phase starts. If she is down, the turn ends.
 * Land at Panel Phase: the player finally stops a panel. If there is a card, it is played (not yet implemented) and the panel is activated by the player. This is the last phase of the turn.
 * Recovery phase: the player rolls the dice. If the amount is more or equal to the required amount, they recover their full HP and move on to a stars Phase. If not, their required amount decreases by one, and their turn ends.
+
+
+
+
+##GUI
+
+GUI methods aren't tested, nor are those with relation to the GUI in other classes (such as those that signal the GUI to display a message)
+
+
+####Instructions
+The general flow of the game is done pressing the "Perform turn action" button. This button does Turn.getPhase.action(), and therefore advances the game. It also updates the text that displays the current state of each player (norma goal, HP, stars and wins).
+When a popup message is displayed, it can be closed with the window's X or the OK button.
+Popups displays are triggered by some turn phases and some panels activations.
+
+There is also a credits button, that opens a window with the game's credits and attributions (this was added because the freepik icons need to be attributed to be used)
+This window can be closed with the window's X.
+
+When a battle starts, a new window will also open. This window will show both units that battle and their stats, and will have buttons to set the unit's battle decisions (wether to evade or defend)
+This window can be closed with the X. (I'm not sure why this only worked sometimes when I played the game, but one of this windows was left to open automatically in case this happens when you're correcting, so that it can be seen)
+A possible improvement for this would be that the window can't be closed until the battle ends.

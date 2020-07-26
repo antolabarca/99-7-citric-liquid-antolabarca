@@ -1,8 +1,10 @@
 package com.github.cc3002.citricjuice.model.board;
 
 import com.github.cc3002.citricjuice.model.unit.Player;
-import com.github.cc3002.citricliquid.mediator.Mediator;
 
+import java.awt.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 /**
@@ -17,6 +19,7 @@ public class Panel implements IPanel { /*this is a neutral panel*/
     protected final int id; /* id of Panel*/
     protected Set<IPanel> nextPanels;
     protected Set<Player> players;
+    private PropertyChangeSupport msgProperty = new PropertyChangeSupport(this);
 
     /**
      * Creates a new panel with coordenates x,y
@@ -111,6 +114,25 @@ public class Panel implements IPanel { /*this is a neutral panel*/
     public void removePlayer(Player player) {
         players.remove(player);
     }
+
+    /**
+     * Adds a listener for this objects messages
+     * @param listener the listener
+     */
+    @Override
+    public void addMsgListener(PropertyChangeListener listener){
+        msgProperty.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * sends a notification to the interface to display a popup msg
+     * @param s the message
+     */
+    @Override
+    public void sendMsg(String s){
+        msgProperty.firePropertyChange("message", null, s);
+    }
+
 
 
 }

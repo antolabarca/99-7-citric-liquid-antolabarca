@@ -10,7 +10,10 @@ public class EncounterPanel extends Panel implements IEnemyPanel{
   WildUnit wild;
   PropertyChangeSupport notification = new PropertyChangeSupport(this);
 
-  public EncounterPanel(int id){super(id);}
+  public EncounterPanel(int id){
+    super(id);
+    setWild(new WildUnit("Wildie", 4,1,0,0));
+  }
 
   /**
    * Sets this panels wild unit
@@ -39,7 +42,10 @@ public class EncounterPanel extends Panel implements IEnemyPanel{
    /**
    * Signals the controller that a battle should be started
    */
-  public void startWildBattle(){this.notification.firePropertyChange("wild battle start", null, wild);}
+  public void startWildBattle(){
+    System.out.println("start wild battle");
+    this.notification.firePropertyChange("wild battle start", null, wild);
+  }
 
   /**
    * adds listener

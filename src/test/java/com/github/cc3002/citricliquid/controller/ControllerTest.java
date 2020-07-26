@@ -1,10 +1,12 @@
 package com.github.cc3002.citricliquid.controller;
 
+import com.github.cc3002.citricjuice.model.NormaGoal;
 import com.github.cc3002.citricjuice.model.board.*;
 import com.github.cc3002.citricjuice.model.unit.BossUnit;
 import com.github.cc3002.citricjuice.model.unit.Player;
 import com.github.cc3002.citricjuice.model.unit.WildUnit;
 import com.github.cc3002.citricliquid.Board;
+import com.github.cc3002.citricliquid.TurnPhases.StarsPhase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -65,30 +67,35 @@ public class ControllerTest {
     public void testCreateBonusPanel(){
         assertEquals(new BonusPanel(0), panelSuppliers.get(0));
         assertTrue(controller.getPanels().contains(panelSuppliers.get(0)));
+        assertTrue(controller.getPanelsList().contains(panelSuppliers.get(0)));
     }
 
     @Test
     public void testCreateBossPanel(){
         assertEquals(new BossPanel(1), panelSuppliers.get(1));
         assertTrue(controller.getPanels().contains(panelSuppliers.get(1)));
+        assertTrue(controller.getPanelsList().contains(panelSuppliers.get(1)));
     }
 
     @Test
     public void testCreateDropPanel(){
         assertEquals(new DropPanel(2), panelSuppliers.get(2));
         assertTrue(controller.getPanels().contains(panelSuppliers.get(2)));
+        assertTrue(controller.getPanelsList().contains(panelSuppliers.get(2)));
     }
 
     @Test
     public void testCreateEncounterPanel(){
         assertEquals(new EncounterPanel(3), panelSuppliers.get(3));
         assertTrue(controller.getPanels().contains(panelSuppliers.get(3)));
+        assertTrue(controller.getPanelsList().contains(panelSuppliers.get(3)));
     }
 
     @Test
     public void testCreateSetHomePanel(){
         assertEquals(new HomePanel(4), panelSuppliers.get(4));
         assertTrue(controller.getPanels().contains(panelSuppliers.get(4)));
+        assertTrue(controller.getPanelsList().contains(panelSuppliers.get(4)));
         controller.setPlayerHome(testPlayers.get(0), (HomePanel) panelSuppliers.get(4));
         assertEquals(panelSuppliers.get(4), testPlayers.get(0).getHome());
     }
@@ -97,13 +104,14 @@ public class ControllerTest {
     public void testCreateNeutralPanel(){
         assertEquals(new Panel(5), panelSuppliers.get(5));
         assertTrue(controller.getPanels().contains(panelSuppliers.get(5)));
+        assertTrue(controller.getPanelsList().contains(panelSuppliers.get(5)));
     }
 
     @Test
     public void testCreatePlayer(){
         Player expectedPlayer = new Player(player_names[1],hp[1],atk[1],def[1],evd[1]);
         assertEquals(expectedPlayer, testPlayers.get(1));
-        assertEquals(panelSuppliers.get(1),testPlayers.get(1).getCurrentPanel());
+        assertEquals(panelSuppliers.get(1),controller.getPlayerPanel(testPlayers.get(1)));
         assertTrue(panelSuppliers.get(1).getPlayers().contains(testPlayers.get(1)));
         assertTrue(controller.getPlayers().contains(testPlayers.get(1)));
     }
@@ -221,5 +229,11 @@ public class ControllerTest {
         assertTrue(panel2.getPlayers().contains(player), "Player didn't stop at split");
     }
 
-
+    @Test
+    public void testNormaGoal(){
+        controller.setCurrPlayerNormaGoal(NormaGoal.STARS);
+        assertEquals(NormaGoal.STARS, controller.getTurnOwner().getNormaGoal());
+        controller.setCurrPlayerNormaGoal(NormaGoal.WINS);
+        assertEquals(NormaGoal.WINS, controller.getTurnOwner().getNormaGoal());
+    }
 }

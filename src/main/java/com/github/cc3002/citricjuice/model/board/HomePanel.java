@@ -14,8 +14,10 @@ public class HomePanel extends Panel{
    */
   public void activatedBy(final @NotNull Player player) {
     player.setCurrentHP(player.getCurrentHP() + 1);
+    sendMsg(player.getName()+"'s HP is now "+player.getCurrentHP());
     if (player.checkNorma()){
       player.normaClear();
+      sendMsg(player.getName()+"'s norma level is now "+player.getNormaLevel()+"!");
     }
   }
 

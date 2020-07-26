@@ -121,7 +121,6 @@ public class GameController {
         EncounterPanel panel = new EncounterPanel(id);
         panelsSet.add(panel);
         panel.addEncounterPanelListener(wildBattleHandler);
-        panel.setWild(new WildUnit("iwi", 3, -1, 1, -1)); //this is for now
         return panel;
     }
 
