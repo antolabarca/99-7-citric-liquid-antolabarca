@@ -94,4 +94,4 @@ When a battle starts, a new window will also open. This window will show both un
 This window can be closed with the X. (I'm not sure why this only worked sometimes when I played the game, but one of this windows was left to open automatically in case this happens when you're correcting, so that it can be seen)
 A possible improvement for this would be that the window can't be closed until the battle ends.
 A note is that the battle works (when the window popup wasn't there and the decisions were set by hand, the players stats actually changed, so a battle was done, but it didn't show anywhere). Actually showing this battle will have to be worked on in the future.
-Also, a good thing to do would be to show "shaking" or some other effect of being attacked, and updating the stats during the battle.
+Also, a good thing to do would be to show "shaking" or some other effect of being attacked, and updating the stats during the battle, or at least showing the attack/damage amounts.
