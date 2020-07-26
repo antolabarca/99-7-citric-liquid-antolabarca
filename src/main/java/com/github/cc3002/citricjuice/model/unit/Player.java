@@ -3,9 +3,13 @@ package com.github.cc3002.citricjuice.model.unit;
 import com.github.cc3002.citricjuice.model.NormaGoal;
 import com.github.cc3002.citricjuice.model.board.HomePanel;
 import com.github.cc3002.citricjuice.model.board.IPanel;
+import com.github.cc3002.citricliquid.gui.choicehandlers.FightChoiceHandler;
+import com.github.cc3002.citricliquid.gui.choicehandlers.HomeChoiceHandler;
+import javafx.util.Pair;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Set;
 
 import static com.github.cc3002.citricjuice.model.NormaGoal.STARS;
 
@@ -25,10 +29,14 @@ public class Player extends AbstractUnit {
   private HomePanel home;
   private PropertyChangeSupport playerWins = new PropertyChangeSupport(this);
   private PropertyChangeSupport playerNorma4 = new PropertyChangeSupport(this);
-  BattleDecision battleDecision;
-  FightDecision fightDecision;
-  IPanel panelDecision;
-  boolean homeDecision;
+  private PropertyChangeSupport playerMoves = new PropertyChangeSupport(this);
+  private PropertyChangeSupport panelDecisionProperty = new PropertyChangeSupport(this);
+  private PropertyChangeSupport homePanelProperty = new PropertyChangeSupport(this);
+  private PropertyChangeSupport fightChoiceProperty = new PropertyChangeSupport(this);
+  private BattleDecision battleDecision = null;
+  private FightDecision fightDecision = null;
+  private IPanel panelDecision = null;
+  private HomeDecision homeDecision = null;
 
   /**
    * Creates a new character.
@@ -248,25 +256,6 @@ public class Player extends AbstractUnit {
     wild.reduceStarsBy(star);
   }
 
-
-  /**
-   * Moves this player according to the rules, returns the "moves" that were left in case the
-   * player stopped to make a decision
-   */
-  public int move(int x){
-    for (int i=0; i<x; i++){
-      if( getCurrentPanel().getNextPanels().size()==1) {
-        getCurrentPanel().removePlayer(this);
-        IPanel newPanel = getCurrentPanel().getNextPanels().iterator().next();
-        this.changePanel(newPanel);
-        newPanel.addPlayer(this);
-        if(this.getCurrentPanel().equals(this.getHome())){return x-i-1; }
-        if (this.getCurrentPanel().getPlayers().size()>1){return x-i-1;}
-      } else { return x-i; }
-    }
-    return 0;
-  }
-
   /**
    * Returns the dice amount required to recover
    */
@@ -288,7 +277,56 @@ public class Player extends AbstractUnit {
   @Override
   public BattleDecision getBattleDecision() { return battleDecision; }
 
-    /**
+  /**
+   * Moves this player according to the rules, returns the "moves" that were left in case the
+   * player stopped to make a decision
+   */
+  public int move(int x){
+    for (int i=0; i<x; i++){
+      if(getCurrentPanel().getNextPanels().size()==1) {
+        IPanel old = getCurrentPanel();
+        old.removePlayer(this);
+        IPanel newPanel = old.getNextPanels().iterator().next();
+        this.changePanel(newPanel);
+        newPanel.addPlayer(this);
+        if(getCurrentPanel().equals(getHome())){
+          homePanelNotification();
+          return x-i-1;
+        }
+        if (getCurrentPanel().getPlayers().size()>1){
+          fightChoiceNotification();
+          return x-i-1;
+        }
+      } else {
+        choosePanelNotification(getCurrentPanel().getNextPanels());
+        return x-i; }
+    }
+    return 0;
+  }
+
+  /**
+   * Sends a notification to the interface that the player runs into another player
+   */
+  private void fightChoiceNotification() {
+    this.fightChoiceProperty.firePropertyChange("fight choice", null, this);
+  }
+
+  /**
+   * Sends a notification to the interface that the player is in the home panel
+   */
+  private void homePanelNotification() {
+    this.homePanelProperty.firePropertyChange("home panel choice", null, this);
+  }
+
+  /**
+   * Sends a notification to the interface to choose the next panel
+   * @param nextPanels the options
+   */
+  private void choosePanelNotification(Set<IPanel> nextPanels) {
+    this.panelDecisionProperty.firePropertyChange("panels choice", null, nextPanels);
+  }
+
+  /**
      * Sets the player's decision in case of being in a battle
      */
     public void setBattleDecision(BattleDecision decision) { battleDecision = decision;}
@@ -326,11 +364,43 @@ public class Player extends AbstractUnit {
    * Sets this players decision to stop at their home panel
    * true if they choose to stop, false if they choose to continue moving
    */
-  public void setHomeDecision(boolean decision){ this.homeDecision = decision;}
+  public void setHomeDecision(HomeDecision decision){ this.homeDecision = decision;}
 
   /**
    * Returns the players decision to stop at their home panel
    * (true if they want to stop, false if they choose to continue)
    */
-  public boolean getHomeDecision() { return homeDecision;  }
+  public HomeDecision getHomeDecision() { return homeDecision;  }
+
+
+
+  /**
+   * Adds a listener to this player
+   * @param listener the listener that is added
+   */
+  public void addPanelChoiceListener(PropertyChangeListener listener) {
+    panelDecisionProperty.addPropertyChangeListener(listener);
+  }
+
+  /**
+   * Adds a listener to this player
+   * @param listener the listener that is added
+   */
+  public void addHomeChoiceListener(PropertyChangeListener listener) {
+    homePanelProperty.addPropertyChangeListener(listener);
+  }
+
+  /**
+   * Adds a listener to this player
+   * @param listener the listener that is added
+   */
+  public void addFightChoiceListener(PropertyChangeListener listener) {
+    fightChoiceProperty.addPropertyChangeListener(listener);
+  }
+
+  /**
+   * Sets this players icon path
+   * @param path the path to the icon
+   */
+  public void setIcon(String path){this.icon = path;}
 }

@@ -367,11 +367,12 @@ public class UnitsTest {
     IPanel expected = new Panel(3);
     suguri.setPanelDecision(expected);
     assertEquals(expected, suguri.getPanelDecision());
-    suguri.setHomeDecision(true);
-    assertTrue(suguri.getHomeDecision());
-    suguri.setHomeDecision(false);
-    assertTrue(!suguri.getHomeDecision());
+    suguri.setHomeDecision(HomeDecision.STOP);
+    assertEquals(HomeDecision.STOP, suguri.getHomeDecision());
+    suguri.setHomeDecision(HomeDecision.KEEPMOVING);
+    assertEquals(HomeDecision.KEEPMOVING, suguri.getHomeDecision());
   }
+
 
   // region : consistency tests
 
