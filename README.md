@@ -95,3 +95,12 @@ This window can be closed with the X. (I'm not sure why this only worked sometim
 A possible improvement for this would be that the window can't be closed until the battle ends.
 A note is that the battle works (when the window popup wasn't there and the decisions were set by hand, the players stats actually changed, so a battle was done, but it didn't show anywhere). Actually showing this battle will have to be worked on in the future.
 Also, a good thing to do would be to show "shaking" or some other effect of being attacked, and updating the stats during the battle, or at least showing the attack/damage amounts.
+
+####Description
+
+The game has a CitricLiquid class, that is the main class for the GUI. Running this class initializes the game.
+This class also is an observer of the turn, the controller and the panel, to show messages/displays in the GUI.
+
+There are Game and Board classes, that set up the game and initialize players/panels/enemies/etc.
+
+There are Credits, MessagePopUp and BattleInterface classes, that involve opening new windows to show credits of the game, messages and battles respectively.
